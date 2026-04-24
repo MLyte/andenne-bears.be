@@ -101,6 +101,7 @@ img {
   width: 1.05em;
   height: 1.05em;
   flex: 0 0 auto;
+  margin-right: 0.42rem;
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;
@@ -733,6 +734,10 @@ h3 {
   border: 1px solid rgba(5, 5, 5, 0.12);
   border-radius: 8px;
   background: #ffffff;
+}
+
+.contact-result[hidden] {
+  display: none;
 }
 
 .contact-result p {
