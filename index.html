@@ -73,7 +73,13 @@
         <img src="images/logoBears.png" alt="" />
         <span>Andenne Bears</span>
       </a>
-      <nav class="main-nav" aria-label="Navigation principale">
+      <button class="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="visually-hidden">Ouvrir le menu</span>
+      </button>
+      <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
         <a href="#rejoindre">Rejoindre</a>
         <a href="#disciplines">Disciplines</a>
         <a href="#infos">Infos</a>
@@ -122,9 +128,9 @@
           </div>
           <div class="trust-strip" aria-label="Points clés du club">
             <span>Débutants bienvenus</span>
+            <span>Essai sans équipement</span>
             <span>Flag sans contact</span>
             <span>Tackle encadré</span>
-            <span>Province de Namur</span>
           </div>
         </div>
       </section>
@@ -180,15 +186,15 @@
 
       <section class="photo-band" aria-label="Ambiance football américain">
         <figure class="photo-card photo-card-large">
-          <img src="images/unsplash-players.jpg" alt="Joueurs de football américain sur le bord du terrain" />
+          <img src="images/unsplash-players.jpg" alt="Joueurs de football américain sur le bord du terrain" loading="lazy" decoding="async" />
           <figcaption>Un club se construit aussi entre deux actions.</figcaption>
         </figure>
         <figure class="photo-card">
-          <img src="images/unsplash-player.jpg" alt="Joueur de football américain en course avec le ballon" />
+          <img src="images/unsplash-player.jpg" alt="Joueur de football américain en course avec le ballon" loading="lazy" decoding="async" />
           <figcaption>Intensité, lecture du jeu, progression.</figcaption>
         </figure>
         <figure class="photo-card">
-          <img src="images/unsplash-ball.jpg" alt="Ballon de football américain posé sur le terrain" />
+          <img src="images/unsplash-ball.jpg" alt="Ballon de football américain posé sur le terrain" loading="lazy" decoding="async" />
           <figcaption>Premier essai, premières questions, premier terrain.</figcaption>
         </figure>
       </section>
@@ -243,25 +249,83 @@
           </div>
           <div class="info-grid">
             <article>
-              <span class="info-label">Âges</span>
-              <h3>Flag dès 8 ans, tackle dès 14 ans</h3>
-              <p>On t'oriente selon ton âge, ton gabarit, ton expérience et ton envie.</p>
+              <span class="info-label">Qui</span>
+              <h3>Jeunes, U19 et seniors</h3>
+              <p>Le club accueille les débutants comme les joueurs confirmés, avec flag dès 8 ans et tackle dès 14 ans.</p>
             </article>
             <article>
-              <span class="info-label">Horaires</span>
-              <h3>Selon la discipline</h3>
-              <p>Tackle et flag ne suivent pas toujours le même rythme. On te donne le bon créneau avant ta venue.</p>
+              <span class="info-label">Quoi</span>
+              <h3>Flag et football américain</h3>
+              <p>Flag sans contact pour apprendre vite, tackle équipé pour jouer la version complète du football américain.</p>
+            </article>
+            <article class="schedule-card">
+              <span class="info-label">Quand</span>
+              <h3>Entraînements</h3>
+              <div class="schedule-list" aria-label="Horaires d'entraînement">
+                <div class="schedule-row">
+                  <span>Seniors tackle</span>
+                  <strong>Mercredi + vendredi</strong>
+                  <time>20h - 22h</time>
+                </div>
+                <div class="schedule-row">
+                  <span>U19 tackle</span>
+                  <strong>Mardi + vendredi</strong>
+                  <time>18h30 - 20h</time>
+                </div>
+                <div class="schedule-row">
+                  <span>Flag toutes catégories</span>
+                  <strong>Mardi</strong>
+                  <time>18h30 - 20h</time>
+                </div>
+                <div class="schedule-row">
+                  <span>Flag toutes catégories</span>
+                  <strong>Samedi</strong>
+                  <time>10h - 12h</time>
+                </div>
+              </div>
+            </article>
+            <article class="location-card">
+              <img src="images/andenne-arena.jpg" alt="Illustration de l'Andenne Arena" loading="lazy" decoding="async" />
+              <span class="info-label">Où</span>
+              <h3>Andenne Arena</h3>
+              <p>Un complexe sportif complet à Andenne, avec terrain synthétique et tracé football américain.</p>
+              <a class="location-link" href="https://www.andenne.be/poi/andenne-arena/" target="_blank" rel="noreferrer">
+                Rue Dr Melin 14, 5300 Andenne
+              </a>
             </article>
             <article>
-              <span class="info-label">Lieu</span>
-              <h3>Andenne / lieu temporaire possible</h3>
-              <p>Le terrain peut varier selon la saison et les disponibilités. On te partage l'adresse exacte.</p>
+              <span class="info-label">Pourquoi</span>
+              <h3>Progresser dans une équipe</h3>
+              <p>Tu travailles la vitesse, la discipline, le physique et l'esprit collectif dans un cadre encadré.</p>
             </article>
             <article>
-              <span class="info-label">Essai</span>
-              <h3>Viens avec une tenue de sport</h3>
-              <p>Pour découvrir, il faut surtout être à l'aise, hydraté et prêt à apprendre.</p>
+              <span class="info-label">Comment</span>
+              <h3>Un essai simple</h3>
+              <p>Contacte le club, puis viens léger pour découvrir.</p>
+              <ul class="trial-list">
+                <li>Tenue de sport</li>
+                <li>Chaussures adaptées au terrain</li>
+                <li>Gourde d'eau</li>
+                <li>Flag ou tackle&nbsp;: on te prête l'équipement</li>
+              </ul>
             </article>
+          </div>
+          <div class="quick-contact" aria-label="Contact rapide pour un essai">
+            <div>
+              <span class="info-label">Contact rapide</span>
+              <h3>Tu veux venir au prochain entraînement&nbsp;?</h3>
+              <p>Écris au club avec ton âge et la discipline qui t'attire. On te répond avec le bon groupe et ce qu'il faut prévoir.</p>
+            </div>
+            <div class="quick-contact-actions">
+              <a class="button button-dark" href="https://m.me/andennebears" target="_blank" rel="noopener">
+                <svg class="icon"><use href="#icon-message-circle"></use></svg>
+                Messenger
+              </a>
+              <a class="button button-primary" href="#contact">
+                <svg class="icon"><use href="#icon-user-plus"></use></svg>
+                Préparer mon message
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -336,10 +400,6 @@
                 <svg class="icon"><use href="#icon-instagram"></use></svg>
                 Instagram
               </a>
-              <span class="is-disabled" aria-disabled="true" title="Numéro WhatsApp à confirmer">
-                <svg class="icon"><use href="#icon-phone"></use></svg>
-                WhatsApp à confirmer
-              </span>
             </div>
           </div>
           <form class="contact-form" id="contact-form">
@@ -368,20 +428,17 @@
               <select id="contact-method" name="Canal prefere">
                 <option>Messenger</option>
                 <option>Instagram</option>
-                <option>WhatsApp</option>
-                <option>E-mail</option>
-                <option>Téléphone</option>
               </select>
             </div>
             <div class="field">
-              <label for="contact-value">Pseudo, numéro ou e-mail</label>
+              <label for="contact-value">Pseudo Messenger ou Instagram</label>
               <input id="contact-value" name="Contact" type="text" autocomplete="email" required />
             </div>
             <div class="field">
               <label for="message">Message</label>
               <textarea id="message" name="Message" rows="5" placeholder="Dis-nous ce que tu veux découvrir, ton expérience éventuelle et tes disponibilités."></textarea>
             </div>
-            <button class="button button-primary" type="submit">Préparer ma demande</button>
+            <button class="button button-primary" type="submit">Préparer mon message d'essai</button>
             <div class="contact-result" id="contact-result" hidden></div>
           </form>
         </div>
@@ -393,6 +450,9 @@
       <a href="#top">Retour en haut</a>
     </footer>
     <script>
+      const siteHeader = document.querySelector(".site-header");
+      const menuToggle = document.querySelector(".menu-toggle");
+      const mainNav = document.querySelector("#main-nav");
       const form = document.querySelector("#contact-form");
       const result = document.querySelector("#contact-result");
       const escapeHTML = (value) =>
@@ -406,10 +466,29 @@
       const channels = {
         Messenger: "https://m.me/andennebears",
         Instagram: "https://www.instagram.com/andennebears/",
-        "WhatsApp": "",
-        "E-mail": "",
-        "Téléphone": "",
       };
+
+      const closeMenu = () => {
+        siteHeader?.classList.remove("is-menu-open");
+        menuToggle?.setAttribute("aria-expanded", "false");
+      };
+
+      menuToggle?.addEventListener("click", () => {
+        const isOpen = siteHeader?.classList.toggle("is-menu-open");
+        menuToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
+      });
+
+      mainNav?.addEventListener("click", (event) => {
+        if (event.target.closest("a")) {
+          closeMenu();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeMenu();
+        }
+      });
 
       form?.addEventListener("submit", (event) => {
         event.preventDefault();
