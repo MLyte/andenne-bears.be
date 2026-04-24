@@ -29,6 +29,7 @@
   </head>
   <body>
     <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <!-- Lucide icon sprite -->
       <symbol id="icon-user-plus" viewBox="0 0 24 24">
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
         <circle cx="9" cy="7" r="4" />
@@ -60,12 +61,39 @@
         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.91.32 1.79.57 2.65a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.43-1.09a2 2 0 0 1 2.11-.45c.86.25 1.74.45 2.65.57A2 2 0 0 1 22 16.92z" />
       </symbol>
       <symbol id="icon-handshake" viewBox="0 0 24 24">
-        <path d="m11 17 2 2a2.83 2.83 0 1 0 4-4" />
-        <path d="m14 14 2.5 2.5a2.83 2.83 0 1 0 4-4l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a2.12 2.12 0 0 1-3-3l.88-.88a3 3 0 0 1 4.24 0l1.38 1.38" />
-        <path d="m7 11-4 4" />
-        <path d="m21 11-2-2" />
-        <path d="m3 15 6 6" />
-        <path d="m19 9 2-2" />
+        <path d="m11 17 2 2a1 1 0 1 0 3-3" />
+        <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" />
+        <path d="m21 3 1 11h-2" />
+        <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" />
+        <path d="M3 4h8" />
+      </symbol>
+      <symbol id="icon-shield" viewBox="0 0 24 24">
+        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
+      </symbol>
+      <symbol id="icon-calendar-days" viewBox="0 0 24 24">
+        <path d="M8 2v4" />
+        <path d="M16 2v4" />
+        <rect width="18" height="18" x="3" y="4" rx="2" />
+        <path d="M3 10h18" />
+        <path d="M8 14h.01" />
+        <path d="M12 14h.01" />
+        <path d="M16 14h.01" />
+        <path d="M8 18h.01" />
+        <path d="M12 18h.01" />
+        <path d="M16 18h.01" />
+      </symbol>
+      <symbol id="icon-map-pin" viewBox="0 0 24 24">
+        <path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="icon-menu" viewBox="0 0 24 24">
+        <line x1="4" x2="20" y1="12" y2="12" />
+        <line x1="4" x2="20" y1="6" y2="6" />
+        <line x1="4" x2="20" y1="18" y2="18" />
+      </symbol>
+      <symbol id="icon-x" viewBox="0 0 24 24">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
       </symbol>
     </svg>
     <header class="site-header">
@@ -73,18 +101,17 @@
         <img src="images/logoBears.png" alt="" />
         <span>Andenne Bears</span>
       </a>
-      <button class="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
+      <button class="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Ouvrir le menu">
+        <svg class="icon icon-menu-open"><use href="#icon-menu"></use></svg>
+        <svg class="icon icon-menu-close"><use href="#icon-x"></use></svg>
         <span class="visually-hidden">Ouvrir le menu</span>
       </button>
       <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
-        <a href="#rejoindre">Rejoindre</a>
-        <a href="#disciplines">Disciplines</a>
-        <a href="#infos">Infos</a>
-        <a href="#partenaires">Partenaires</a>
-        <a href="#contact">Contact</a>
+        <a href="#rejoindre"><svg class="icon"><use href="#icon-user-plus"></use></svg>Rejoindre</a>
+        <a href="#disciplines"><svg class="icon"><use href="#icon-shield"></use></svg>Disciplines</a>
+        <a href="#infos"><svg class="icon"><use href="#icon-info"></use></svg>Infos</a>
+        <a href="#partenaires"><svg class="icon"><use href="#icon-handshake"></use></svg>Partenaires</a>
+        <a href="#contact"><svg class="icon"><use href="#icon-message-circle"></use></svg>Contact</a>
       </nav>
       <a class="header-cta" href="#contact">
         <svg class="icon"><use href="#icon-user-plus"></use></svg>
@@ -144,7 +171,8 @@
           <p>
             Envoie-nous ton âge, ton niveau et ce qui t'attire. On te répond
             avec le bon groupe, le bon terrain et ce qu'il faut prévoir pour
-            venir sereinement.
+            venir sereinement. La ligue couvre tes 3 premiers entraînements&nbsp;:
+            c'est gratuit et sans engagement.
           </p>
           <a class="button button-dark" href="#contact">
             <svg class="icon"><use href="#icon-check-circle"></use></svg>
@@ -186,16 +214,20 @@
 
       <section class="photo-band" aria-label="Ambiance football américain">
         <figure class="photo-card photo-card-large">
-          <img src="images/unsplash-players.jpg" alt="Joueurs de football américain sur le bord du terrain" loading="lazy" decoding="async" />
-          <figcaption>Un club se construit aussi entre deux actions.</figcaption>
+          <img src="images/bears-entry.jpg" alt="Joueurs des Andenne Bears entrant sur le terrain" loading="lazy" decoding="async" />
+          <figcaption>Une équipe qui entre ensemble, et qui avance ensemble.</figcaption>
         </figure>
         <figure class="photo-card">
-          <img src="images/unsplash-player.jpg" alt="Joueur de football américain en course avec le ballon" loading="lazy" decoding="async" />
-          <figcaption>Intensité, lecture du jeu, progression.</figcaption>
+          <img src="images/bears-huddle.jpg" alt="Joueurs des Andenne Bears réunis avec le staff" loading="lazy" decoding="async" />
+          <figcaption>Briefing, écoute, progression.</figcaption>
         </figure>
         <figure class="photo-card">
-          <img src="images/unsplash-ball.jpg" alt="Ballon de football américain posé sur le terrain" loading="lazy" decoding="async" />
-          <figcaption>Premier essai, premières questions, premier terrain.</figcaption>
+          <img src="images/bears-tackle-run.jpg" alt="Joueur des Andenne Bears avançant balle en main pendant un match seniors tackle" loading="lazy" decoding="async" />
+          <figcaption>Seniors tackle : contact, lecture, engagement.</figcaption>
+        </figure>
+        <figure class="photo-card">
+          <img src="images/bears-scrimmage.jpg" alt="Ligne offensive des Andenne Bears prête au snap en match seniors tackle" loading="lazy" decoding="async" />
+          <figcaption>Une phase après l'autre, avec le collectif.</figcaption>
         </figure>
       </section>
 
@@ -260,7 +292,7 @@
             </article>
             <article class="schedule-card">
               <span class="info-label">Quand</span>
-              <h3>Entraînements</h3>
+              <h3 class="heading-with-icon"><svg class="icon"><use href="#icon-calendar-days"></use></svg>Entraînements</h3>
               <div class="schedule-list" aria-label="Horaires d'entraînement">
                 <div class="schedule-row">
                   <span>Seniors tackle</span>
@@ -290,6 +322,7 @@
               <h3>Andenne Arena</h3>
               <p>Un complexe sportif complet à Andenne, avec terrain synthétique et tracé football américain.</p>
               <a class="location-link" href="https://www.andenne.be/poi/andenne-arena/" target="_blank" rel="noreferrer">
+                <svg class="icon"><use href="#icon-map-pin"></use></svg>
                 Rue Dr Melin 14, 5300 Andenne
               </a>
             </article>
@@ -303,6 +336,8 @@
               <h3>Un essai simple</h3>
               <p>Contacte le club, puis viens léger pour découvrir.</p>
               <ul class="trial-list">
+                <li>3 entraînements assurés par la ligue</li>
+                <li>Gratuit, sans engagement</li>
                 <li>Tenue de sport</li>
                 <li>Chaussures adaptées au terrain</li>
                 <li>Gourde d'eau</li>
@@ -471,11 +506,16 @@
       const closeMenu = () => {
         siteHeader?.classList.remove("is-menu-open");
         menuToggle?.setAttribute("aria-expanded", "false");
+        menuToggle?.setAttribute("aria-label", "Ouvrir le menu");
       };
 
       menuToggle?.addEventListener("click", () => {
         const isOpen = siteHeader?.classList.toggle("is-menu-open");
         menuToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
+        menuToggle.setAttribute(
+          "aria-label",
+          isOpen ? "Fermer le menu" : "Ouvrir le menu",
+        );
       });
 
       mainNav?.addEventListener("click", (event) => {

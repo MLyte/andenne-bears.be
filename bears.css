@@ -169,7 +169,6 @@ a {
 .menu-toggle {
   display: none;
   place-items: center;
-  gap: 0.24rem;
   width: 44px;
   height: 44px;
   padding: 0;
@@ -180,24 +179,19 @@ a {
   cursor: pointer;
 }
 
-.menu-toggle span:not(.visually-hidden) {
+.menu-toggle .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0;
+}
+
+.menu-toggle .icon-menu-close,
+.menu-toggle[aria-expanded="true"] .icon-menu-open {
+  display: none;
+}
+
+.menu-toggle[aria-expanded="true"] .icon-menu-close {
   display: block;
-  width: 1.15rem;
-  height: 2px;
-  background: currentColor;
-  transition: transform 180ms ease, opacity 180ms ease;
-}
-
-.site-header.is-menu-open .menu-toggle span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.site-header.is-menu-open .menu-toggle span:nth-child(2) {
-  opacity: 0;
-}
-
-.site-header.is-menu-open .menu-toggle span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
 }
 
 .main-nav a,
@@ -209,11 +203,19 @@ a {
 .main-nav a {
   display: inline-flex;
   align-items: center;
+  gap: 0.42rem;
   min-height: 44px;
   padding: 0.35rem 0.15rem;
   color: rgba(255, 255, 255, 0.78);
   font-weight: 700;
   font-size: 0.92rem;
+}
+
+.main-nav a .icon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0;
+  color: var(--gold);
 }
 
 .main-nav a:hover,
@@ -298,7 +300,7 @@ textarea:focus-visible {
   background:
     linear-gradient(90deg, rgba(5, 5, 5, 0.9), rgba(5, 5, 5, 0.64)),
     linear-gradient(0deg, rgba(5, 5, 5, 0.78), rgba(5, 5, 5, 0.04) 52%),
-    url("images/background.jpg") center / cover;
+    url("images/bears-entry.jpg") center / cover;
   filter: saturate(0.72);
   transform: scale(1.01);
 }
@@ -564,7 +566,7 @@ h3 {
 
 .photo-band {
   display: grid;
-  grid-template-columns: 1.35fr 0.85fr 0.85fr;
+  grid-template-columns: 1.3fr 0.9fr 0.9fr 0.9fr;
   gap: 1rem;
   padding: 0 clamp(1rem, 4vw, 3rem) clamp(4rem, 7vw, 6rem);
   background: #ffffff;
@@ -619,7 +621,7 @@ h3 {
   padding: clamp(1.25rem, 3vw, 2rem);
   background:
     linear-gradient(180deg, rgba(5, 5, 5, 0.82), rgba(5, 5, 5, 0.98)),
-    url("images/unsplash-action.jpg") center / cover;
+    url("images/bears-line-battle.jpg") center / cover;
   border: 1px solid var(--line);
 }
 
@@ -650,7 +652,7 @@ h3 {
 .card-highlight {
   background:
     linear-gradient(180deg, rgba(159, 20, 53, 0.76), rgba(5, 5, 5, 0.96)),
-    url("images/unsplash-player.jpg") center / cover;
+    url("images/bears-entry.jpg") center / cover;
 }
 
 .section-practical {
@@ -702,6 +704,8 @@ h3 {
 
 .location-link {
   display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   width: fit-content;
   margin-bottom: 1.2rem;
   color: var(--red);
@@ -710,12 +714,27 @@ h3 {
   text-decoration: none;
 }
 
+.location-link .icon,
+.heading-with-icon .icon {
+  margin-right: 0;
+}
+
 .location-link:hover {
   text-decoration: underline;
 }
 
 .info-grid h3 {
   margin-bottom: 0.75rem;
+}
+
+.heading-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.heading-with-icon .icon {
+  color: var(--gold-dark);
 }
 
 .info-grid p {
@@ -847,7 +866,7 @@ h3 {
   padding: 2rem;
   background:
     linear-gradient(180deg, rgba(5, 5, 5, 0.12), rgba(5, 5, 5, 0.88)),
-    url("images/unsplash-players.jpg") center / cover;
+    url("images/bears-offense-line.jpg") center / cover;
   box-shadow: var(--shadow);
 }
 
@@ -1069,7 +1088,8 @@ h3 {
     display: none;
   }
 
-  .site-header.is-menu-open .main-nav {
+  .site-header.is-menu-open .main-nav,
+  .menu-toggle[aria-expanded="true"] + .main-nav {
     display: grid;
   }
 
