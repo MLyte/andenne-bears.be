@@ -1,0 +1,69 @@
+@font-face {
+  font-family: "BertholdCityBold";
+  src: url("fonts/BertholdCityBold.ttf");
+}
+
+@font-face {
+  font-family: "BertholdCityMedium";
+  src: url("fonts/BertholdCityMedium.ttf");
+}
+
+body {
+  background: url("images/background.jpg") no-repeat center fixed;
+  text-align: center;
+  padding-top: 3em;
+}
+
+h1 {
+  text-align: center;
+  font-size: 4em;
+  color: #ffffff;
+  font-family: "BertholdCityBold", "BertholdCityMedium", "SF Pro Text",
+    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2.2em;
+  color: #ffffff;
+  font-family: "BertholdCityBold", "BertholdCityMedium", "SF Pro Text",
+    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+h3 {
+  text-align: center;
+  font-size: 1.4em;
+  color: rgb(0, 0, 0);
+}
+
+p,
+ul,
+a {
+  text-align: center;
+  color: #ffffff;
+  font-size: 1em;
+  font-family: "SF Pro Text", "Helvetica Neue", "Helvetica", "Arial",
+    sans-serif;
+}
+
+a {
+  font-size: 1em;
+  font-family: "SF Pro Text", "Helvetica Neue", "Helvetica", "Arial",
+    sans-serif;
+  text-decoration: none;
+  color: #f2cb2a;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: rgb(255, 255, 255);
+}
+
+.backgroundColorTxt {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  padding: 2em 0;
+}
