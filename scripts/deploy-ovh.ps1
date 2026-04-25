@@ -5,6 +5,7 @@ param(
   [string] $RemotePath = $(if ($env:OVH_FTP_PATH) { $env:OVH_FTP_PATH } else { "www" }),
   [switch] $UseFileZilla,
   [switch] $Ssl,
+  [switch] $Active,
   [switch] $DryRun
 )
 
@@ -107,8 +108,10 @@ function New-FtpRequest {
   $request.Credentials = [Net.NetworkCredential]::new($UserName, $Password)
   $request.EnableSsl = [bool] $Ssl
   $request.UseBinary = $true
-  $request.UsePassive = $true
+  $request.UsePassive = -not [bool] $Active
   $request.KeepAlive = $false
+  $request.Timeout = 30000
+  $request.ReadWriteTimeout = 30000
   return $request
 }
 
@@ -151,6 +154,23 @@ function Send-FtpFile {
   $response.Close()
 }
 
+function Test-FtpLogin {
+  $request = New-FtpRequest -RemotePathValue "" -Method ([Net.WebRequestMethods+Ftp]::PrintWorkingDirectory)
+  try {
+    $response = $request.GetResponse()
+    $description = $response.StatusDescription.Trim()
+    $response.Close()
+    Write-Host "LOGIN    $description"
+  } catch [Net.WebException] {
+    $response = $_.Exception.Response
+    $message = if ($response) { $response.StatusDescription.Trim() } else { $_.Exception.Message }
+    if ($response) {
+      $response.Close()
+    }
+    throw "FTP login failed for $UserName@$HostName. Server said: $message"
+  }
+}
+
 $Files = foreach ($item in $ItemsToDeploy) {
   $path = Join-Path $ProjectRoot $item
   if (-not (Test-Path -LiteralPath $path)) {
@@ -170,6 +190,11 @@ $Files = $Files | Sort-Object FullName
 Write-Host "Deploy target: ftp://$HostName/$($RemotePath.Trim('/'))"
 Write-Host "Files: $($Files.Count)"
 Write-Host "TLS: $(if ($Ssl) { "enabled" } else { "disabled" })"
+Write-Host "FTP mode: $(if ($Active) { "active" } else { "passive" })"
+
+if (-not $DryRun) {
+  Test-FtpLogin
+}
 
 foreach ($file in $Files) {
   $relativePath = Get-RelativeDeployPath -BasePath $ProjectRoot -FilePath $file.FullName
