@@ -29,12 +29,28 @@
   </head>
   <body>
     <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <!-- Brand marks use filled paths; keep them separate from the Lucide stroke icons. -->
+      <symbol id="brand-facebook" viewBox="0 0 320 512">
+        <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06H297V6.26S260.43 0 225.36 0C152.14 0 104.28 44.38 104.28 124.72v70.62H22.89V288h81.39v224h100.17V288z" />
+      </symbol>
+      <symbol id="brand-messenger" viewBox="0 0 512 512">
+        <path d="M256.55 8C116.52 8 8 110.34 8 248.57c0 72.3 29.71 134.78 78.07 177.94V504l71.19-39.1c31.07 8.61 64.21 13.23 99.29 13.23 140.03 0 247.45-102.34 247.45-240.57S396.58 8 256.55 8zm24.54 323.81l-63.19-67.18-123.42 67.18 135.66-144.2 64.73 67.18 121.86-67.18-135.64 144.2z" />
+      </symbol>
+      <symbol id="brand-instagram" viewBox="0 0 448 512">
+        <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9s-58-34.4-93.9-36.2C279.5 31.3 168.6 31.3 131.6 33.4c-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2s34.4-58 36.2-93.9c2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+      </symbol>
       <!-- Lucide icon sprite -->
       <symbol id="icon-user-plus" viewBox="0 0 24 24">
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
         <circle cx="9" cy="7" r="4" />
         <line x1="19" x2="19" y1="8" y2="14" />
         <line x1="22" x2="16" y1="11" y2="11" />
+      </symbol>
+      <symbol id="icon-users" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </symbol>
       <symbol id="icon-info" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10" />
@@ -48,14 +64,10 @@
       <symbol id="icon-message-circle" viewBox="0 0 24 24">
         <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
       </symbol>
-      <symbol id="icon-facebook-brand" viewBox="0 0 24 24">
-        <path d="M9.1 23.69v-7.98H6.63v-3.67H9.1v-1.58c0-4.09 1.85-5.98 5.86-5.98.76 0 2.07.15 2.61.3v3.33c-.28-.03-.78-.05-1.39-.05-1.97 0-2.73.75-2.73 2.68v1.3h3.92l-.67 3.67h-3.25v7.98C19.39 22.78 24 17.64 24 11.5 24 5.15 18.85 0 12.5 0S1 5.15 1 11.5c0 5.39 3.71 9.91 8.1 12.19Z" />
-      </symbol>
-      <symbol id="icon-messenger-brand" viewBox="0 0 24 24">
-        <path d="M12 0C5.37 0 0 4.97 0 11.11c0 3.5 1.75 6.62 4.47 8.65V24l4.09-2.24c1.09.3 2.25.46 3.44.46 6.63 0 12-4.97 12-11.11C24 4.97 18.63 0 12 0Zm1.19 14.96-3.05-3.26-5.97 3.26L10.73 8l3.13 3.26L19.75 8l-6.56 6.96Z" />
-      </symbol>
       <symbol id="icon-instagram" viewBox="0 0 24 24">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-2.35a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z" />
+        <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
       </symbol>
       <symbol id="icon-send" viewBox="0 0 24 24">
         <path d="m22 2-7 20-4-9-9-4Z" />
@@ -114,6 +126,7 @@
         <a href="#rejoindre"><svg class="icon"><use href="#icon-user-plus"></use></svg>Rejoindre</a>
         <a href="#disciplines"><svg class="icon"><use href="#icon-shield"></use></svg>Disciplines</a>
         <a href="#infos"><svg class="icon"><use href="#icon-info"></use></svg>Infos</a>
+        <a href="#membres"><svg class="icon"><use href="#icon-users"></use></svg>Membres</a>
         <a href="#partenaires"><svg class="icon"><use href="#icon-handshake"></use></svg>Partenaires</a>
         <a href="#contact"><svg class="icon"><use href="#icon-message-circle"></use></svg>Contact</a>
       </nav>
@@ -145,7 +158,8 @@
           />
           <p class="hero-copy">
             Depuis 2002, les Bears accueillent celles et ceux qui veulent
-            apprendre, se dépasser et trouver leur place dans une vraie équipe.
+            <strong>apprendre, se dépasser</strong> et trouver leur place dans
+            une vraie équipe.
           </p>
           <div class="hero-actions" aria-label="Actions principales">
             <a class="button button-primary" href="#contact">
@@ -174,9 +188,10 @@
           </div>
           <p>
             Envoie-nous ton âge, ton niveau et ce qui t'attire. On te répond
-            avec le bon groupe, le bon terrain et ce qu'il faut prévoir pour
-            venir sereinement. La ligue couvre tes 3 premiers entraînements&nbsp;:
-            c'est gratuit et sans engagement.
+            avec <strong>le bon groupe</strong>, <strong>le bon terrain</strong>
+            et ce qu'il faut prévoir pour venir sereinement. La ligue couvre tes
+            <strong>3 premiers entraînements</strong>&nbsp;: c'est gratuit et
+            sans engagement.
           </p>
           <a class="button button-dark" href="#contact">
             <svg class="icon"><use href="#icon-check-circle"></use></svg>
@@ -192,8 +207,9 @@
             <h2 id="join-title">Tu veux jouer&nbsp;? Viens tester.</h2>
             <p>
               Tu n'as pas besoin de connaître les règles par cœur ni d'avoir
-              déjà porté un casque. Si tu viens avec de l'envie, de l'écoute et
-              l'esprit d'équipe, on s'occupe du reste.
+              déjà porté un casque. Si tu viens avec
+              <strong>de l'envie, de l'écoute et l'esprit d'équipe</strong>, on
+              t'aide à prendre tes marques.
             </p>
           </div>
           <div class="steps" aria-label="Comment venir essayer">
@@ -246,8 +262,8 @@
               <p class="card-tag">Contact équipé</p>
               <h3>Football américain tackle</h3>
               <p>
-                Jeu physique, technique et collectif. Idéal si tu veux apprendre
-                un sport complet où chaque poste compte.
+                Jeu <strong>physique, technique et collectif</strong>. Idéal si
+                tu veux apprendre un sport complet où chaque poste compte.
               </p>
               <ul>
                 <li>Débutants accompagnés</li>
@@ -259,8 +275,8 @@
               <p class="card-tag">Sans contact</p>
               <h3>Flag football</h3>
               <p>
-                Rapide, mixte, accessible et stratégique. Une excellente porte
-                d'entrée pour les jeunes, les adultes et les curieux.
+                <strong>Rapide, mixte, accessible</strong> et stratégique. Une
+                excellente porte d'entrée pour les jeunes, les adultes et les curieux.
               </p>
               <ul>
                 <li>Version sans plaquage</li>
@@ -279,20 +295,20 @@
             <h2 id="infos-title">Les infos essentielles, sans chasse au post Facebook.</h2>
             <p>
               Avant ton premier entraînement, on te donne les bonnes infos au
-              bon moment&nbsp;: discipline, groupe, terrain, tenue et rythme des
-              séances.
+              bon moment&nbsp;: <strong>discipline</strong>, <strong>groupe</strong>,
+              <strong>terrain</strong>, tenue et rythme des séances.
             </p>
           </div>
           <div class="info-grid">
             <article>
               <span class="info-label">Qui</span>
               <h3>Jeunes, U19 et seniors</h3>
-              <p>Le club accueille les débutants comme les joueurs confirmés, avec flag dès 8 ans et tackle dès 14 ans.</p>
+              <p>Le club accueille les débutants comme les joueurs confirmés, avec <strong>flag dès 8 ans</strong> et <strong>tackle dès 14 ans</strong>.</p>
             </article>
             <article>
               <span class="info-label">Quoi</span>
               <h3>Flag et football américain</h3>
-              <p>Flag sans contact pour apprendre vite, tackle équipé pour jouer la version complète du football américain.</p>
+              <p><strong>Flag sans contact</strong> pour apprendre vite, <strong>tackle équipé</strong> pour jouer la version complète du football américain.</p>
             </article>
             <article class="schedule-card">
               <span class="info-label">Quand</span>
@@ -321,7 +337,7 @@
               </div>
             </article>
             <article class="location-card">
-              <img src="images/andenne-arena.jpg" alt="Illustration de l'Andenne Arena" loading="lazy" decoding="async" />
+              <img src="images/arena3.jpg" alt="Vue aérienne de l'Andenne Arena et de son terrain" loading="lazy" decoding="async" />
               <span class="info-label">Où</span>
               <h3>Andenne Arena</h3>
               <p>Un complexe sportif complet à Andenne, avec terrain synthétique et tracé football américain.</p>
@@ -338,7 +354,7 @@
             <article>
               <span class="info-label">Comment</span>
               <h3>Un essai simple</h3>
-              <p>Contacte le club, puis viens léger pour découvrir.</p>
+              <p><strong>Contacte le club</strong>, puis viens léger pour découvrir.</p>
               <ul class="trial-list">
                 <li>3 entraînements assurés par la ligue</li>
                 <li>Gratuit, sans engagement</li>
@@ -353,16 +369,16 @@
             <div>
               <span class="info-label">Contact rapide</span>
               <h3>Tu veux venir au prochain entraînement&nbsp;?</h3>
-              <p>Écris au club avec ton âge et la discipline qui t'attire. On te répond avec le bon groupe et ce qu'il faut prévoir.</p>
+              <p>Écris au club avec <strong>ton âge</strong> et <strong>la discipline</strong> qui t'attire. On te répond avec le bon groupe et ce qu'il faut prévoir.</p>
             </div>
             <div class="quick-contact-actions">
               <a class="button button-dark" href="https://m.me/andennebears" target="_blank" rel="noopener">
-                <svg class="icon"><use href="#icon-message-circle"></use></svg>
+                <svg class="icon brand-icon"><use href="#brand-messenger"></use></svg>
                 Messenger
               </a>
               <a class="button button-primary" href="#contact">
                 <svg class="icon"><use href="#icon-user-plus"></use></svg>
-                Préparer mon message
+                Envoyer mon message
               </a>
             </div>
           </div>
@@ -381,14 +397,96 @@
             <h2 id="parents-title">Un sport qui canalise l'énergie.</h2>
             <p>
               Le flag football donne aux jeunes un terrain pour courir,
-              réfléchir vite, respecter des consignes et jouer ensemble sans
-              plaquage. Les parents peuvent venir voir, poser leurs questions et
-              comprendre le cadre avant toute décision.
+              réfléchir vite, respecter des consignes et jouer ensemble
+              <strong>sans plaquage</strong>. Les parents peuvent venir voir,
+              poser leurs questions et <strong>comprendre le cadre</strong>
+              avant toute décision.
             </p>
             <a class="text-link" href="#contact">
               Poser une question parent
             </a>
           </div>
+        </div>
+      </section>
+
+      <section class="section members-section" id="membres" aria-labelledby="members-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="section-kicker">Membres</p>
+            <h2 id="members-title">Le comité et le staff sportif.</h2>
+            <p>
+              Quelques visages pour savoir à qui parler&nbsp;: gestion du club,
+              événements, football tackle, U19 et flag.
+            </p>
+          </div>
+          <div class="members-groups" aria-label="Comité et staff des Andenne Bears">
+            <section class="member-group" aria-labelledby="committee-title">
+              <div class="member-group-heading">
+                <p class="card-tag">Comité</p>
+                <h3 id="committee-title">Gestion du club</h3>
+              </div>
+              <div class="members-grid">
+                <article class="member-card">
+                  <img src="images/members/jean-mathieu-moetwil-profile.jpg" alt="Portrait stylisé de Jean-Mathieu Moetwil" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Président</p>
+                    <h4>Jean-Mathieu Moetwil</h4>
+                  </div>
+                </article>
+                <article class="member-card">
+                  <img src="images/members/jean-mathieu-moetwil-profile.jpg" alt="Portrait stylisé de Jean-Mathieu Moetwil" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Secrétaire</p>
+                    <h4>Jean-Mathieu Moetwil</h4>
+                  </div>
+                </article>
+                <article class="member-card">
+                  <img src="images/members/alexis-fochon-profile.jpg" alt="Portrait stylisé d'Alexis Fochon" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Trésorier</p>
+                    <h4>Alexis Fochon</h4>
+                  </div>
+                </article>
+                <article class="member-card">
+                  <img src="images/members/antoine-clarinval-profile.jpg" alt="Portrait stylisé d'Antoine Clarinval" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Responsable événements</p>
+                    <h4>Antoine Clarinval</h4>
+                  </div>
+                </article>
+              </div>
+            </section>
+            <section class="member-group" aria-labelledby="coaches-title">
+              <div class="member-group-heading">
+                <p class="card-tag">Staff sportif</p>
+                <h3 id="coaches-title">Coaching terrain</h3>
+              </div>
+              <div class="members-grid">
+                <article class="member-card member-card-featured">
+                  <img src="images/members/mathieu-luyten-profile.jpg" alt="Portrait stylisé de Mathieu Luyten" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Head Coach Tackle</p>
+                    <h4>Mathieu Luyten</h4>
+                  </div>
+                </article>
+                <article class="member-card">
+                  <img src="images/members/stephan-horion.png" alt="Portrait illustratif de Stéphan Horion" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Head Coach U19</p>
+                    <h4>Stéphan Horion</h4>
+                  </div>
+                </article>
+                <article class="member-card">
+                  <img src="images/members/jean-mathieu-moetwil-profile.jpg" alt="Portrait stylisé de Jean-Mathieu Moetwil" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Head Coach Flag</p>
+                    <h4>Jean-Mathieu Moetwil</h4>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+          <p class="members-note">Portraits stylisés générés à partir des photos fournies pour la maquette du site.</p>
         </div>
       </section>
 
@@ -398,9 +496,9 @@
             <p class="section-kicker">Partenaires</p>
             <h2 id="partners-title">Soutenir un club local qui fait bouger Andenne.</h2>
             <p>
-              Aider les Bears, c'est soutenir du sport amateur, des bénévoles,
-              des jeunes, des adultes et une communauté qui porte les couleurs
-              de la région sur le terrain.
+              Aider les Bears, c'est soutenir du <strong>sport amateur</strong>,
+              des <strong>bénévoles</strong>, des jeunes, des adultes et une
+              communauté qui porte les couleurs de la région sur le terrain.
             </p>
           </div>
           <div class="partner-options">
@@ -422,143 +520,147 @@
             <p class="section-kicker">Contact</p>
             <h2 id="contact-title">On te répond, puis on t'attend sur le terrain.</h2>
             <p>
-              Choisis le canal qui te ressemble. Pour un essai, une question
-              parent, un partenariat ou un coup de main bénévole, on te répond
-              avec les prochaines étapes.
+              Choisis le canal qui te ressemble. Pour un <strong>essai</strong>,
+              une <strong>question parent</strong>, un partenariat ou un coup de
+              main bénévole, on te répond avec les prochaines étapes.
             </p>
-            <div class="instant-contact" aria-label="Contacts rapides">
-              <a href="https://www.facebook.com/andennebears" aria-label="Contacter les Bears sur Facebook">
-                <svg class="icon brand-icon"><use href="#icon-facebook-brand"></use></svg>
-                Facebook
-              </a>
-              <a href="https://m.me/andennebears" aria-label="Contacter les Bears sur Messenger">
-                <svg class="icon brand-icon"><use href="#icon-messenger-brand"></use></svg>
-                Messenger
-              </a>
-              <a href="https://www.instagram.com/andennebears/" aria-label="Contacter les Bears sur Instagram">
-                <svg class="icon brand-icon"><use href="#icon-instagram"></use></svg>
-                Instagram
-              </a>
+            <div class="social-spotlight" aria-label="Réseaux sociaux des Bears">
+              <div class="social-spotlight-copy">
+                <span class="info-label">Réseaux</span>
+                <h3>Suivre le club ou écrire en direct</h3>
+              </div>
+              <div class="instant-contact" aria-label="Contacts rapides">
+                <a href="https://www.facebook.com/andennebears" aria-label="Contacter les Bears sur Facebook">
+                  <span class="social-icon" aria-hidden="true">
+                    <svg class="icon brand-icon"><use href="#brand-facebook"></use></svg>
+                  </span>
+                  <span>
+                    Facebook
+                    <small>Actus du club</small>
+                  </span>
+                </a>
+                <a href="https://m.me/andennebears" aria-label="Contacter les Bears sur Messenger">
+                  <span class="social-icon" aria-hidden="true">
+                    <svg class="icon brand-icon"><use href="#brand-messenger"></use></svg>
+                  </span>
+                  <span>
+                    Messenger
+                    <small>Réponse directe</small>
+                  </span>
+                </a>
+                <a href="https://www.instagram.com/andennebears/" aria-label="Contacter les Bears sur Instagram">
+                  <span class="social-icon" aria-hidden="true">
+                    <svg class="icon brand-icon"><use href="#brand-instagram"></use></svg>
+                  </span>
+                  <span>
+                    Instagram
+                    <small>Photos et stories</small>
+                  </span>
+                </a>
+              </div>
             </div>
           </div>
           <form class="contact-form" id="contact-form">
             <div class="field">
-              <label for="name">Nom et prénom</label>
+              <label for="name">
+                <span>Nom et prénom</span>
+                <span class="field-status is-required">Obligatoire</span>
+              </label>
               <input id="name" name="Nom" type="text" autocomplete="name" required />
             </div>
             <div class="field-row">
               <div class="field">
-                <label for="age">Âge</label>
+                <label for="age">
+                  <span>Âge</span>
+                  <span class="field-status" data-field-status="age">Facultatif</span>
+                </label>
                 <input id="age" name="Age" type="number" min="6" max="80" inputmode="numeric" />
               </div>
               <div class="field">
-                <label for="profile">Profil</label>
-                <select id="profile" name="Profil">
-                  <option>Je veux essayer</option>
-                  <option>Question parent</option>
-                  <option>Partenariat</option>
-                  <option>Bénévolat</option>
-                  <option>Autre demande</option>
+                <label for="profile">
+                <span>Profil</span>
+                <span class="field-status is-required">Obligatoire</span>
+              </label>
+                <select id="profile" name="Profil" required>
+                  <option value="essai">Je veux essayer</option>
+                  <option value="parent">Question parent</option>
+                  <option value="partenariat">Partenariat</option>
+                  <option value="benevolat">Bénévolat</option>
+                  <option value="autre">Autre demande</option>
                 </select>
               </div>
             </div>
             <div class="field">
-              <label for="contact-method">Me recontacter via</label>
-              <select id="contact-method" name="Canal prefere">
-                <option>Messenger</option>
-                <option>Instagram</option>
+              <label for="contact-method">
+                <span>Me recontacter via</span>
+                <span class="field-status is-required">Obligatoire</span>
+              </label>
+              <select id="contact-method" name="Canal prefere" required>
+                <option value="messenger">Messenger</option>
+                <option value="instagram">Instagram</option>
+                <option value="telephone">Téléphone</option>
+                <option value="email">Email</option>
               </select>
             </div>
             <div class="field">
-              <label for="contact-value">Pseudo Messenger ou Instagram</label>
-              <input id="contact-value" name="Contact" type="text" autocomplete="email" required />
+              <label for="contact-value">
+                <span data-contact-value-label>Pseudo Messenger, Instagram, téléphone ou email</span>
+                <span class="field-status is-required">Obligatoire</span>
+              </label>
+              <input id="contact-value" name="Contact" type="text" autocomplete="off" required />
             </div>
             <div class="field">
-              <label for="message">Message</label>
+              <label for="message">
+                <span>Message</span>
+                <span class="field-status" data-field-status="message">Facultatif</span>
+              </label>
               <textarea id="message" name="Message" rows="5" placeholder="Dis-nous ce que tu veux découvrir, ton expérience éventuelle et tes disponibilités."></textarea>
             </div>
-            <button class="button button-primary" type="submit">Préparer mon message d'essai</button>
+            <button class="button button-primary" type="submit">Envoyer mon message d'essai</button>
             <div class="contact-result" id="contact-result" hidden></div>
           </form>
         </div>
       </section>
     </main>
 
+    <section class="legal-section" aria-labelledby="legal-title">
+      <div class="legal-inner">
+        <div>
+          <p class="section-kicker">Informations légales</p>
+          <h2 id="legal-title">Andenne Bears - American Football ASBL</h2>
+        </div>
+        <dl class="legal-list">
+          <div>
+            <dt>Numéro d'entreprise</dt>
+            <dd>0871.430.182</dd>
+          </div>
+          <div>
+            <dt>Forme légale</dt>
+            <dd>Association sans but lucratif</dd>
+          </div>
+          <div>
+            <dt>Statut BCE</dt>
+            <dd>Actif</dd>
+          </div>
+          <div>
+            <dt>Siège social</dt>
+            <dd>Rue de Halbosart 25, 5300 Andenne</dd>
+          </div>
+        </dl>
+        <p class="legal-source">
+          Source&nbsp;:
+          <a href="https://kbopub.economie.fgov.be/kbopub/toonondernemingps.html?lang=fr&amp;ondernemingsnummer=871430182" target="_blank" rel="noopener">
+            fiche BCE officielle
+          </a>
+          consultée le 25 avril 2026.
+        </p>
+      </div>
+    </section>
+
     <footer class="site-footer">
       <p>Copyright &copy; 2026 - Andenne Bears ASBL</p>
       <a href="#top">Retour en haut</a>
     </footer>
-    <script>
-      const siteHeader = document.querySelector(".site-header");
-      const menuToggle = document.querySelector(".menu-toggle");
-      const mainNav = document.querySelector("#main-nav");
-      const form = document.querySelector("#contact-form");
-      const result = document.querySelector("#contact-result");
-      const escapeHTML = (value) =>
-        String(value).replace(/[&<>"']/g, (char) => ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        })[char]);
-      const channels = {
-        Messenger: "https://m.me/andennebears",
-        Instagram: "https://www.instagram.com/andennebears/",
-      };
-
-      const closeMenu = () => {
-        siteHeader?.classList.remove("is-menu-open");
-        menuToggle?.setAttribute("aria-expanded", "false");
-        menuToggle?.setAttribute("aria-label", "Ouvrir le menu");
-      };
-
-      menuToggle?.addEventListener("click", () => {
-        const isOpen = siteHeader?.classList.toggle("is-menu-open");
-        menuToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
-        menuToggle.setAttribute(
-          "aria-label",
-          isOpen ? "Fermer le menu" : "Ouvrir le menu",
-        );
-      });
-
-      mainNav?.addEventListener("click", (event) => {
-        if (event.target.closest("a")) {
-          closeMenu();
-        }
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          closeMenu();
-        }
-      });
-
-      form?.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const data = new FormData(form);
-        const name = data.get("Nom") || "Un futur Bear";
-        const profile = data.get("Profil") || "Je veux essayer";
-        const channel = data.get("Canal prefere") || "Messenger";
-        const contact = data.get("Contact") || "";
-        const message = data.get("Message") || "";
-        const summary = `${name} - ${profile}\nContact souhaité\u00a0: ${channel} (${contact})\n\n${message}`;
-        const channelUrl = channels[channel];
-        const safeChannel = escapeHTML(channel);
-        const safeSummary = escapeHTML(summary);
-
-        result.hidden = false;
-        result.innerHTML = `
-          <strong>Demande prête.</strong>
-          <p>Copie ce message puis envoie-le via ${safeChannel}. Le formulaire deviendra automatique dès qu'un outil de réception sera choisi.</p>
-          <textarea readonly rows="6">${safeSummary}</textarea>
-          ${
-            channelUrl
-              ? `<a class="button button-dark" href="${channelUrl}" target="_blank" rel="noopener">Ouvrir ${safeChannel}</a>`
-              : `<p class="contact-note">Ce canal arrive bientôt. Choisis Messenger ou Instagram pour l'instant.</p>`
-          }
-        `;
-      });
-    </script>
+    <script src="scripts/bears.js" defer></script>
   </body>
 </html>
