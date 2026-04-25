@@ -5,6 +5,10 @@ const iconMenuOpen = document.querySelector(".icon-menu-open");
 const iconMenuClose = document.querySelector(".icon-menu-close");
 const form = document.querySelector("#contact-form");
 const result = document.querySelector("#contact-result");
+const photoCarousel = document.querySelector(".photo-carousel");
+const photoCarouselTrack = document.querySelector(".photo-carousel-track");
+const photoCarouselPrev = document.querySelector("[data-carousel-prev]");
+const photoCarouselNext = document.querySelector("[data-carousel-next]");
 
 const escapeHTML = (value) =>
   String(value).replace(/[&<>"']/g, (char) => ({
@@ -94,6 +98,10 @@ const age = document.querySelector("#age");
 const messageField = document.querySelector("#message");
 const ageStatus = document.querySelector('[data-field-status="age"]');
 const messageStatus = document.querySelector('[data-field-status="message"]');
+const formStart = document.querySelector("#form-start");
+const csrfToken = document.querySelector("#csrf-token");
+const formSubmit = form?.querySelector('button[type="submit"]');
+let isContactBackendAvailable = false;
 
 const setRequiredState = (field, status, isRequired) => {
   if (field) {
@@ -135,6 +143,49 @@ profile?.addEventListener("change", updateProfileRequirements);
 updateContactField();
 updateProfileRequirements();
 
+if (formStart) {
+  formStart.value = String(Date.now());
+}
+
+const readJsonResponse = async (response) => {
+  const text = await response.text();
+  try {
+    return {
+      isJson: true,
+      data: JSON.parse(text),
+    };
+  } catch {
+    return {
+      isJson: false,
+      data: null,
+    };
+  }
+};
+
+const loadCsrfToken = async () => {
+  if (!csrfToken) {
+    return;
+  }
+
+  try {
+    const response = await fetch("contact.php?csrf=1", {
+      headers: {
+        Accept: "application/json",
+      },
+      credentials: "same-origin",
+    });
+    const parsed = await readJsonResponse(response);
+    if (response.ok && parsed.isJson && parsed.data?.csrfToken) {
+      csrfToken.value = parsed.data.csrfToken;
+      isContactBackendAvailable = true;
+    }
+  } catch {
+    isContactBackendAvailable = false;
+  }
+};
+
+loadCsrfToken();
+
 const closeMenu = () => {
   siteHeader?.classList.remove("is-menu-open");
   menuToggle?.setAttribute("aria-expanded", "false");
@@ -164,6 +215,52 @@ mainNav?.addEventListener("click", (event) => {
   }
 });
 
+const getCarouselStep = () => {
+  const firstCard = photoCarouselTrack?.querySelector(".photo-card");
+  if (!firstCard || !photoCarouselTrack) {
+    return 320;
+  }
+
+  const styles = window.getComputedStyle(photoCarouselTrack);
+  const gap = Number.parseFloat(styles.columnGap || styles.gap) || 0;
+  return firstCard.getBoundingClientRect().width + gap;
+};
+
+const updateCarouselButtons = () => {
+  if (!photoCarousel || !photoCarouselPrev || !photoCarouselNext) {
+    return;
+  }
+
+  const maxScrollLeft = photoCarousel.scrollWidth - photoCarousel.clientWidth;
+  photoCarouselPrev.disabled = photoCarousel.scrollLeft <= 2;
+  photoCarouselNext.disabled = photoCarousel.scrollLeft >= maxScrollLeft - 2;
+};
+
+let carouselScrollFrame = null;
+
+const requestCarouselUpdate = () => {
+  if (carouselScrollFrame) {
+    return;
+  }
+
+  carouselScrollFrame = window.requestAnimationFrame(() => {
+    carouselScrollFrame = null;
+    updateCarouselButtons();
+  });
+};
+
+photoCarouselPrev?.addEventListener("click", () => {
+  photoCarousel?.scrollBy({ left: -getCarouselStep(), behavior: "smooth" });
+});
+
+photoCarouselNext?.addEventListener("click", () => {
+  photoCarousel?.scrollBy({ left: getCarouselStep(), behavior: "smooth" });
+});
+
+photoCarousel?.addEventListener("scroll", requestCarouselUpdate, { passive: true });
+window.addEventListener("resize", requestCarouselUpdate);
+updateCarouselButtons();
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeMenu();
@@ -172,30 +269,62 @@ document.addEventListener("keydown", (event) => {
 
 form?.addEventListener("submit", (event) => {
   event.preventDefault();
-  const data = new FormData(form);
-  const name = data.get("Nom") || "Un futur Bear";
-  const selectedProfile = data.get("Profil") || "essai";
-  const profileSettingsForSubmit = profileSettings[selectedProfile] || profileSettings.essai;
-  const profileName = profileSettingsForSubmit.name;
-  const channel = data.get("Canal prefere") || "messenger";
-  const contact = data.get("Contact") || "";
-  const message = data.get("Message") || "";
-  const channelSettingsForSubmit = channelSettings[channel] || channelSettings.messenger;
-  const channelUrl = channelSettingsForSubmit.url;
-  const channelName = channelSettingsForSubmit.name;
-  const summary = `${name} - ${profileName}\nContact souhaité\u00a0: ${channelName} (${contact})\n\n${message}`;
-  const safeChannel = escapeHTML(channelName);
-  const safeSummary = escapeHTML(summary);
 
   result.hidden = false;
-  result.innerHTML = `
-    <strong>Demande prête.</strong>
-    <p>Copie ce message puis finalise le contact via ${safeChannel}. Le formulaire deviendra automatique dès qu'un outil de réception sera choisi.</p>
-    <textarea readonly rows="6">${safeSummary}</textarea>
-    ${
-      channelUrl
-        ? `<a class="button button-dark" href="${channelUrl}" target="_blank" rel="noopener">Ouvrir ${safeChannel}</a>`
-        : `<p class="contact-note">Parfait. Nous te recontacterons directement via ${safeChannel}.</p>`
-    }
-  `;
+  result.classList.remove("is-success", "is-error");
+
+  if (!isContactBackendAvailable) {
+    result.classList.add("is-error");
+    result.innerHTML = `
+      <strong>Envoi indisponible.</strong>
+      <p>Le serveur PHP doit être actif pour envoyer le message automatiquement. Réessaie dans quelques instants ou contacte-nous via Messenger.</p>
+    `;
+    return;
+  }
+
+  formSubmit.disabled = true;
+  result.innerHTML = "<strong>Envoi en cours...</strong>";
+
+  fetch(form.action, {
+    method: "POST",
+    body: new FormData(form),
+    headers: {
+      Accept: "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(async (response) => {
+      const parsed = await readJsonResponse(response);
+      if (!parsed.isJson) {
+        throw new Error("invalid-response");
+      }
+
+      const message = parsed.data?.message || "Une erreur est survenue.";
+      const isSuccess = Boolean(response.ok && parsed.data?.success);
+      result.classList.add(isSuccess ? "is-success" : "is-error");
+      result.innerHTML = `
+        <strong>${isSuccess ? "Message envoyé." : "Envoi impossible."}</strong>
+        <p>${escapeHTML(message)}</p>
+      `;
+
+      if (isSuccess) {
+        form.reset();
+        updateContactField();
+        updateProfileRequirements();
+        if (formStart) {
+          formStart.value = String(Date.now());
+        }
+        await loadCsrfToken();
+      }
+    })
+    .catch(() => {
+      result.classList.add("is-error");
+      result.innerHTML = `
+        <strong>Envoi impossible.</strong>
+        <p>Une erreur réseau empêche l'envoi du message. Réessaie dans quelques instants.</p>
+      `;
+    })
+    .finally(() => {
+      formSubmit.disabled = false;
+    });
 });

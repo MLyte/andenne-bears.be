@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
@@ -23,7 +23,7 @@
       content="Débutant ou confirmé, viens découvrir les Andenne Bears. Football américain, flag football, essais, entraînements et partenaires."
     />
     <meta property="og:image" content="images/logoBears.png" />
-    <meta property="og:url" content="https://www.andenne-bears.be/" />
+    <meta property="og:url" content="https://mathieuluyten.be/bears.html" />
     <meta property="og:type" content="website" />
     <meta name="robots" content="index, follow" />
   </head>
@@ -110,6 +110,12 @@
       <symbol id="icon-x" viewBox="0 0 24 24">
         <path d="M18 6 6 18" />
         <path d="m6 6 12 12" />
+      </symbol>
+      <symbol id="icon-chevron-left" viewBox="0 0 24 24">
+        <path d="m15 18-6-6 6-6" />
+      </symbol>
+      <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+        <path d="m9 18 6-6-6-6" />
       </symbol>
     </svg>
     <header class="site-header">
@@ -243,23 +249,66 @@
         </div>
       </section>
 
-      <section class="photo-band" aria-label="Ambiance football américain et flag football">
-        <figure class="photo-card photo-card-large">
-          <img src="images/bears-entry.jpg" alt="Joueurs des Andenne Bears entrant sur le terrain" loading="lazy" decoding="async" />
-          <figcaption>Une équipe qui entre ensemble, et qui avance ensemble.</figcaption>
-        </figure>
-        <figure class="photo-card">
-          <img src="images/flag/AndenneBearsOctobre2024--35.jpg" alt="Jeunes joueurs des Andenne Bears alignés avant une action de flag football" loading="lazy" decoding="async" />
-          <figcaption>Flag : apprendre vite, avec du jeu et des repères.</figcaption>
-        </figure>
-        <figure class="photo-card">
-          <img src="images/flag/AndenneBearsOctobre2024--30.jpg" alt="Joueur des Andenne Bears poursuivant un porteur de balle en match de flag football" loading="lazy" decoding="async" />
-          <figcaption>Sans plaquage, mais avec lecture, vitesse et duel.</figcaption>
-        </figure>
-        <figure class="photo-card">
-          <img src="images/flag/AndenneBearsOctobre2024--58.jpg" alt="Jeune joueuse des Andenne Bears à la réception d'une passe en flag football" loading="lazy" decoding="async" />
-          <figcaption>Une passe, une course, une décision collective.</figcaption>
-        </figure>
+      <section class="photo-band" aria-labelledby="photo-carousel-title">
+        <div class="photo-band-heading">
+          <div>
+            <p class="section-kicker">Ambiance Bears</p>
+            <h2 id="photo-carousel-title">Le terrain, l'équipe et les premiers essais.</h2>
+            <p>Des premiers repères aux matchs : flag, tackle, énergie collective et vie de club.</p>
+          </div>
+          <div class="photo-carousel-controls" aria-label="Navigation de la galerie photo">
+            <button class="photo-carousel-button" type="button" data-carousel-prev aria-label="Photo précédente">
+              <svg class="icon" aria-hidden="true"><use href="#icon-chevron-left"></use></svg>
+            </button>
+            <button class="photo-carousel-button" type="button" data-carousel-next aria-label="Photo suivante">
+              <svg class="icon" aria-hidden="true"><use href="#icon-chevron-right"></use></svg>
+            </button>
+          </div>
+        </div>
+        <div class="photo-carousel" aria-label="Galerie photo des Andenne Bears">
+          <div class="photo-carousel-track">
+            <figure class="photo-card photo-card-large">
+              <img src="images/bears-entry.jpg" alt="Joueurs des Andenne Bears entrant sur le terrain" decoding="async" />
+              <figcaption>Une équipe qui entre ensemble, et qui avance ensemble.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/bears-huddle.jpg" alt="Joueurs des Andenne Bears rassemblés en cercle pendant un entraînement" loading="lazy" decoding="async" />
+              <figcaption>Avant l'action, le collectif se resserre.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/bears-scrimmage.jpg" alt="Phase d'entraînement des Andenne Bears sur le terrain" loading="lazy" decoding="async" />
+              <figcaption>Des repères concrets, séance après séance.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/bears-line-battle.jpg" alt="Duel de ligne pendant une action de football américain" loading="lazy" decoding="async" />
+              <figcaption>Tackle : intensité, technique et confiance.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/bears-offense-line.jpg" alt="Ligne offensive des Andenne Bears prête au départ d'une action" loading="lazy" decoding="async" />
+              <figcaption>Chaque poste compte, chaque rôle se construit.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/bears-tackle-run.jpg" alt="Porteur de balle des Andenne Bears en course pendant une action tackle" loading="lazy" decoding="async" />
+              <figcaption>Avancer sous pression, ensemble.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/flag/AndenneBearsOctobre2024--35.jpg" alt="Jeunes joueurs des Andenne Bears alignés avant une action de flag football" loading="lazy" decoding="async" />
+              <figcaption>Flag : apprendre vite, avec du jeu et des repères.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/flag/AndenneBearsOctobre2024--30.jpg" alt="Joueur des Andenne Bears poursuivant un porteur de balle en match de flag football" loading="lazy" decoding="async" />
+              <figcaption>Sans plaquage, mais avec lecture, vitesse et duel.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/flag/AndenneBearsOctobre2024--58.jpg" alt="Jeune joueuse des Andenne Bears à la réception d'une passe en flag football" loading="lazy" decoding="async" />
+              <figcaption>Une passe, une course, une décision collective.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/flag/AndenneBearsOctobre2024--44.jpg" alt="Jeunes joueurs des Andenne Bears pendant une action de flag football" loading="lazy" decoding="async" />
+              <figcaption>Le bon geste arrive avec le bon timing.</figcaption>
+            </figure>
+          </div>
+        </div>
       </section>
 
       <section class="section section-dark" id="disciplines" aria-labelledby="disciplines-title">
@@ -396,11 +445,24 @@
         </div>
       </section>
 
+      <section class="section slogan-section" aria-labelledby="slogan-title">
+        <div class="section-inner slogan-inner">
+          <p class="section-kicker">Notre slogan</p>
+          <h2 id="slogan-title" class="club-slogan">
+            <span>One team.</span>
+            <span>One family.</span>
+            <span>One heartbeat.</span>
+          </h2>
+        </div>
+      </section>
+
       <section class="section section-parents" aria-labelledby="parents-title">
         <div class="section-inner split reverse">
           <div class="feature-panel">
             <p class="quote">
-              One team. One family. One heartbeat.
+              Flag football.<br />
+              Vitesse.<br />
+              Jeu sans contact.
             </p>
           </div>
           <div class="section-copy">
@@ -445,10 +507,10 @@
                   </div>
                 </article>
                 <article class="member-card">
-                  <img src="images/members/jean-mathieu-moetwil-profile.jpg" alt="Portrait stylisé de Jean-Mathieu Moetwil" loading="lazy" decoding="async" />
+                  <img src="images/members/nicolas-matagne-profile.jpg" alt="Portrait stylisé de Nicolas Matagne" loading="lazy" decoding="async" />
                   <div>
                     <p class="member-role">Secrétaire</p>
-                    <h4>Jean-Mathieu Moetwil</h4>
+                    <h4>Nicolas Matagne</h4>
                   </div>
                 </article>
                 <article class="member-card">
@@ -481,17 +543,31 @@
                   </div>
                 </article>
                 <article class="member-card">
-                  <img src="images/members/stephan-horion.png" alt="Portrait illustratif de Stéphan Horion" loading="lazy" decoding="async" />
+                  <img src="images/members/jean-mathieu-moetwil-profile.jpg" alt="Portrait stylisé de Jean-Mathieu Moetwil" loading="lazy" decoding="async" />
                   <div>
-                    <p class="member-role">Head Coach U19</p>
-                    <h4>Stéphan Horion</h4>
+                    <p class="member-role">Coach Flag U13</p>
+                    <h4>Jean-Mathieu Moetwil</h4>
                   </div>
                 </article>
                 <article class="member-card">
-                  <img src="images/members/jean-mathieu-moetwil-profile.jpg" alt="Portrait stylisé de Jean-Mathieu Moetwil" loading="lazy" decoding="async" />
+                  <img src="images/members/joseph-mavor-profile.jpg" alt="Portrait stylisé de Joseph Mavor" loading="lazy" decoding="async" />
                   <div>
-                    <p class="member-role">Head Coach Flag</p>
-                    <h4>Jean-Mathieu Moetwil</h4>
+                    <p class="member-role">Coach Flag U17</p>
+                    <h4>Joseph Mavor</h4>
+                  </div>
+                </article>
+                <article class="member-card">
+                  <img src="images/members/coach-generic-a.png" alt="Portrait illustratif de Thomas Duby" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Coach Flag Seniors A</p>
+                    <h4>Thomas Duby</h4>
+                  </div>
+                </article>
+                <article class="member-card">
+                  <img src="images/members/stephan-horion.png" alt="Portrait illustratif de Stéphane Horion" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Coach Flag Seniors B</p>
+                    <h4>Stéphane Horion</h4>
                   </div>
                 </article>
               </div>
@@ -570,7 +646,10 @@
               </div>
             </div>
           </div>
-          <form class="contact-form" id="contact-form">
+          <form class="contact-form" id="contact-form" action="contact.php" method="post" novalidate>
+            <input type="hidden" name="form_context" value="bears" />
+            <input type="hidden" name="form_start" id="form-start" />
+            <input type="hidden" name="csrf_token" id="csrf-token" />
             <div class="field">
               <label for="name">
                 <span>Nom et prénom</span>
@@ -626,6 +705,10 @@
               </label>
               <textarea id="message" name="Message" rows="5" placeholder="Dis-nous ce que tu veux découvrir, ton expérience éventuelle et tes disponibilités."></textarea>
             </div>
+            <label class="honeypot" aria-hidden="true">
+              <span>Ne pas remplir</span>
+              <input type="text" name="company" tabindex="-1" autocomplete="off" />
+            </label>
             <button class="button button-primary" type="submit">Envoyer mon message d'essai</button>
             <div class="contact-result" id="contact-result" hidden></div>
           </form>
@@ -677,3 +760,4 @@
     <script src="scripts/bears.js" defer></script>
   </body>
 </html>
+

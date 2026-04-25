@@ -529,6 +529,32 @@ h3 {
   color: var(--gold);
 }
 
+.slogan-section {
+  background: var(--black);
+  color: var(--cream);
+  padding-block: clamp(3.5rem, 6vw, 5.5rem);
+}
+
+.slogan-inner {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.slogan-section .section-kicker {
+  color: var(--gold);
+}
+
+.club-slogan {
+  margin: 0;
+  color: var(--cream);
+  font-size: clamp(2.6rem, 7vw, 6.4rem);
+  line-height: 0.95;
+}
+
+.club-slogan span {
+  display: block;
+}
+
 .section-alert {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -615,15 +641,109 @@ h3 {
 }
 
 .photo-band {
-  display: grid;
-  grid-template-columns: 1.3fr 0.9fr 0.9fr 0.9fr;
-  gap: 1rem;
-  padding: 0 clamp(1rem, 4vw, 3rem) clamp(4rem, 7vw, 6rem);
+  padding: clamp(1rem, 2vw, 1.5rem) clamp(1rem, 4vw, 3rem) clamp(4rem, 7vw, 6rem);
   background: #ffffff;
+}
+
+.photo-band-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: min(1320px, 100%);
+  margin: 0 auto 1.25rem;
+}
+
+.photo-band-heading h2 {
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.95;
+}
+
+.photo-band-heading p:not(.section-kicker) {
+  max-width: 620px;
+  margin: 0.85rem 0 0;
+  color: rgba(5, 5, 5, 0.72);
+  font-weight: 600;
+}
+
+.photo-carousel-controls {
+  display: inline-flex;
+  gap: 0.6rem;
+  flex: 0 0 auto;
+}
+
+.photo-carousel-button {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(5, 5, 5, 0.16);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--black);
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.photo-carousel-button:hover {
+  border-color: var(--black);
+  background: var(--black);
+  color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.photo-carousel-button:focus-visible {
+  outline: 3px solid rgba(238, 207, 43, 0.76);
+  outline-offset: 3px;
+}
+
+.photo-carousel-button:disabled {
+  border-color: rgba(5, 5, 5, 0.16);
+  background: #ffffff;
+  color: var(--black);
+  cursor: default;
+  opacity: 0.42;
+  transform: none;
+}
+
+.photo-carousel-button .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0;
+}
+
+.photo-carousel {
+  width: min(1320px, 100%);
+  margin: 0 auto;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-padding-inline: 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.photo-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.photo-carousel-track {
+  display: grid;
+  grid-auto-columns: minmax(280px, 24vw);
+  grid-auto-flow: column;
+  gap: 1rem;
 }
 
 .photo-card {
   position: relative;
+  scroll-snap-align: start;
   min-height: 330px;
   margin: 0;
   overflow: hidden;
@@ -632,6 +752,7 @@ h3 {
 }
 
 .photo-card-large {
+  grid-column: span 2;
   min-height: 430px;
 }
 
@@ -658,6 +779,7 @@ h3 {
   bottom: 1rem;
   color: #ffffff;
   font-weight: 800;
+  text-wrap: balance;
 }
 
 .discipline-grid {
@@ -922,7 +1044,7 @@ h3 {
   padding: 2rem;
   background:
     linear-gradient(180deg, rgba(5, 5, 5, 0.12), rgba(5, 5, 5, 0.88)),
-    url("images/bears-offense-line.jpg") center / cover;
+    url("images/flag/AndenneBearsOctobre2024--35.jpg") center / cover;
   box-shadow: var(--shadow);
 }
 
@@ -1226,6 +1348,19 @@ h3 {
   font: inherit;
 }
 
+.contact-form .button:disabled {
+  cursor: wait;
+  opacity: 0.66;
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .contact-result {
   display: grid;
   gap: 0.75rem;
@@ -1233,6 +1368,16 @@ h3 {
   border: 1px solid rgba(5, 5, 5, 0.12);
   border-radius: 8px;
   background: #ffffff;
+}
+
+.contact-result.is-success {
+  border-color: rgba(35, 125, 74, 0.35);
+  background: rgba(35, 125, 74, 0.08);
+}
+
+.contact-result.is-error {
+  border-color: rgba(159, 20, 53, 0.32);
+  background: rgba(159, 20, 53, 0.08);
 }
 
 .contact-result[hidden] {
@@ -1437,7 +1582,16 @@ h3 {
   }
 
   .photo-band {
-    padding-top: 0;
+    padding-top: 0.5rem;
+  }
+
+  .photo-band-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .photo-carousel-track {
+    grid-auto-columns: minmax(300px, 48vw);
   }
 
   .photo-card,
@@ -1503,13 +1657,36 @@ h3 {
   }
 
   .photo-band {
+    padding-inline: 1rem;
+  }
+
+  .photo-band-heading {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .photo-band-heading h2 {
+    font-size: clamp(2rem, 12vw, 3rem);
+  }
+
+  .photo-carousel-controls {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .photo-carousel-track {
+    grid-auto-columns: minmax(260px, 86vw);
     gap: 0.75rem;
+  }
+
+  .photo-card-large {
+    grid-column: span 1;
   }
 
   .photo-card,
   .photo-card-large {
     min-height: auto;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 3;
   }
 
   .alert-card {
@@ -1571,6 +1748,10 @@ h3 {
 
 @media (prefers-reduced-motion: reduce) {
   html {
+    scroll-behavior: auto;
+  }
+
+  .photo-carousel {
     scroll-behavior: auto;
   }
 
