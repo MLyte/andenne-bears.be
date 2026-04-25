@@ -147,9 +147,9 @@ a {
   z-index: 20;
   top: 0;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  gap: 1.5rem;
+  gap: clamp(0.85rem, 2vw, 1.5rem);
   padding: 0.75rem clamp(1rem, 4vw, 3rem);
   background: rgba(5, 5, 5, 0.94);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
@@ -237,6 +237,41 @@ a {
 .text-link:hover,
 .site-footer a:hover {
   color: var(--gold);
+}
+
+.header-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.header-social a {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.header-social a:hover {
+  border-color: rgba(238, 207, 43, 0.8);
+  color: var(--black);
+  background: var(--gold);
+  transform: translateY(-1px);
+}
+
+.header-social .icon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0;
 }
 
 .header-cta,
@@ -666,8 +701,8 @@ h3 {
 
 .card-highlight {
   background:
-    linear-gradient(180deg, rgba(159, 20, 53, 0.76), rgba(5, 5, 5, 0.96)),
-    url("images/bears-entry.jpg") center / cover;
+    linear-gradient(180deg, rgba(159, 20, 53, 0.72), rgba(5, 5, 5, 0.94)),
+    url("images/flag/AndenneBearsOctobre2024--28.jpg") center 28% / cover;
 }
 
 .section-practical {
@@ -994,13 +1029,6 @@ h3 {
   line-height: 1.12;
 }
 
-.members-note {
-  margin: 1rem 0 0;
-  color: rgba(5, 5, 5, 0.56);
-  font-size: 0.86rem;
-  font-weight: 700;
-}
-
 .partner-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1303,6 +1331,13 @@ h3 {
   margin: 0;
 }
 
+.footer-note {
+  margin-top: 0.25rem;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 .site-footer a {
   color: var(--gold);
   font-weight: 800;
@@ -1345,6 +1380,23 @@ h3 {
   .site-header.is-menu-open .main-nav,
   .menu-toggle[aria-expanded="true"] + .main-nav {
     display: grid;
+  }
+
+  .header-social {
+    display: none;
+    order: 5;
+    grid-column: 1 / -1;
+    justify-content: center;
+    padding-top: 0.25rem;
+  }
+
+  .site-header.is-menu-open .header-social {
+    display: inline-flex;
+  }
+
+  .header-social a {
+    width: 44px;
+    height: 44px;
   }
 
   .header-cta {
