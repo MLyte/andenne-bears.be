@@ -6,7 +6,8 @@ param(
   [switch] $UseFileZilla,
   [switch] $Ssl,
   [switch] $Active,
-  [switch] $DryRun
+  [switch] $DryRun,
+  [switch] $SkipChangeThisSync
 )
 
 $ErrorActionPreference = "Stop"
@@ -17,10 +18,15 @@ $ItemsToDeploy = @(
   "index.html",
   "bears.css",
   "contact.php",
+  "changethis.php",
   "config/contact-config.php",
   "fonts",
   "images",
   "scripts"
+)
+
+$OptionalItemsToDeploy = @(
+  "config/changethis-config.php"
 )
 
 function Import-FileZillaServer {
@@ -56,6 +62,10 @@ function Import-FileZillaServer {
   throw "No matching FileZilla FTP entry found. Pass -HostName, -UserName and -Password, or set OVH_FTP_* env vars."
 }
 
+if (-not $SkipChangeThisSync) {
+  & (Join-Path $PSScriptRoot "sync-changethis-widget.ps1")
+}
+
 if ($UseFileZilla) {
   $providedHostName = $HostName
   $fileZilla = Import-FileZillaServer -PreferredUser $UserName
@@ -64,7 +74,7 @@ if ($UseFileZilla) {
   $Password = $fileZilla.Password
 }
 
-if (-not $HostName -or -not $UserName -or -not $Password) {
+if (-not $DryRun -and (-not $HostName -or -not $UserName -or -not $Password)) {
   if (-not $HostName -or -not $UserName) {
     throw "Missing FTP config. Set OVH_FTP_HOST and OVH_FTP_USER, pass parameters, or use -UseFileZilla."
   }
@@ -175,6 +185,20 @@ $Files = foreach ($item in $ItemsToDeploy) {
   $path = Join-Path $ProjectRoot $item
   if (-not (Test-Path -LiteralPath $path)) {
     throw "Deploy item not found: $item"
+  }
+
+  $entry = Get-Item -LiteralPath $path
+  if ($entry.PSIsContainer) {
+    Get-ChildItem -LiteralPath $entry.FullName -File -Recurse
+  } else {
+    $entry
+  }
+}
+
+$Files += foreach ($item in $OptionalItemsToDeploy) {
+  $path = Join-Path $ProjectRoot $item
+  if (-not (Test-Path -LiteralPath $path)) {
+    continue
   }
 
   $entry = Get-Item -LiteralPath $path
