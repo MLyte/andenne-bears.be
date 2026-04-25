@@ -111,6 +111,11 @@ img {
   fill: none;
 }
 
+.brand-icon {
+  fill: currentColor;
+  stroke: none;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
