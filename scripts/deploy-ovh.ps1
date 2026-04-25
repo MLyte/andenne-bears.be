@@ -70,6 +70,30 @@ function Get-RelativeDeployPath {
 
 Write-Host "Deploy target: ftp://$HostName/$($RemotePath.Trim('/'))"
 Write-Host "Files: $($Files.Count)"
+Write-Host "Mode: $(if ($PlainFtp) { "plain FTP" } else { "FTPS" })"
+
+if (-not $DryRun) {
+  $remoteRootUrl = "ftp://$HostName/$($RemotePath.Trim('/'))/"
+  $testArgs = @(
+    "--fail",
+    "--silent",
+    "--show-error",
+    "--list-only",
+    "--user", "${UserName}:${Password}",
+    $remoteRootUrl
+  )
+
+  if (-not $PlainFtp) {
+    $testArgs = @("--ssl-reqd") + $testArgs
+  }
+
+  Write-Host "CHECK    FTP login and remote path"
+  & $Curl.Source @testArgs | Out-Null
+
+  if ($LASTEXITCODE -ne 0) {
+    throw "FTP connection check failed. Verify host, login, password, protocol mode and OVH_FTP_PATH before uploading."
+  }
+}
 
 foreach ($file in $Files) {
   $relativePath = Get-RelativeDeployPath -BasePath $ProjectRoot -FilePath $file.FullName
