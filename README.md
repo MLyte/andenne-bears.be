@@ -37,3 +37,36 @@ http://localhost:8000/
 - `designer-ux-architecture.md` : proposition UX.
 - `designer-ui-direction-visuelle.md` : proposition UI.
 - `brief-binome-web-designers.md` : synthese pour le binome de designers.
+
+## Deployer sur OVH en FTP/FTPS
+
+Le script `scripts/deploy-ovh.ps1` envoie uniquement les fichiers publics :
+
+- `index.html`
+- `bears.css`
+- `fonts/`
+- `images/`
+
+Configurer les variables locales PowerShell :
+
+```powershell
+$env:OVH_FTP_HOST = "ftp.clusterXXX.hosting.ovh.net"
+$env:OVH_FTP_USER = "ton-login-ovh"
+$env:OVH_FTP_PASSWORD = "ton-mot-de-passe"
+$env:OVH_FTP_PATH = "www"
+```
+
+Verifier sans envoyer :
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -DryRun
+```
+
+Envoyer sur OVH :
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1
+```
+
+Par defaut, le script force FTPS via `--ssl-reqd`. Si l'hebergement n'accepte
+que le FTP simple, ajouter `-PlainFtp`.
