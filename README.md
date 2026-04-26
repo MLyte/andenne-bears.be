@@ -27,10 +27,24 @@ Puis ouvrir :
 http://localhost:8000/
 ```
 
+## ChangeThis
+
+Le site embarque le widget ChangeThis via :
+
+- `scripts/changethis-widget.js`
+- `scripts/changethis-init.js`
+
+En local, `changethis-init.js` envoie les retours vers `http://localhost:3000/api/public/feedback`.
+En production, il utilise `https://app.changethis.dev/api/public/feedback`.
+
+Pour forcer un endpoint pendant un test, definir `window.CHANGETHIS_ENDPOINT`
+avant le chargement de `scripts/changethis-init.js`.
+
 ## Fichiers principaux
 
 - `index.html` : page actuelle du site.
 - `bears.css` : styles actuels.
+- `scripts/` : scripts du site, dont le widget ChangeThis.
 - `images/` : logo, favicon et fond.
 - `fonts/` : polices utilisees par le site actuel.
 - `refonte-contenu-andenne-bears.md` : audit de contenu et refonte.
