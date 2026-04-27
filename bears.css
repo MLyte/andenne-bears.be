@@ -595,7 +595,7 @@ h3 {
 }
 
 .heartbeat-line {
-  height: min(280px, 70%);
+  height: min(220px, 58%);
   left: -2vw;
   opacity: 0.92;
   pointer-events: none;
