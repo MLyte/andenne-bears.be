@@ -513,7 +513,7 @@ h3 {
   color: var(--gold);
 }
 
-#partenaires .section-copy h2 {
+#partenaires .section-copy h2 span {
   color: var(--cream);
 }
 
