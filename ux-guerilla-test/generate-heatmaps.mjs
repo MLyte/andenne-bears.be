@@ -120,49 +120,61 @@ function rpc(ws) {
 }
 
 async function getPageSize(viewport) {
-  const port = 9400 + Math.floor(Math.random() * 1000);
-  const userDataDir = `${outDir}/.chrome-${viewport.name}-${Date.now()}`;
-  const chrome = spawn(chromePath, [
-    "--headless=new",
-    "--disable-gpu",
-    "--allow-file-access-from-files",
-    `--remote-debugging-port=${port}`,
-    `--user-data-dir=${userDataDir}`,
-    `--window-size=${viewport.width},${viewport.height}`,
-    "about:blank",
-  ]);
+  const source = await readFile(`${root}/index.html`, "utf8");
+  const withBase = source.replace("<head>", `<head>\n    <base href="file:///${root}/">`);
+  const measureHtml = withBase.replace(
+    "</body>",
+    `<script>
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const data = {
+            width: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth),
+            height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight),
+            innerWidth: window.innerWidth,
+            innerHeight: window.innerHeight
+          };
+          document.body.textContent = 'MEASURE:' + JSON.stringify(data);
+        }, 600);
+      });
+    </script></body>`
+  );
+  const htmlPath = `${outDir}/${viewport.name}-measure.html`;
+  await writeFile(htmlPath, measureHtml);
 
-  try {
-    const ws = await connect(port);
-    await waitForOpen(ws);
-    const send = rpc(ws);
-    await send("Page.enable");
-    await send("Emulation.setDeviceMetricsOverride", {
-      width: viewport.width,
-      height: viewport.height,
-      deviceScaleFactor: 1,
-      mobile: viewport.mobile,
-      screenOrientation: viewport.mobile
-        ? { type: "portraitPrimary", angle: 0 }
-        : { type: "landscapePrimary", angle: 0 },
+  return new Promise((resolve, reject) => {
+    const chrome = spawn(chromePath, [
+      "--headless=new",
+      "--disable-gpu",
+      "--allow-file-access-from-files",
+      "--force-device-scale-factor=1",
+      "--virtual-time-budget=3500",
+      `--window-size=${viewport.width},${viewport.height}`,
+      "--dump-dom",
+      `file:///${htmlPath.replaceAll("\\", "/")}`,
+    ]);
+    let stdout = "";
+    let stderr = "";
+    chrome.stdout.on("data", (chunk) => {
+      stdout += chunk.toString();
     });
-    await send("Page.navigate", { url: pageUrl });
-    await delay(5000);
-    const measured = await send("Runtime.evaluate", {
-      expression: `JSON.stringify({
-        width: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth),
-        height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight),
-        innerWidth: window.innerWidth,
-        innerHeight: window.innerHeight
-      })`,
-      returnByValue: true,
+    chrome.stderr.on("data", (chunk) => {
+      stderr += chunk.toString();
     });
-    const content = JSON.parse(measured.result.value);
-    ws.close();
-    return { width: Math.round(content.width), height: Math.round(content.height) };
-  } finally {
-    chrome.kill();
-  }
+    chrome.on("error", reject);
+    chrome.on("exit", (code) => {
+      if (code !== 0) {
+        reject(new Error(stderr || `Chrome exited with ${code}`));
+        return;
+      }
+      const match = stdout.match(/MEASURE:(\{[^<]+\})/);
+      if (!match) {
+        reject(new Error("Could not measure page height."));
+        return;
+      }
+      const data = JSON.parse(match[1]);
+      resolve({ width: Math.round(data.innerWidth), height: Math.round(data.height) });
+    });
+  });
 }
 
 function runChromeScreenshot({ viewport, htmlPath, outputPath }) {

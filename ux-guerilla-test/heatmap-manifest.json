@@ -2,8 +2,8 @@
   "results": [
     {
       "name": "desktop-1366x768",
-      "width": 1366,
-      "height": 768,
+      "width": 1350,
+      "height": 10573,
       "viewportWidth": 1366,
       "viewportHeight": 768,
       "mode": "desktop",
@@ -11,7 +11,91 @@
         {
           "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-01.png",
           "y": 0,
-          "width": 1366,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-02.png",
+          "y": 768,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-03.png",
+          "y": 1536,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-04.png",
+          "y": 2304,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-05.png",
+          "y": 3072,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-06.png",
+          "y": 3840,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-07.png",
+          "y": 4608,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-08.png",
+          "y": 5376,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-09.png",
+          "y": 6144,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-10.png",
+          "y": 6912,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-11.png",
+          "y": 7680,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-12.png",
+          "y": 8448,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-13.png",
+          "y": 9216,
+          "width": 1350,
+          "height": 768
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-14.png",
+          "y": 9984,
+          "width": 1350,
+          "height": 589
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-15.png",
+          "y": 9805,
+          "width": 1350,
           "height": 768
         }
       ],
@@ -182,8 +266,8 @@
     },
     {
       "name": "mobile-390x844",
-      "width": 980,
-      "height": 2121,
+      "width": 484,
+      "height": 14641,
       "viewportWidth": 390,
       "viewportHeight": 844,
       "mode": "mobile",
@@ -191,25 +275,115 @@
         {
           "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-01.png",
           "y": 0,
-          "width": 980,
+          "width": 484,
           "height": 844
         },
         {
           "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-02.png",
           "y": 844,
-          "width": 980,
+          "width": 484,
           "height": 844
         },
         {
           "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-03.png",
           "y": 1688,
-          "width": 980,
-          "height": 433
+          "width": 484,
+          "height": 844
         },
         {
           "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-04.png",
-          "y": 1277,
-          "width": 980,
+          "y": 2532,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-05.png",
+          "y": 3376,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-06.png",
+          "y": 4220,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-07.png",
+          "y": 5064,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-08.png",
+          "y": 5908,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-09.png",
+          "y": 6752,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-10.png",
+          "y": 7596,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-11.png",
+          "y": 8440,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-12.png",
+          "y": 9284,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-13.png",
+          "y": 10128,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-14.png",
+          "y": 10972,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-15.png",
+          "y": 11816,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-16.png",
+          "y": 12660,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-17.png",
+          "y": 13504,
+          "width": 484,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-18.png",
+          "y": 14348,
+          "width": 484,
+          "height": 293
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-19.png",
+          "y": 13797,
+          "width": 484,
           "height": 844
         }
       ],

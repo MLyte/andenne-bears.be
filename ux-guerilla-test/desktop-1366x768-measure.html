@@ -1008,5 +1008,17 @@
     <script src="scripts/changethis-widget.js" defer></script>
     <script src="scripts/changethis-init.js" defer></script>
     -->
-  <script>window.addEventListener('load',()=>{setTimeout(()=>window.scrollTo(0,2532),250);});</script></body>
+  <script>
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const data = {
+            width: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth),
+            height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight),
+            innerWidth: window.innerWidth,
+            innerHeight: window.innerHeight
+          };
+          document.body.textContent = 'MEASURE:' + JSON.stringify(data);
+        }, 600);
+      });
+    </script></body>
 </html>
