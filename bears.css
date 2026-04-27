@@ -359,8 +359,7 @@ textarea:focus-visible {
   position: relative;
   width: min(980px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 4.5rem 0 3.5rem;
-  transform: translateY(1.4vh);
+  padding: 4rem 0;
   display: grid;
   justify-items: center;
   text-align: center;
