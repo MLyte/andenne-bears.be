@@ -921,6 +921,7 @@ h3 {
 .discipline-age-groups span {
   display: inline-flex;
   align-items: center;
+  gap: 0.35rem;
   min-height: 1.55rem;
   padding: 0.24rem 0.56rem;
   border: 1px solid rgba(238, 207, 43, 0.34);
@@ -932,6 +933,23 @@ h3 {
   letter-spacing: 0.03em;
   line-height: 1;
   text-transform: uppercase;
+}
+
+.discipline-age-groups .discipline-age-future {
+  border-color: rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.discipline-age-groups small {
+  padding: 0.12rem 0.34rem;
+  border-radius: 999px;
+  color: var(--black);
+  background: var(--gold);
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
 }
 
 .discipline-card .card-tag {
