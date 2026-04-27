@@ -539,6 +539,7 @@ h3 {
     var(--black);
   color: var(--cream);
   overflow: hidden;
+  padding-inline: 0;
   padding-block: clamp(3.5rem, 6vw, 5.5rem);
   position: relative;
 }
@@ -568,6 +569,7 @@ h3 {
   display: grid;
   gap: 0.8rem;
   position: relative;
+  width: min(1120px, calc(100% - clamp(2rem, 8vw, 6rem)));
   z-index: 3;
 }
 
@@ -594,13 +596,13 @@ h3 {
 
 .heartbeat-line {
   height: min(280px, 70%);
-  left: -8vw;
+  left: -2vw;
   opacity: 0.92;
   pointer-events: none;
   position: absolute;
   top: 55%;
   transform: translateY(-50%);
-  width: 116vw;
+  width: 104vw;
   z-index: 2;
 }
 
@@ -627,7 +629,7 @@ h3 {
 }
 
 .heartbeat-line-scan {
-  animation: heartbeat-scan 4.2s linear infinite;
+  animation: heartbeat-scan 2.8s linear infinite;
   filter: drop-shadow(0 0 12px rgba(238, 207, 43, 0.58));
   stroke: url("#heartbeat-scan-gradient");
   stroke-dasharray: 190 1000;
@@ -1721,9 +1723,9 @@ h3 {
 
   .heartbeat-line {
     opacity: 0.72;
-    left: -12vw;
+    left: -4vw;
     top: 55%;
-    width: 124vw;
+    width: 108vw;
   }
 
   .header-social a {
