@@ -555,6 +555,11 @@ h3 {
   display: block;
 }
 
+.club-slogan .slogan-highlight {
+  color: var(--gold);
+  display: inline;
+}
+
 .section-alert {
   padding-top: 1rem;
   padding-bottom: 1rem;
