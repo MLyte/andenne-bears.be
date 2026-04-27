@@ -1802,6 +1802,11 @@ h3 {
   line-height: 1.35;
 }
 
+.partner-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
 .partner-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1815,6 +1820,62 @@ h3 {
   color: var(--cream);
   background: rgba(255, 255, 255, 0.08);
   font-weight: 800;
+}
+
+.venue-partner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(238, 207, 43, 0.32);
+  border-left: 5px solid var(--gold);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.07);
+  text-decoration: none;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-partner img {
+  width: 74px;
+  max-height: 58px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.venue-partner > span {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.venue-partner:hover {
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.11);
+  transform: translateY(-1px);
+}
+
+.venue-partner-label {
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.venue-partner strong {
+  color: var(--cream);
+  font-size: 1.05rem;
+  line-height: 1.15;
+}
+
+.venue-partner > span > span:last-child {
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .contact-section {
@@ -2391,6 +2452,14 @@ h3 {
   .partner-options,
   .field-row {
     grid-template-columns: 1fr;
+  }
+
+  .venue-partner {
+    align-items: flex-start;
+  }
+
+  .venue-partner img {
+    width: 58px;
   }
 
   .member-card {
