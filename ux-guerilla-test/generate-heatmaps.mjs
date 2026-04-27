@@ -172,7 +172,7 @@ async function getPageSize(viewport) {
         return;
       }
       const data = JSON.parse(match[1]);
-      resolve({ width: Math.round(data.innerWidth), height: Math.round(data.height) });
+      resolve({ width: viewport.width, height: Math.round(data.height) });
     });
   });
 }
