@@ -18,6 +18,8 @@ Options:
   --ftps                Force FTPS explicit mode
   --active              Use active mode (default passive)
   --debug               Show verbose curl logs (useful if a transfer appears stuck)
+  --changed-only        Upload only files that differ (size/mtime) when remote metadata is available
+  --force-all           Force upload of all files (default behavior)
   --dry-run             Print operations without uploading
   -h, --help            Show this help
 
@@ -38,6 +40,7 @@ USE_FTPS=1
 USE_ACTIVE=0
 DRY_RUN=0
 DEBUG=0
+CHANGED_ONLY=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -79,6 +82,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     --debug)
       DEBUG=1
+      shift
+      ;;
+    --changed-only)
+      CHANGED_ONLY=1
+      shift
+      ;;
+    --force-all)
+      CHANGED_ONLY=0
       shift
       ;;
     --dry-run)
@@ -123,6 +134,84 @@ urlencode_path() {
   done
 
   printf '%s' "$output"
+}
+
+local_mtime_epoch() {
+  local file="$1"
+  if stat -c '%Y' "$file" >/dev/null 2>&1; then
+    stat -c '%Y' "$file"
+    return
+  fi
+
+  if stat -f '%m' "$file" >/dev/null 2>&1; then
+    stat -f '%m' "$file"
+    return
+  fi
+
+  echo ""
+}
+
+parse_http_date_epoch() {
+  local http_date="$1"
+
+  if date -d "$http_date" '+%s' >/dev/null 2>&1; then
+    date -d "$http_date" '+%s'
+    return
+  fi
+
+  if date -j -f '%a, %d %b %Y %T %Z' "$http_date" '+%s' >/dev/null 2>&1; then
+    date -j -f '%a, %d %b %Y %T %Z' "$http_date" '+%s'
+    return
+  fi
+
+  echo ""
+}
+
+should_upload_file() {
+  local local_file="$1"
+  local remote_url="$2"
+
+  if [[ "$CHANGED_ONLY" -eq 0 ]]; then
+    return 0
+  fi
+
+  local local_size
+  local remote_size
+  local local_epoch
+  local remote_epoch
+  local remote_last_modified
+  local headers
+
+  local_size="$(wc -c < "$local_file" | tr -d '[:space:]')"
+  if ! headers="$(curl "${CURL_ARGS[@]}" --head "$remote_url" 2>/dev/null)"; then
+    return 0
+  fi
+
+  remote_size="$(printf '%s\n' "$headers" | awk -F': ' 'tolower($1)=="content-length"{print $2}' | tr -d '\r' | tail -n1)"
+  if [[ -z "$remote_size" ]]; then
+    return 0
+  fi
+
+  if [[ "$local_size" != "$remote_size" ]]; then
+    return 0
+  fi
+
+  remote_last_modified="$(printf '%s\n' "$headers" | awk -F': ' 'tolower($1)=="last-modified"{print $2}' | tr -d '\r' | tail -n1)"
+  if [[ -z "$remote_last_modified" ]]; then
+    return 1
+  fi
+
+  local_epoch="$(local_mtime_epoch "$local_file")"
+  remote_epoch="$(parse_http_date_epoch "$remote_last_modified")"
+  if [[ -z "$local_epoch" || -z "$remote_epoch" ]]; then
+    return 1
+  fi
+
+  if (( local_epoch > remote_epoch )); then
+    return 0
+  fi
+
+  return 1
 }
 
 get_permission_octal() {
@@ -195,9 +284,7 @@ DEPLOY_ITEMS=(
   "index.html"
   "bears.css"
   "contact.php"
-  "changethis.php"
   "config/contact-config.php"
-  "config/changethis-config.php"
   "fonts"
   "images"
   "scripts"
@@ -207,7 +294,7 @@ FILES=()
 for item in "${DEPLOY_ITEMS[@]}"; do
   abs="$PROJECT_ROOT/$item"
   if [[ ! -e "$abs" ]]; then
-    if [[ "$item" == "config/contact-config.php" || "$item" == "config/changethis-config.php" ]]; then
+    if [[ "$item" == "config/contact-config.php" ]]; then
       continue
     fi
     echo "Deploy item not found: $item" >&2
@@ -259,6 +346,7 @@ echo "TLS: $( [[ "$USE_FTPS" -eq 1 ]] && echo enabled || echo disabled )"
 echo "FTP mode: $( [[ "$USE_ACTIVE" -eq 1 ]] && echo active || echo passive )"
 echo "Auth: $( [[ "$NETRC_ACTIVE" -eq 1 ]] && echo "netrc ($NETRC_FILE)" || echo "env/flags" )"
 echo "Debug: $( [[ "$DEBUG" -eq 1 ]] && echo enabled || echo disabled )"
+echo "Changed-only: $( [[ "$CHANGED_ONLY" -eq 1 ]] && echo enabled || echo disabled )"
 
 index=0
 for local_file in "${FILES[@]}"; do
@@ -269,6 +357,11 @@ for local_file in "${FILES[@]}"; do
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "DRY RUN  [${index}/${#FILES[@]}] ${relative_path} -> ${remote_file}"
+    continue
+  fi
+
+  if ! should_upload_file "$local_file" "$remote_url"; then
+    echo "SKIP     [${index}/${#FILES[@]}] ${relative_path} (unchanged)"
     continue
   fi
 

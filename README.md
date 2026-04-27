@@ -134,6 +134,18 @@ Si un transfert semble bloque, activer les logs FTP/FTPS detailles :
 ./scripts/deploy-ovh.sh --debug
 ```
 
+Uploader uniquement les fichiers modifies (compare taille et date distante quand disponible) :
+
+```bash
+./scripts/deploy-ovh.sh --changed-only
+```
+
+Forcer l'upload complet (comportement historique) :
+
+```bash
+./scripts/deploy-ovh.sh --force-all
+```
+
 ### Windows (PowerShell)
 
 Verifier sans envoyer :
