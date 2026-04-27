@@ -114,7 +114,7 @@ const messageStatus = document.querySelector('[data-field-status="message"]');
 const formStart = document.querySelector("#form-start");
 const chatFormStart = document.querySelector("#chat-form-start");
 const csrfTokens = document.querySelectorAll('input[name="csrf_token"]');
-const formSubmit = form?.querySelector('button[type="submit"]');
+const formSubmit = form?.querySelector("[data-submit-label]");
 const chatSubmit = chatForm?.querySelector('button[type="submit"]');
 let isContactBackendAvailable = false;
 
@@ -158,6 +158,7 @@ const updateProfileRequirements = () => {
 
 contactMethod?.addEventListener("change", updateContactField);
 profile?.addEventListener("change", updateProfileRequirements);
+profile?.addEventListener("input", updateProfileRequirements);
 updateContactField();
 updateProfileRequirements();
 
