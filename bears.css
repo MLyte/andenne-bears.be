@@ -534,7 +534,9 @@ h3 {
 }
 
 .slogan-section {
-  background: var(--black);
+  background:
+    radial-gradient(circle at 50% 52%, rgba(255, 255, 255, 0.06), transparent 34%),
+    var(--black);
   color: var(--cream);
   overflow: hidden;
   padding-block: clamp(3.5rem, 6vw, 5.5rem);
@@ -553,8 +555,8 @@ h3 {
 
 .slogan-section::after {
   background:
-    linear-gradient(90deg, var(--black), transparent 18%, transparent 82%, var(--black)),
-    linear-gradient(180deg, rgba(5, 5, 5, 0.28), transparent 42%, rgba(5, 5, 5, 0.42));
+    linear-gradient(90deg, var(--black), rgba(5, 5, 5, 0.18) 17%, rgba(5, 5, 5, 0.18) 83%, var(--black)),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.12), transparent 46%, rgba(5, 5, 5, 0.24));
   content: "";
   inset: 0;
   pointer-events: none;
@@ -578,6 +580,7 @@ h3 {
   color: var(--cream);
   font-size: clamp(2.6rem, 7vw, 6.4rem);
   line-height: 0.95;
+  text-shadow: 0 10px 34px rgba(0, 0, 0, 0.84);
 }
 
 .club-slogan span {
@@ -593,10 +596,10 @@ h3 {
   height: min(280px, 70%);
   left: 50%;
   min-width: 1180px;
-  opacity: 0.66;
+  opacity: 0.92;
   pointer-events: none;
   position: absolute;
-  top: 52%;
+  top: 55%;
   transform: translate(-50%, -50%);
   width: 118vw;
   z-index: 2;
@@ -609,118 +612,49 @@ h3 {
   vector-effect: non-scaling-stroke;
 }
 
-.heartbeat-line-shadow {
-  animation: heartbeat-breathe 3.9s ease-in-out infinite;
+.heartbeat-line-base {
+  opacity: 0.18;
+  stroke: rgba(238, 207, 43, 0.86);
+  stroke-width: 3.2;
+}
+
+.heartbeat-line-glow {
+  animation: heartbeat-glow 4.8s ease-in-out infinite;
   filter: url("#heartbeat-glow-filter");
-  opacity: 0.28;
-  stroke: rgba(238, 207, 43, 0.52);
-  stroke-width: 20;
+  opacity: 0.36;
+  stroke: rgba(238, 207, 43, 0.7);
+  stroke-width: 13;
 }
 
-.heartbeat-mask-window {
-  animation: heartbeat-mask-sweep 3.9s cubic-bezier(0.72, 0, 0.18, 1) infinite;
+.heartbeat-line-scan {
+  animation: heartbeat-scan 4.8s cubic-bezier(0.68, 0, 0.25, 1) infinite;
+  filter: drop-shadow(0 0 12px rgba(238, 207, 43, 0.58));
+  stroke: url("#heartbeat-scan-gradient");
+  stroke-dasharray: 180 1200;
+  stroke-dashoffset: 380;
+  stroke-width: 6;
 }
 
-.heartbeat-line-gold,
-.heartbeat-line-red {
-  stroke-dasharray: 260 1540;
-  stroke-dashoffset: 0;
-}
-
-.heartbeat-line-gold {
-  animation:
-    heartbeat-trace 3.9s cubic-bezier(0.72, 0, 0.18, 1) infinite,
-    heartbeat-glow 3.9s ease-in-out infinite;
-  filter: drop-shadow(0 0 10px rgba(238, 207, 43, 0.38));
-  stroke: var(--gold);
-  stroke-width: 5.8;
-}
-
-.heartbeat-line-red {
-  animation:
-    heartbeat-trace 3.9s cubic-bezier(0.72, 0, 0.18, 1) infinite,
-    heartbeat-red-pulse 3.9s ease-in-out infinite;
-  animation-delay: 0.12s;
-  opacity: 0.32;
-  stroke: #c32632;
-  stroke-width: 2.6;
-}
-
-@keyframes heartbeat-trace {
-  0% {
-    stroke-dashoffset: 520;
+@keyframes heartbeat-scan {
+  0%,
+  12% {
+    stroke-dashoffset: 420;
   }
 
-  18% {
-    stroke-dashoffset: 230;
-  }
-
-  38% {
-    stroke-dashoffset: -240;
-  }
-
+  72%,
   100% {
-    stroke-dashoffset: -1240;
+    stroke-dashoffset: -980;
   }
 }
 
 @keyframes heartbeat-glow {
   0%,
   100% {
-    opacity: 0.55;
-    stroke-width: 5.4;
+    opacity: 0.24;
   }
 
-  21% {
-    opacity: 1;
-    stroke-width: 6.8;
-  }
-
-  34% {
-    opacity: 0.72;
-    stroke-width: 5.8;
-  }
-}
-
-@keyframes heartbeat-red-pulse {
-  0%,
-  100% {
-    opacity: 0.22;
-  }
-
-  24% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes heartbeat-breathe {
-  0%,
-  100% {
-    opacity: 0.18;
-    stroke-width: 18;
-  }
-
-  24% {
-    opacity: 0.42;
-    stroke-width: 26;
-  }
-}
-
-@keyframes heartbeat-mask-sweep {
-  0% {
-    transform: translateX(-80px);
-  }
-
-  18% {
-    transform: translateX(210px);
-  }
-
-  38% {
-    transform: translateX(640px);
-  }
-
-  100% {
-    transform: translateX(1420px);
+  42% {
+    opacity: 0.48;
   }
 }
 
@@ -2010,10 +1944,8 @@ h3 {
     scroll-behavior: auto;
   }
 
-  .heartbeat-line-shadow,
-  .heartbeat-line-gold,
-  .heartbeat-line-red,
-  .heartbeat-mask-window {
+  .heartbeat-line-glow,
+  .heartbeat-line-scan {
     animation: none;
   }
 

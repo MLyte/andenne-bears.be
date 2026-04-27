@@ -466,28 +466,24 @@
       <section class="section slogan-section" aria-labelledby="slogan-title">
         <svg class="heartbeat-line" viewBox="0 0 1440 280" aria-hidden="true" focusable="false">
           <defs>
-            <filter id="heartbeat-glow-filter" x="-120" y="-60" width="1680" height="400" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <filter id="heartbeat-glow-filter" x="-10%" y="-80%" width="120%" height="260%" color-interpolation-filters="sRGB">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            <linearGradient id="heartbeat-trail-gradient" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="black" />
-              <stop offset="0.18" stop-color="white" stop-opacity="0.18" />
-              <stop offset="0.56" stop-color="white" />
-              <stop offset="1" stop-color="white" />
+            <linearGradient id="heartbeat-scan-gradient" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#eecf2b" stop-opacity="0" />
+              <stop offset="0.24" stop-color="#eecf2b" stop-opacity="0.28" />
+              <stop offset="0.54" stop-color="#fff3a6" />
+              <stop offset="0.82" stop-color="#eecf2b" stop-opacity="0.52" />
+              <stop offset="1" stop-color="#eecf2b" stop-opacity="0" />
             </linearGradient>
-            <mask id="heartbeat-trail-mask" maskUnits="userSpaceOnUse" x="-120" y="-60" width="1680" height="400">
-              <rect class="heartbeat-mask-window" x="-80" y="-60" width="540" height="400" fill="url(#heartbeat-trail-gradient)" />
-            </mask>
           </defs>
-          <g class="heartbeat-trail" mask="url(#heartbeat-trail-mask)">
-            <path class="heartbeat-line-shadow" d="M-60 150 H300 C322 150 328 152 340 174 C354 202 374 208 394 190 C416 170 426 70 450 70 C476 70 486 214 522 214 C552 214 574 150 610 150 C634 150 642 166 664 166 C688 166 694 150 718 150 H1500" />
-            <path class="heartbeat-line-gold" d="M-60 150 H300 C322 150 328 152 340 174 C354 202 374 208 394 190 C416 170 426 70 450 70 C476 70 486 214 522 214 C552 214 574 150 610 150 C634 150 642 166 664 166 C688 166 694 150 718 150 H1500" />
-            <path class="heartbeat-line-red" d="M-60 150 H300 C322 150 328 152 340 174 C354 202 374 208 394 190 C416 170 426 70 450 70 C476 70 486 214 522 214 C552 214 574 150 610 150 C634 150 642 166 664 166 C688 166 694 150 718 150 H1500" />
-          </g>
+          <path class="heartbeat-line-base" pathLength="1200" d="M-80 150 H246 C304 150 332 150 360 150 C386 150 399 120 424 120 C452 120 466 202 498 202 C529 202 544 88 580 88 C616 88 632 150 680 150 H1520" />
+          <path class="heartbeat-line-glow" pathLength="1200" d="M-80 150 H246 C304 150 332 150 360 150 C386 150 399 120 424 120 C452 120 466 202 498 202 C529 202 544 88 580 88 C616 88 632 150 680 150 H1520" />
+          <path class="heartbeat-line-scan" pathLength="1200" d="M-80 150 H246 C304 150 332 150 360 150 C386 150 399 120 424 120 C452 120 466 202 498 202 C529 202 544 88 580 88 C616 88 632 150 680 150 H1520" />
         </svg>
         <div class="section-inner slogan-inner">
           <p class="section-kicker">Notre slogan</p>
