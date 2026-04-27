@@ -551,6 +551,17 @@ h3 {
   position: absolute;
 }
 
+.slogan-section::after {
+  background:
+    linear-gradient(90deg, var(--black), transparent 18%, transparent 82%, var(--black)),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.28), transparent 42%, rgba(5, 5, 5, 0.42));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
 .slogan-inner {
   display: grid;
   gap: 0.8rem;
@@ -582,10 +593,10 @@ h3 {
   height: min(280px, 70%);
   left: 50%;
   min-width: 1180px;
-  opacity: 0.48;
+  opacity: 0.54;
   pointer-events: none;
   position: absolute;
-  top: 56%;
+  top: 58%;
   transform: translate(-50%, -50%);
   width: 118vw;
   z-index: 1;
@@ -599,40 +610,95 @@ h3 {
 }
 
 .heartbeat-line-shadow {
+  animation: heartbeat-breathe 3.9s ease-in-out infinite;
   filter: blur(12px);
-  opacity: 0.34;
-  stroke: rgba(238, 207, 43, 0.42);
-  stroke-width: 22;
+  opacity: 0.28;
+  stroke: rgba(238, 207, 43, 0.52);
+  stroke-width: 20;
 }
 
 .heartbeat-line-gold,
 .heartbeat-line-red {
-  stroke-dasharray: 340 1420;
+  stroke-dasharray: 220 1540;
   stroke-dashoffset: 0;
 }
 
 .heartbeat-line-gold {
-  animation: heartbeat-trace 6.4s linear infinite;
-  filter: drop-shadow(0 0 12px rgba(238, 207, 43, 0.42));
+  animation:
+    heartbeat-trace 3.9s cubic-bezier(0.72, 0, 0.18, 1) infinite,
+    heartbeat-glow 3.9s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(238, 207, 43, 0.38));
   stroke: var(--gold);
-  stroke-width: 7;
+  stroke-width: 6;
 }
 
 .heartbeat-line-red {
-  animation: heartbeat-trace 6.4s linear infinite;
-  animation-delay: 0.16s;
-  opacity: 0.42;
-  stroke: var(--red);
+  animation:
+    heartbeat-trace 3.9s cubic-bezier(0.72, 0, 0.18, 1) infinite,
+    heartbeat-red-pulse 3.9s ease-in-out infinite;
+  animation-delay: 0.12s;
+  opacity: 0.34;
+  stroke: #c32632;
   stroke-width: 3;
 }
 
 @keyframes heartbeat-trace {
-  from {
+  0% {
     stroke-dashoffset: 520;
   }
 
-  to {
+  18% {
+    stroke-dashoffset: 230;
+  }
+
+  38% {
+    stroke-dashoffset: -240;
+  }
+
+  100% {
     stroke-dashoffset: -1240;
+  }
+}
+
+@keyframes heartbeat-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    stroke-width: 5.5;
+  }
+
+  21% {
+    opacity: 1;
+    stroke-width: 7.5;
+  }
+
+  34% {
+    opacity: 0.72;
+    stroke-width: 6;
+  }
+}
+
+@keyframes heartbeat-red-pulse {
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+
+  24% {
+    opacity: 0.58;
+  }
+}
+
+@keyframes heartbeat-breathe {
+  0%,
+  100% {
+    opacity: 0.18;
+    stroke-width: 18;
+  }
+
+  24% {
+    opacity: 0.42;
+    stroke-width: 26;
   }
 }
 
@@ -1631,8 +1697,8 @@ h3 {
 
   .heartbeat-line {
     min-width: 900px;
-    opacity: 0.36;
-    top: 60%;
+    opacity: 0.42;
+    top: 62%;
     width: 170vw;
   }
 
@@ -1852,6 +1918,7 @@ h3 {
     scroll-behavior: auto;
   }
 
+  .heartbeat-line-shadow,
   .heartbeat-line-gold,
   .heartbeat-line-red {
     animation: none;
