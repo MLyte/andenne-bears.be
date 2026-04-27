@@ -251,10 +251,6 @@ if [[ "$USE_FTPS" -eq 1 ]]; then
   CURL_ARGS+=(--ssl-reqd)
 fi
 
-if [[ -n "$PORT" ]]; then
-  CURL_ARGS+=(--port "$PORT")
-fi
-
 echo "Deploy target: ${PROTO}://${HOST}:${PORT}/${REMOTE_PATH}"
 echo "Files: ${#FILES[@]}"
 echo "TLS: $( [[ "$USE_FTPS" -eq 1 ]] && echo enabled || echo disabled )"
@@ -267,7 +263,7 @@ for local_file in "${FILES[@]}"; do
   index=$((index + 1))
   relative_path="${local_file#"$PROJECT_ROOT/"}"
   remote_file="$REMOTE_PATH/$relative_path"
-  remote_url="${PROTO}://${HOST}/$(urlencode_path "$remote_file")"
+  remote_url="${PROTO}://${HOST}:${PORT}/$(urlencode_path "$remote_file")"
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "DRY RUN  [${index}/${#FILES[@]}] ${relative_path} -> ${remote_file}"
