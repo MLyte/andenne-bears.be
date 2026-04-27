@@ -12,10 +12,12 @@ Options:
   --user <user>         FTP username (default: $OVH_FTP_USER)
   --password <pass>     FTP password (default: $OVH_FTP_PASSWORD)
   --path <remote-path>  Remote root path (default: $OVH_FTP_PATH or /www)
+  --port <port>         FTP/FTPS explicit port (default: $OVH_FTP_PORT or 21)
   --netrc-file <path>   Use a netrc file for credentials (default: $OVH_FTP_NETRC or ./.ovh-ftp.netrc)
   --ftp                 Use plain FTP (default is FTPS explicit)
   --ftps                Force FTPS explicit mode
   --active              Use active mode (default passive)
+  --debug               Show verbose curl logs (useful if a transfer appears stuck)
   --dry-run             Print operations without uploading
   -h, --help            Show this help
 
@@ -30,10 +32,12 @@ HOST="${OVH_FTP_HOST:-ftp.cluster115.hosting.ovh.net}"
 USER_NAME="${OVH_FTP_USER:-}"
 PASSWORD="${OVH_FTP_PASSWORD:-}"
 REMOTE_PATH="${OVH_FTP_PATH:-/www}"
+PORT="${OVH_FTP_PORT:-21}"
 NETRC_FILE="${OVH_FTP_NETRC:-$PROJECT_ROOT/.ovh-ftp.netrc}"
 USE_FTPS=1
 USE_ACTIVE=0
 DRY_RUN=0
+DEBUG=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -53,6 +57,10 @@ while [[ $# -gt 0 ]]; do
       REMOTE_PATH="${2:-}"
       shift 2
       ;;
+    --port)
+      PORT="${2:-}"
+      shift 2
+      ;;
     --netrc-file)
       NETRC_FILE="${2:-}"
       shift 2
@@ -67,6 +75,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --active)
       USE_ACTIVE=1
+      shift
+      ;;
+    --debug)
+      DEBUG=1
       shift
       ;;
     --dry-run)
@@ -90,6 +102,27 @@ normalize_path() {
   p="${p#/}"
   p="${p%/}"
   printf '%s' "$p"
+}
+
+urlencode_path() {
+  local input="$1"
+  local output=""
+  local i
+  local c
+
+  for ((i = 0; i < ${#input}; i++)); do
+    c="${input:i:1}"
+    case "$c" in
+      [a-zA-Z0-9.~_/-])
+        output+="$c"
+        ;;
+      *)
+        printf -v output '%s%%%02X' "$output" "'$c"
+        ;;
+    esac
+  done
+
+  printf '%s' "$output"
 }
 
 get_permission_octal() {
@@ -152,6 +185,11 @@ fi
 
 REMOTE_PATH="$(normalize_path "$REMOTE_PATH")"
 
+if [[ -n "$PORT" && ! "$PORT" =~ ^[0-9]+$ ]]; then
+  echo "Invalid port: $PORT (expected numeric value)." >&2
+  exit 1
+fi
+
 DEPLOY_ITEMS=(
   ".ovhconfig"
   "index.html"
@@ -184,16 +222,20 @@ for item in "${DEPLOY_ITEMS[@]}"; do
 done
 
 PROTO="ftp"
-if [[ "$USE_FTPS" -eq 1 ]]; then
-  PROTO="ftps"
-fi
 
 CURL_ARGS=(
-  --silent
   --show-error
   --fail
   --disable-epsv
+  --connect-timeout 15
+  --max-time 600
 )
+
+if [[ "$DEBUG" -eq 0 ]]; then
+  CURL_ARGS+=(--silent)
+else
+  CURL_ARGS+=(--verbose)
+fi
 
 if [[ "$NETRC_ACTIVE" -eq 1 ]]; then
   CURL_ARGS+=(--netrc-file "$NETRC_FILE")
@@ -209,24 +251,32 @@ if [[ "$USE_FTPS" -eq 1 ]]; then
   CURL_ARGS+=(--ssl-reqd)
 fi
 
-echo "Deploy target: ${PROTO}://${HOST}/${REMOTE_PATH}"
+if [[ -n "$PORT" ]]; then
+  CURL_ARGS+=(--port "$PORT")
+fi
+
+echo "Deploy target: ${PROTO}://${HOST}:${PORT}/${REMOTE_PATH}"
 echo "Files: ${#FILES[@]}"
 echo "TLS: $( [[ "$USE_FTPS" -eq 1 ]] && echo enabled || echo disabled )"
 echo "FTP mode: $( [[ "$USE_ACTIVE" -eq 1 ]] && echo active || echo passive )"
 echo "Auth: $( [[ "$NETRC_ACTIVE" -eq 1 ]] && echo "netrc ($NETRC_FILE)" || echo "env/flags" )"
+echo "Debug: $( [[ "$DEBUG" -eq 1 ]] && echo enabled || echo disabled )"
 
+index=0
 for local_file in "${FILES[@]}"; do
+  index=$((index + 1))
   relative_path="${local_file#"$PROJECT_ROOT/"}"
   remote_file="$REMOTE_PATH/$relative_path"
-  remote_url="${PROTO}://${HOST}/${remote_file}"
+  remote_url="${PROTO}://${HOST}/$(urlencode_path "$remote_file")"
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
-    echo "DRY RUN  ${relative_path} -> ${remote_file}"
+    echo "DRY RUN  [${index}/${#FILES[@]}] ${relative_path} -> ${remote_file}"
     continue
   fi
 
-  echo "UPLOAD   ${relative_path}"
+  echo "UPLOAD   [${index}/${#FILES[@]}] ${relative_path}"
   curl "${CURL_ARGS[@]}" --ftp-create-dirs --upload-file "$local_file" "$remote_url"
+  echo "DONE     [${index}/${#FILES[@]}] ${relative_path}"
 done
 
 if [[ "$DRY_RUN" -eq 1 ]]; then

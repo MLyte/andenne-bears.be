@@ -94,6 +94,9 @@ Ensuite, il suffit de lancer :
 ```
 
 Le script utilisera automatiquement `.ovh-ftp.netrc` (ou `OVH_FTP_NETRC`) et refusera un fichier avec des permissions trop ouvertes.
+Il affiche aussi une progression `[x/N]` pour chaque fichier (`UPLOAD` puis `DONE`).
+Pour OVH, utiliser le port `21` (FTP ou FTPS explicite).
+Les chemins distants sont encodes automatiquement (`%20`), donc les noms de fichiers avec espaces fonctionnent.
 
 ### Variables d'environnement (alternative)
 
@@ -102,6 +105,7 @@ export OVH_FTP_HOST="ftp.clusterXXX.hosting.ovh.net"
 export OVH_FTP_USER="ton-login-ovh"
 export OVH_FTP_PASSWORD="ton-mot-de-passe"
 export OVH_FTP_PATH="/www"
+export OVH_FTP_PORT="21"
 ```
 
 ### Linux/macOS (bash)
@@ -116,6 +120,18 @@ Basculer en FTP simple si necessaire :
 
 ```bash
 ./scripts/deploy-ovh.sh --ftp
+```
+
+Forcer explicitement le port OVH :
+
+```bash
+./scripts/deploy-ovh.sh --port 21
+```
+
+Si un transfert semble bloque, activer les logs FTP/FTPS detailles :
+
+```bash
+./scripts/deploy-ovh.sh --debug
 ```
 
 ### Windows (PowerShell)
