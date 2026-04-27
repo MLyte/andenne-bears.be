@@ -1300,13 +1300,6 @@ h3 {
   box-shadow: 0 18px 48px rgba(5, 5, 5, 0.08);
 }
 
-.member-card-featured {
-  border-color: rgba(238, 207, 43, 0.62);
-  background:
-    linear-gradient(135deg, rgba(238, 207, 43, 0.16), rgba(255, 255, 255, 0.96) 45%),
-    #ffffff;
-}
-
 .member-card img {
   width: 104px;
   aspect-ratio: 1;
