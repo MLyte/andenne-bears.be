@@ -261,6 +261,147 @@ photoCarousel?.addEventListener("scroll", requestCarouselUpdate, { passive: true
 window.addEventListener("resize", requestCarouselUpdate);
 updateCarouselButtons();
 
+const heartbeatSection = document.querySelector(".slogan-section");
+const heartbeatLine = document.querySelector(".heartbeat-line");
+const heartbeatGold = document.querySelector(".heartbeat-line-gold");
+const heartbeatRed = document.querySelector(".heartbeat-line-red");
+const heartbeatShadow = document.querySelector(".heartbeat-line-shadow");
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+const initHeartbeatAnimation = () => {
+  if (
+    !heartbeatSection ||
+    !heartbeatLine ||
+    !heartbeatGold ||
+    !heartbeatRed ||
+    !heartbeatShadow ||
+    prefersReducedMotion.matches
+  ) {
+    return;
+  }
+
+  heartbeatSection.classList.add("is-heartbeat-enhanced");
+
+  const dashLength = 1760;
+  const pulseShape = [
+    [0, 520],
+    [0.12, 360],
+    [0.18, 120],
+    [0.26, -260],
+    [0.42, -560],
+    [1, -1240],
+  ];
+  const beatDurations = [3300, 3740, 3460, 4020];
+  const amplitudes = [1, 0.86, 1.12, 0.94];
+  let animationFrame = null;
+  let isVisible = false;
+  let cycleStart = performance.now();
+  let beatIndex = 0;
+
+  const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
+  const easeInOutSine = (value) => -(Math.cos(Math.PI * value) - 1) / 2;
+
+  const interpolateShape = (progress) => {
+    for (let index = 1; index < pulseShape.length; index += 1) {
+      const [currentProgress, currentOffset] = pulseShape[index];
+      const [previousProgress, previousOffset] = pulseShape[index - 1];
+      if (progress <= currentProgress) {
+        const localProgress = (progress - previousProgress) / (currentProgress - previousProgress);
+        const easedProgress = index <= 3 ? easeOutCubic(localProgress) : easeInOutSine(localProgress);
+        return previousOffset + (currentOffset - previousOffset) * easedProgress;
+      }
+    }
+    return pulseShape[pulseShape.length - 1][1];
+  };
+
+  const animateHeartbeat = (timestamp) => {
+    const duration = beatDurations[beatIndex % beatDurations.length];
+    let progress = (timestamp - cycleStart) / duration;
+
+    if (progress >= 1) {
+      cycleStart = timestamp;
+      beatIndex += 1;
+      progress = 0;
+    }
+
+    const amplitude = amplitudes[beatIndex % amplitudes.length];
+    const offset = interpolateShape(progress);
+    const impulse = Math.max(
+      0,
+      1 - Math.abs(progress - 0.22) / 0.16,
+    ) * amplitude;
+    const aftershock = Math.max(
+      0,
+      1 - Math.abs(progress - 0.34) / 0.14,
+    ) * amplitude;
+
+    heartbeatGold.style.strokeDasharray = `220 ${dashLength - 220}`;
+    heartbeatRed.style.strokeDasharray = `180 ${dashLength - 180}`;
+    heartbeatGold.style.strokeDashoffset = String(offset);
+    heartbeatRed.style.strokeDashoffset = String(offset - 42 - aftershock * 34);
+    heartbeatGold.style.opacity = String(0.48 + impulse * 0.52);
+    heartbeatRed.style.opacity = String(0.18 + aftershock * 0.42);
+    heartbeatGold.style.strokeWidth = String(5.4 + impulse * 2.8);
+    heartbeatRed.style.strokeWidth = String(2.2 + aftershock * 1.4);
+    heartbeatShadow.style.opacity = String(0.14 + impulse * 0.32);
+    heartbeatShadow.style.strokeWidth = String(18 + impulse * 12);
+    heartbeatLine.style.transform = `translate(-50%, -50%) scale(${1 + impulse * 0.012})`;
+
+    if (isVisible) {
+      animationFrame = window.requestAnimationFrame(animateHeartbeat);
+    }
+  };
+
+  const startHeartbeat = () => {
+    if (animationFrame || prefersReducedMotion.matches) {
+      return;
+    }
+    isVisible = true;
+    cycleStart = performance.now();
+    animationFrame = window.requestAnimationFrame(animateHeartbeat);
+  };
+
+  const stopHeartbeat = () => {
+    isVisible = false;
+    if (animationFrame) {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+  };
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startHeartbeat();
+        } else {
+          stopHeartbeat();
+        }
+      },
+      { threshold: 0.18 },
+    );
+    observer.observe(heartbeatSection);
+  } else {
+    startHeartbeat();
+  }
+
+  const handleMotionPreferenceChange = (event) => {
+    if (event.matches) {
+      stopHeartbeat();
+    } else {
+      startHeartbeat();
+    }
+  };
+
+  if (typeof prefersReducedMotion.addEventListener === "function") {
+    prefersReducedMotion.addEventListener("change", handleMotionPreferenceChange);
+  } else if (typeof prefersReducedMotion.addListener === "function") {
+    prefersReducedMotion.addListener(handleMotionPreferenceChange);
+  }
+};
+
+initHeartbeatAnimation();
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeMenu();

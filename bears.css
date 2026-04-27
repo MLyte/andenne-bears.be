@@ -642,6 +642,12 @@ h3 {
   stroke-width: 3;
 }
 
+.is-heartbeat-enhanced .heartbeat-line-shadow,
+.is-heartbeat-enhanced .heartbeat-line-gold,
+.is-heartbeat-enhanced .heartbeat-line-red {
+  animation: none;
+}
+
 @keyframes heartbeat-trace {
   0% {
     stroke-dashoffset: 520;
