@@ -447,9 +447,29 @@
 
       <section class="section slogan-section" aria-labelledby="slogan-title">
         <svg class="heartbeat-line" viewBox="0 0 1440 280" aria-hidden="true" focusable="false">
-          <path class="heartbeat-line-shadow" d="M-60 150 H260 L302 150 L332 96 L378 212 L432 42 L492 150 H632 L668 150 L696 118 L728 178 L766 150 H1500" />
-          <path class="heartbeat-line-gold" d="M-60 150 H260 L302 150 L332 96 L378 212 L432 42 L492 150 H632 L668 150 L696 118 L728 178 L766 150 H1500" />
-          <path class="heartbeat-line-red" d="M-60 150 H260 L302 150 L332 96 L378 212 L432 42 L492 150 H632 L668 150 L696 118 L728 178 L766 150 H1500" />
+          <defs>
+            <filter id="heartbeat-glow-filter" x="-120" y="-60" width="1680" height="400" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <linearGradient id="heartbeat-trail-gradient" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="black" />
+              <stop offset="0.18" stop-color="white" stop-opacity="0.18" />
+              <stop offset="0.56" stop-color="white" />
+              <stop offset="1" stop-color="white" />
+            </linearGradient>
+            <mask id="heartbeat-trail-mask" maskUnits="userSpaceOnUse" x="-120" y="-60" width="1680" height="400">
+              <rect class="heartbeat-mask-window" x="-80" y="-60" width="540" height="400" fill="url(#heartbeat-trail-gradient)" />
+            </mask>
+          </defs>
+          <g class="heartbeat-trail" mask="url(#heartbeat-trail-mask)">
+            <path class="heartbeat-line-shadow" d="M-60 150 H260 L302 150 L332 96 L378 212 L432 42 L492 150 H632 L668 150 L696 118 L728 178 L766 150 H1500" />
+            <path class="heartbeat-line-gold" d="M-60 150 H260 L302 150 L332 96 L378 212 L432 42 L492 150 H632 L668 150 L696 118 L728 178 L766 150 H1500" />
+            <path class="heartbeat-line-red" d="M-60 150 H260 L302 150 L332 96 L378 212 L432 42 L492 150 H632 L668 150 L696 118 L728 178 L766 150 H1500" />
+          </g>
         </svg>
         <div class="section-inner slogan-inner">
           <p class="section-kicker">Notre slogan</p>

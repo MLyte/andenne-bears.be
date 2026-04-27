@@ -266,6 +266,7 @@ const heartbeatLine = document.querySelector(".heartbeat-line");
 const heartbeatGold = document.querySelector(".heartbeat-line-gold");
 const heartbeatRed = document.querySelector(".heartbeat-line-red");
 const heartbeatShadow = document.querySelector(".heartbeat-line-shadow");
+const heartbeatMaskWindow = document.querySelector(".heartbeat-mask-window");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const initHeartbeatAnimation = () => {
@@ -275,6 +276,7 @@ const initHeartbeatAnimation = () => {
     !heartbeatGold ||
     !heartbeatRed ||
     !heartbeatShadow ||
+    !heartbeatMaskWindow ||
     prefersReducedMotion.matches
   ) {
     return;
@@ -282,7 +284,10 @@ const initHeartbeatAnimation = () => {
 
   heartbeatSection.classList.add("is-heartbeat-enhanced");
 
-  const dashLength = 1760;
+  const dashLength = heartbeatGold.getTotalLength();
+  const goldSegment = Math.min(280, dashLength * 0.17);
+  const redSegment = Math.min(230, dashLength * 0.14);
+  const trailWidth = 560;
   const pulseShape = [
     [0, 520],
     [0.12, 360],
@@ -335,8 +340,14 @@ const initHeartbeatAnimation = () => {
       1 - Math.abs(progress - 0.34) / 0.14,
     ) * amplitude;
 
-    heartbeatGold.style.strokeDasharray = `220 ${dashLength - 220}`;
-    heartbeatRed.style.strokeDasharray = `180 ${dashLength - 180}`;
+    const headLength = Math.max(0, Math.min(dashLength, dashLength - offset));
+    const headPoint = heartbeatGold.getPointAtLength(headLength);
+    const trailX = Math.max(-100, Math.min(1420, headPoint.x - trailWidth * 0.72));
+
+    heartbeatMaskWindow.setAttribute("x", String(trailX));
+    heartbeatMaskWindow.setAttribute("width", String(trailWidth + impulse * 120));
+    heartbeatGold.style.strokeDasharray = `${goldSegment + impulse * 46} ${dashLength}`;
+    heartbeatRed.style.strokeDasharray = `${redSegment + aftershock * 34} ${dashLength}`;
     heartbeatGold.style.strokeDashoffset = String(offset);
     heartbeatRed.style.strokeDashoffset = String(offset - 42 - aftershock * 34);
     heartbeatGold.style.opacity = String(0.48 + impulse * 0.52);
