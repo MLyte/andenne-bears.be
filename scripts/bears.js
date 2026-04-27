@@ -285,9 +285,9 @@ const initHeartbeatAnimation = () => {
   heartbeatSection.classList.add("is-heartbeat-enhanced");
 
   const dashLength = heartbeatGold.getTotalLength();
-  const goldSegment = Math.min(280, dashLength * 0.17);
-  const redSegment = Math.min(230, dashLength * 0.14);
-  const trailWidth = 560;
+  const goldSegment = Math.min(340, dashLength * 0.2);
+  const redSegment = Math.min(280, dashLength * 0.17);
+  const trailWidth = 660;
   const pulseShape = [
     [0, 520],
     [0.12, 360],
@@ -346,16 +346,16 @@ const initHeartbeatAnimation = () => {
 
     heartbeatMaskWindow.setAttribute("x", String(trailX));
     heartbeatMaskWindow.setAttribute("width", String(trailWidth + impulse * 120));
-    heartbeatGold.style.strokeDasharray = `${goldSegment + impulse * 46} ${dashLength}`;
-    heartbeatRed.style.strokeDasharray = `${redSegment + aftershock * 34} ${dashLength}`;
+    heartbeatGold.style.strokeDasharray = `${goldSegment + impulse * 64} ${dashLength}`;
+    heartbeatRed.style.strokeDasharray = `${redSegment + aftershock * 44} ${dashLength}`;
     heartbeatGold.style.strokeDashoffset = String(offset);
     heartbeatRed.style.strokeDashoffset = String(offset - 42 - aftershock * 34);
-    heartbeatGold.style.opacity = String(0.48 + impulse * 0.52);
-    heartbeatRed.style.opacity = String(0.18 + aftershock * 0.42);
-    heartbeatGold.style.strokeWidth = String(5.4 + impulse * 2.8);
-    heartbeatRed.style.strokeWidth = String(2.2 + aftershock * 1.4);
-    heartbeatShadow.style.opacity = String(0.14 + impulse * 0.32);
-    heartbeatShadow.style.strokeWidth = String(18 + impulse * 12);
+    heartbeatGold.style.opacity = String(0.72 + impulse * 0.28);
+    heartbeatRed.style.opacity = String(0.28 + aftershock * 0.5);
+    heartbeatGold.style.strokeWidth = String(6.6 + impulse * 3.2);
+    heartbeatRed.style.strokeWidth = String(2.8 + aftershock * 1.8);
+    heartbeatShadow.style.opacity = String(0.26 + impulse * 0.42);
+    heartbeatShadow.style.strokeWidth = String(24 + impulse * 14);
     heartbeatLine.style.transform = `translate(-50%, -50%) scale(${1 + impulse * 0.012})`;
 
     if (isVisible) {

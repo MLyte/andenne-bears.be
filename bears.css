@@ -554,7 +554,7 @@ h3 {
 .slogan-section::after {
   background:
     linear-gradient(90deg, var(--black), transparent 18%, transparent 82%, var(--black)),
-    linear-gradient(180deg, rgba(5, 5, 5, 0.28), transparent 42%, rgba(5, 5, 5, 0.42));
+    linear-gradient(180deg, rgba(5, 5, 5, 0.16), transparent 42%, rgba(5, 5, 5, 0.24));
   content: "";
   inset: 0;
   pointer-events: none;
@@ -593,7 +593,7 @@ h3 {
   height: min(280px, 70%);
   left: 50%;
   min-width: 1180px;
-  opacity: 0.54;
+  opacity: 0.82;
   pointer-events: none;
   position: absolute;
   top: 58%;
@@ -612,9 +612,9 @@ h3 {
 .heartbeat-line-shadow {
   animation: heartbeat-breathe 3.9s ease-in-out infinite;
   filter: url("#heartbeat-glow-filter");
-  opacity: 0.28;
-  stroke: rgba(238, 207, 43, 0.52);
-  stroke-width: 20;
+  opacity: 0.42;
+  stroke: rgba(238, 207, 43, 0.72);
+  stroke-width: 24;
 }
 
 .heartbeat-mask-window {
@@ -631,9 +631,9 @@ h3 {
   animation:
     heartbeat-trace 3.9s cubic-bezier(0.72, 0, 0.18, 1) infinite,
     heartbeat-glow 3.9s ease-in-out infinite;
-  filter: drop-shadow(0 0 10px rgba(238, 207, 43, 0.38));
+  filter: drop-shadow(0 0 14px rgba(238, 207, 43, 0.58));
   stroke: var(--gold);
-  stroke-width: 6;
+  stroke-width: 7;
 }
 
 .heartbeat-line-red {
@@ -641,7 +641,7 @@ h3 {
     heartbeat-trace 3.9s cubic-bezier(0.72, 0, 0.18, 1) infinite,
     heartbeat-red-pulse 3.9s ease-in-out infinite;
   animation-delay: 0.12s;
-  opacity: 0.34;
+  opacity: 0.46;
   stroke: #c32632;
   stroke-width: 3;
 }
@@ -674,42 +674,42 @@ h3 {
 @keyframes heartbeat-glow {
   0%,
   100% {
-    opacity: 0.55;
-    stroke-width: 5.5;
+    opacity: 0.68;
+    stroke-width: 6.5;
   }
 
   21% {
     opacity: 1;
-    stroke-width: 7.5;
+    stroke-width: 8.5;
   }
 
   34% {
-    opacity: 0.72;
-    stroke-width: 6;
+    opacity: 0.82;
+    stroke-width: 7;
   }
 }
 
 @keyframes heartbeat-red-pulse {
   0%,
   100% {
-    opacity: 0.22;
+    opacity: 0.3;
   }
 
   24% {
-    opacity: 0.58;
+    opacity: 0.68;
   }
 }
 
 @keyframes heartbeat-breathe {
   0%,
   100% {
-    opacity: 0.18;
-    stroke-width: 18;
+    opacity: 0.28;
+    stroke-width: 22;
   }
 
   24% {
-    opacity: 0.42;
-    stroke-width: 26;
+    opacity: 0.56;
+    stroke-width: 32;
   }
 }
 
