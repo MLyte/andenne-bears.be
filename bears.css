@@ -629,7 +629,7 @@ h3 {
 }
 
 .heartbeat-line-scan {
-  animation: heartbeat-scan 2.8s linear infinite;
+  animation: heartbeat-scan 2.1s linear infinite;
   filter: drop-shadow(0 0 10px rgba(238, 207, 43, 0.44));
   stroke: url("#heartbeat-scan-gradient");
   stroke-dasharray: 230 1000;
