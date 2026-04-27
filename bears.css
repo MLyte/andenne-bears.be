@@ -513,6 +513,10 @@ h3 {
   color: var(--gold);
 }
 
+#partenaires .section-copy h2 {
+  color: var(--cream);
+}
+
 .section-dark .section-heading h2::after,
 .section-dark .section-copy h2::after {
   background: var(--cream);
