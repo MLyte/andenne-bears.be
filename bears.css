@@ -532,12 +532,26 @@ h3 {
 .slogan-section {
   background: var(--black);
   color: var(--cream);
+  overflow: hidden;
   padding-block: clamp(3.5rem, 6vw, 5.5rem);
+  position: relative;
+}
+
+.slogan-section::before {
+  background:
+    radial-gradient(circle at 18% 56%, rgba(238, 207, 43, 0.12), transparent 30%),
+    radial-gradient(circle at 74% 52%, rgba(159, 20, 53, 0.16), transparent 32%);
+  content: "";
+  inset: 0;
+  opacity: 0.9;
+  position: absolute;
 }
 
 .slogan-inner {
   display: grid;
   gap: 0.8rem;
+  position: relative;
+  z-index: 2;
 }
 
 .slogan-section .section-kicker {
@@ -558,6 +572,64 @@ h3 {
 .club-slogan .slogan-highlight {
   color: var(--gold);
   display: inline;
+}
+
+.heartbeat-line {
+  height: min(280px, 70%);
+  left: 50%;
+  min-width: 1180px;
+  opacity: 0.48;
+  pointer-events: none;
+  position: absolute;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  width: 118vw;
+  z-index: 1;
+}
+
+.heartbeat-line path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.heartbeat-line-shadow {
+  filter: blur(12px);
+  opacity: 0.34;
+  stroke: rgba(238, 207, 43, 0.42);
+  stroke-width: 22;
+}
+
+.heartbeat-line-gold,
+.heartbeat-line-red {
+  stroke-dasharray: 340 1420;
+  stroke-dashoffset: 0;
+}
+
+.heartbeat-line-gold {
+  animation: heartbeat-trace 6.4s linear infinite;
+  filter: drop-shadow(0 0 12px rgba(238, 207, 43, 0.42));
+  stroke: var(--gold);
+  stroke-width: 7;
+}
+
+.heartbeat-line-red {
+  animation: heartbeat-trace 6.4s linear infinite;
+  animation-delay: 0.16s;
+  opacity: 0.42;
+  stroke: var(--red);
+  stroke-width: 3;
+}
+
+@keyframes heartbeat-trace {
+  from {
+    stroke-dashoffset: 520;
+  }
+
+  to {
+    stroke-dashoffset: -1240;
+  }
 }
 
 .section-alert {
@@ -1553,6 +1625,13 @@ h3 {
     display: inline-flex;
   }
 
+  .heartbeat-line {
+    min-width: 900px;
+    opacity: 0.36;
+    top: 60%;
+    width: 170vw;
+  }
+
   .header-social a {
     width: 44px;
     height: 44px;
@@ -1767,6 +1846,11 @@ h3 {
 
   .photo-carousel {
     scroll-behavior: auto;
+  }
+
+  .heartbeat-line-gold,
+  .heartbeat-line-red {
+    animation: none;
   }
 
   *,
