@@ -18,7 +18,7 @@
       buttonLabel: buttonConfig.label || "Feedback",
       buttonStateLabel: buttonConfig.stateLabel || (isLocal ? "Site en dev" : "Site en prod"),
       buttonVariant: buttonConfig.variant || (isLocal ? "dev" : "prod"),
-      visible: buttonConfig.visible !== false
+      visible: false
     });
   }
 
