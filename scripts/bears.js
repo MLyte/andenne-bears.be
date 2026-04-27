@@ -32,6 +32,7 @@ const channelSettings = {
     url: "https://m.me/andennebears",
     name: "Messenger",
     label: "Pseudo Messenger",
+    hint: "Indique ton pseudo ou ton nom Messenger, pas un numéro de téléphone.",
     type: "text",
     autocomplete: "off",
     inputMode: "text",
@@ -40,6 +41,7 @@ const channelSettings = {
     url: "https://www.instagram.com/andennebears/",
     name: "Instagram",
     label: "Pseudo Instagram",
+    hint: "Exemple : andennebears ou @andennebears.",
     type: "text",
     autocomplete: "off",
     inputMode: "text",
@@ -48,6 +50,7 @@ const channelSettings = {
     url: null,
     name: "Téléphone",
     label: "Numéro de téléphone",
+    hint: "Exemple : +32470123456.",
     type: "tel",
     autocomplete: "tel",
     inputMode: "tel",
@@ -56,6 +59,7 @@ const channelSettings = {
     url: null,
     name: "Email",
     label: "Adresse email",
+    hint: "Exemple : nom@example.com.",
     type: "email",
     autocomplete: "email",
     inputMode: "email",
@@ -118,6 +122,58 @@ const formSubmit = form?.querySelector("[data-submit-label]");
 const chatSubmit = chatForm?.querySelector('button[type="submit"]');
 let isContactBackendAvailable = false;
 
+const looksLikePhoneNumber = (value) => {
+  const compactValue = value.replace(/[\s()./-]/g, "");
+  const digits = value.replace(/\D/g, "");
+  return /^\+?\d+$/.test(compactValue) && digits.length >= 8 && digits.length <= 15;
+};
+
+const isValidPhoneNumber = (value) => {
+  const trimmedValue = value.trim();
+  const digits = trimmedValue.replace(/\D/g, "");
+  return /^[+()\d\s./-]+$/.test(trimmedValue) && digits.length >= 8 && digits.length <= 15;
+};
+
+const isValidInstagramHandle = (value) => {
+  const handle = value.trim().replace(/^@/, "");
+  return (
+    /^[A-Za-z0-9._]{1,30}$/.test(handle)
+    && !handle.startsWith(".")
+    && !handle.endsWith(".")
+    && !handle.includes("..")
+    && /[A-Za-z]/.test(handle)
+    && !looksLikePhoneNumber(handle)
+  );
+};
+
+const validateContactValue = () => {
+  if (!contactValue) {
+    return true;
+  }
+
+  const selectedChannel = contactMethod?.value || "messenger";
+  const value = contactValue.value.trim();
+  let validationMessage = "";
+
+  if (value.length < 2) {
+    validationMessage = "Merci de renseigner une coordonnée de contact.";
+  } else if (selectedChannel === "email" && !contactValue.validity.valid) {
+    validationMessage = "Adresse email invalide.";
+  } else if (selectedChannel === "telephone" && !isValidPhoneNumber(value)) {
+    validationMessage = "Merci d'indiquer un numéro de téléphone valide.";
+  } else if (selectedChannel === "instagram" && !isValidInstagramHandle(value)) {
+    validationMessage = "Merci d'indiquer un pseudo Instagram valide.";
+  } else if (selectedChannel === "messenger") {
+    const hasLetter = /[A-Za-zÀ-ÖØ-öø-ÿ]/.test(value);
+    if (looksLikePhoneNumber(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || !hasLetter) {
+      validationMessage = "Merci d'indiquer ton pseudo ou ton nom Messenger.";
+    }
+  }
+
+  contactValue.setCustomValidity(validationMessage);
+  return validationMessage === "";
+};
+
 const setRequiredState = (field, status, isRequired) => {
   if (field) {
     field.required = isRequired;
@@ -140,6 +196,9 @@ const updateContactField = () => {
     contactValue.autocomplete = settings.autocomplete;
     contactValue.inputMode = settings.inputMode;
     contactValue.placeholder = settings.label;
+    contactValue.title = settings.hint;
+    contactValue.setCustomValidity("");
+    validateContactValue();
   }
 };
 
@@ -157,6 +216,8 @@ const updateProfileRequirements = () => {
 };
 
 contactMethod?.addEventListener("change", updateContactField);
+contactValue?.addEventListener("input", validateContactValue);
+contactValue?.addEventListener("blur", validateContactValue);
 profile?.addEventListener("change", updateProfileRequirements);
 profile?.addEventListener("input", updateProfileRequirements);
 updateContactField();
@@ -422,6 +483,12 @@ document.addEventListener("keydown", (event) => {
 
 form?.addEventListener("submit", (event) => {
   event.preventDefault();
+
+  validateContactValue();
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
 
   result.hidden = false;
   result.classList.remove("is-success", "is-error");

@@ -1,0 +1,366 @@
+{
+  "results": [
+    {
+      "name": "desktop-1366x768",
+      "width": 1366,
+      "height": 768,
+      "viewportWidth": 1366,
+      "viewportHeight": 768,
+      "mode": "desktop",
+      "segments": [
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/desktop-1366x768-segment-01.png",
+          "y": 0,
+          "width": 1366,
+          "height": 768
+        }
+      ],
+      "hotspots": [
+        {
+          "x": 150,
+          "y": 28,
+          "rx": 110,
+          "ry": 28,
+          "w": 0.28,
+          "label": "Brand/header"
+        },
+        {
+          "x": 1130,
+          "y": 30,
+          "rx": 115,
+          "ry": 32,
+          "w": 0.34,
+          "label": "CTA header"
+        },
+        {
+          "x": 683,
+          "y": 330,
+          "rx": 260,
+          "ry": 170,
+          "w": 0.82,
+          "label": "Logo + proposition"
+        },
+        {
+          "x": 590,
+          "y": 535,
+          "rx": 150,
+          "ry": 50,
+          "w": 1,
+          "label": "CTA Venir essayer"
+        },
+        {
+          "x": 780,
+          "y": 535,
+          "rx": 170,
+          "ry": 50,
+          "w": 0.78,
+          "label": "Infos pratiques"
+        },
+        {
+          "x": 683,
+          "y": 645,
+          "rx": 330,
+          "ry": 45,
+          "w": 0.5,
+          "label": "Trust strip"
+        },
+        {
+          "x": 683,
+          "y": 900,
+          "rx": 470,
+          "ry": 130,
+          "w": 0.72,
+          "label": "Premier essai"
+        },
+        {
+          "x": 450,
+          "y": 1360,
+          "rx": 250,
+          "ry": 210,
+          "w": 0.52,
+          "label": "Pourquoi rejoindre"
+        },
+        {
+          "x": 910,
+          "y": 1360,
+          "rx": 250,
+          "ry": 210,
+          "w": 0.48,
+          "label": "Cartes rejoindre"
+        },
+        {
+          "x": 683,
+          "y": 2190,
+          "rx": 500,
+          "ry": 170,
+          "w": 0.36,
+          "label": "Galerie"
+        },
+        {
+          "x": 460,
+          "y": 3100,
+          "rx": 260,
+          "ry": 230,
+          "w": 0.64,
+          "label": "Football americain"
+        },
+        {
+          "x": 910,
+          "y": 3100,
+          "rx": 260,
+          "ry": 230,
+          "w": 0.58,
+          "label": "Flag football"
+        },
+        {
+          "x": 683,
+          "y": 4050,
+          "rx": 520,
+          "ry": 300,
+          "w": 0.9,
+          "label": "Infos pratiques"
+        },
+        {
+          "x": 683,
+          "y": 5000,
+          "rx": 450,
+          "ry": 180,
+          "w": 0.34,
+          "label": "Slogan"
+        },
+        {
+          "x": 683,
+          "y": 5700,
+          "rx": 500,
+          "ry": 250,
+          "w": 0.5,
+          "label": "Parents"
+        },
+        {
+          "x": 683,
+          "y": 6700,
+          "rx": 540,
+          "ry": 430,
+          "w": 0.44,
+          "label": "Comite staff"
+        },
+        {
+          "x": 683,
+          "y": 8070,
+          "rx": 520,
+          "ry": 280,
+          "w": 0.46,
+          "label": "Partenaires"
+        },
+        {
+          "x": 430,
+          "y": 9000,
+          "rx": 300,
+          "ry": 330,
+          "w": 0.72,
+          "label": "Contact copy"
+        },
+        {
+          "x": 910,
+          "y": 9000,
+          "rx": 300,
+          "ry": 420,
+          "w": 1,
+          "label": "Formulaire contact"
+        },
+        {
+          "x": 1260,
+          "y": 706,
+          "rx": 80,
+          "ry": 45,
+          "w": 0.42,
+          "label": "Chat flottant"
+        }
+      ],
+      "screenshotPath": "C:/www/andenne-bears.be/ux-guerilla-test/homepage-desktop-1366x768.png",
+      "heatmapPath": "C:/www/andenne-bears.be/ux-guerilla-test/heatmap-desktop-1366x768.png"
+    },
+    {
+      "name": "mobile-390x844",
+      "width": 980,
+      "height": 2121,
+      "viewportWidth": 390,
+      "viewportHeight": 844,
+      "mode": "mobile",
+      "segments": [
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-01.png",
+          "y": 0,
+          "width": 980,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-02.png",
+          "y": 844,
+          "width": 980,
+          "height": 844
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-03.png",
+          "y": 1688,
+          "width": 980,
+          "height": 433
+        },
+        {
+          "path": "C:/www/andenne-bears.be/ux-guerilla-test/mobile-390x844-segment-04.png",
+          "y": 1277,
+          "width": 980,
+          "height": 844
+        }
+      ],
+      "hotspots": [
+        {
+          "x": 58,
+          "y": 30,
+          "rx": 58,
+          "ry": 25,
+          "w": 0.28,
+          "label": "Brand/header"
+        },
+        {
+          "x": 352,
+          "y": 30,
+          "rx": 36,
+          "ry": 30,
+          "w": 0.54,
+          "label": "Menu mobile"
+        },
+        {
+          "x": 195,
+          "y": 330,
+          "rx": 135,
+          "ry": 150,
+          "w": 0.86,
+          "label": "Logo + proposition"
+        },
+        {
+          "x": 195,
+          "y": 545,
+          "rx": 145,
+          "ry": 48,
+          "w": 1,
+          "label": "CTA Venir essayer"
+        },
+        {
+          "x": 195,
+          "y": 610,
+          "rx": 150,
+          "ry": 48,
+          "w": 0.82,
+          "label": "Infos pratiques"
+        },
+        {
+          "x": 195,
+          "y": 760,
+          "rx": 150,
+          "ry": 85,
+          "w": 0.5,
+          "label": "Trust strip"
+        },
+        {
+          "x": 195,
+          "y": 1130,
+          "rx": 165,
+          "ry": 220,
+          "w": 0.76,
+          "label": "Premier essai"
+        },
+        {
+          "x": 195,
+          "y": 1680,
+          "rx": 165,
+          "ry": 330,
+          "w": 0.58,
+          "label": "Rejoindre"
+        },
+        {
+          "x": 195,
+          "y": 2600,
+          "rx": 170,
+          "ry": 260,
+          "w": 0.38,
+          "label": "Galerie"
+        },
+        {
+          "x": 195,
+          "y": 3650,
+          "rx": 165,
+          "ry": 420,
+          "w": 0.68,
+          "label": "Disciplines"
+        },
+        {
+          "x": 195,
+          "y": 5100,
+          "rx": 170,
+          "ry": 620,
+          "w": 0.92,
+          "label": "Infos pratiques"
+        },
+        {
+          "x": 195,
+          "y": 6650,
+          "rx": 165,
+          "ry": 340,
+          "w": 0.38,
+          "label": "Slogan"
+        },
+        {
+          "x": 195,
+          "y": 7450,
+          "rx": 165,
+          "ry": 420,
+          "w": 0.5,
+          "label": "Parents"
+        },
+        {
+          "x": 195,
+          "y": 8850,
+          "rx": 170,
+          "ry": 700,
+          "w": 0.42,
+          "label": "Comite staff"
+        },
+        {
+          "x": 195,
+          "y": 11150,
+          "rx": 170,
+          "ry": 460,
+          "w": 0.5,
+          "label": "Partenaires"
+        },
+        {
+          "x": 195,
+          "y": 12400,
+          "rx": 170,
+          "ry": 760,
+          "w": 1,
+          "label": "Formulaire contact"
+        },
+        {
+          "x": 330,
+          "y": 790,
+          "rx": 62,
+          "ry": 45,
+          "w": 0.42,
+          "label": "Chat flottant"
+        }
+      ],
+      "screenshotPath": "C:/www/andenne-bears.be/ux-guerilla-test/homepage-mobile-390x844.png",
+      "heatmapPath": "C:/www/andenne-bears.be/ux-guerilla-test/heatmap-mobile-390x844.png"
+    }
+  ],
+  "scenarios": [
+    "Nouveau joueur senior qui cherche comment venir essayer",
+    "Parent qui veut verifier l'encadrement et les infos pratiques",
+    "Joueur flag qui cherche la discipline sans contact",
+    "Partenaire local qui cherche le serieux du club et le contact",
+    "Visiteur presse qui scanne seulement le haut de page et les CTA",
+    "Benevole potentiel qui cherche le comite, les roles et le formulaire"
+  ]
+}

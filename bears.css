@@ -1390,7 +1390,7 @@ h3 {
 }
 
 .schedule-card .info-label {
-  display: block;
+  display: inline-flex;
   margin-bottom: 0.35rem;
 }
 

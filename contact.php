@@ -48,6 +48,45 @@ function textLength(string $value): int
     return strlen($value);
 }
 
+function looksLikePhoneNumber(string $value): bool
+{
+    $compactValue = (string) preg_replace('/[\s().\/-]+/', '', $value);
+    $digits = (string) preg_replace('/\D+/', '', $value);
+
+    return preg_match('/^\+?\d+$/', $compactValue) === 1
+        && strlen($digits) >= 8
+        && strlen($digits) <= 15;
+}
+
+function isValidPhoneNumber(string $value): bool
+{
+    $trimmedValue = trim($value);
+    $digits = (string) preg_replace('/\D+/', '', $trimmedValue);
+
+    return preg_match('/^[+()\d\s.\/-]+$/', $trimmedValue) === 1
+        && strlen($digits) >= 8
+        && strlen($digits) <= 15;
+}
+
+function isValidInstagramHandle(string $value): bool
+{
+    $handle = (string) preg_replace('/^@/', '', trim($value));
+
+    return preg_match('/^[A-Za-z0-9._]{1,30}$/', $handle) === 1
+        && substr($handle, 0, 1) !== '.'
+        && substr($handle, -1) !== '.'
+        && strpos($handle, '..') === false
+        && preg_match('/[A-Za-z]/', $handle) === 1
+        && !looksLikePhoneNumber($handle);
+}
+
+function isValidMessengerContact(string $value): bool
+{
+    return !looksLikePhoneNumber($value)
+        && !filter_var($value, FILTER_VALIDATE_EMAIL)
+        && preg_match('/\p{L}/u', $value) === 1;
+}
+
 function securityLog(string $event, array $context = []): void
 {
     $safeContext = [
@@ -217,7 +256,14 @@ if ($isBearsForm) {
     $channel = trim((string) ($_POST['Canal prefere'] ?? 'messenger'));
     $contact = trim((string) ($_POST['Contact'] ?? ''));
     $profileLabel = $profileLabels[$profile] ?? 'Autre demande';
-    $channelLabel = $channelLabels[$channel] ?? 'Contact';
+    $channelLabel = $channelLabels[$channel] ?? '';
+
+    if ($channelLabel === '') {
+        jsonResponse(422, [
+            'success' => false,
+            'message' => 'Canal de contact invalide.',
+        ]);
+    }
 
     if ($profile === 'essai' && ($age === '' || !ctype_digit($age))) {
         jsonResponse(422, [
@@ -233,13 +279,35 @@ if ($isBearsForm) {
         ]);
     }
 
+    if ($channel === 'email' && !filter_var($contact, FILTER_VALIDATE_EMAIL)) {
+        jsonResponse(422, [
+            'success' => false,
+            'message' => 'Adresse email invalide.',
+        ]);
+    }
+
+    if ($channel === 'telephone' && !isValidPhoneNumber($contact)) {
+        jsonResponse(422, [
+            'success' => false,
+            'message' => 'Merci d\'indiquer un numéro de téléphone valide.',
+        ]);
+    }
+
+    if ($channel === 'instagram' && !isValidInstagramHandle($contact)) {
+        jsonResponse(422, [
+            'success' => false,
+            'message' => 'Merci d\'indiquer un pseudo Instagram valide.',
+        ]);
+    }
+
+    if ($channel === 'messenger' && !isValidMessengerContact($contact)) {
+        jsonResponse(422, [
+            'success' => false,
+            'message' => 'Merci d\'indiquer votre pseudo ou nom Messenger.',
+        ]);
+    }
+
     if ($channel === 'email') {
-        if (!filter_var($contact, FILTER_VALIDATE_EMAIL)) {
-            jsonResponse(422, [
-                'success' => false,
-                'message' => 'Adresse email invalide.',
-            ]);
-        }
         $cleanEmail = str_replace(["\r", "\n"], '', $contact);
     }
 
