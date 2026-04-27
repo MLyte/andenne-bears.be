@@ -1261,7 +1261,7 @@ h3 {
 .member-group-heading h3 {
   margin: 0;
   color: var(--black);
-  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-size: 0.7rem;
 }
 
 .member-subgroup-title {
