@@ -195,7 +195,9 @@ DEPLOY_ITEMS=(
   "index.html"
   "bears.css"
   "contact.php"
+  "changethis.php"
   "config/contact-config.php"
+  "config/changethis-config.php"
   "fonts"
   "images"
   "scripts"
@@ -205,7 +207,7 @@ FILES=()
 for item in "${DEPLOY_ITEMS[@]}"; do
   abs="$PROJECT_ROOT/$item"
   if [[ ! -e "$abs" ]]; then
-    if [[ "$item" == "config/contact-config.php" ]]; then
+    if [[ "$item" == "config/contact-config.php" || "$item" == "config/changethis-config.php" ]]; then
       continue
     fi
     echo "Deploy item not found: $item" >&2
