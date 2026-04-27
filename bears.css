@@ -977,6 +977,29 @@ h3 {
   color: rgba(255, 255, 255, 0.82);
 }
 
+.discipline-age-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1.1rem;
+}
+
+.discipline-age-groups span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55rem;
+  padding: 0.24rem 0.56rem;
+  border: 1px solid rgba(238, 207, 43, 0.34);
+  border-radius: 999px;
+  color: var(--gold);
+  background: rgba(238, 207, 43, 0.1);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .discipline-card .card-tag {
   color: var(--gold);
 }
@@ -988,6 +1011,12 @@ h3 {
 
 .discipline-card li + li {
   margin-top: 0.5rem;
+}
+
+.discipline-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.25rem, 3vw, 2rem);
 }
 
 .card-highlight {
