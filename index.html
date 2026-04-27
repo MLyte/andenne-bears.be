@@ -757,9 +757,74 @@
       </div>
       <a href="#top">Retour en haut</a>
     </footer>
+    <aside class="site-chat" data-site-chat aria-label="Message au club Andenne Bears">
+      <section class="site-chat-panel" id="site-chat-panel" aria-labelledby="site-chat-title" hidden>
+        <div class="site-chat-header">
+          <img class="site-chat-avatar" src="images/logoBears.png" alt="" width="44" height="44" />
+          <div class="site-chat-heading">
+            <p class="site-chat-kicker">Andenne Bears</p>
+            <h2 id="site-chat-title">Message au club</h2>
+            <p class="site-chat-status">
+              <span aria-hidden="true"></span>
+              Réponse via Messenger, email ou téléphone
+            </p>
+          </div>
+          <button class="site-chat-close" type="button" data-site-chat-close aria-label="Fermer le chat">
+            <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+          </button>
+        </div>
+        <div class="site-chat-thread" aria-live="polite">
+          <p class="site-chat-message is-club">Salut ! Laisse ton message ici. On te répond ensuite par le canal le plus pratique.</p>
+          <p class="site-chat-note">Ce formulaire n'est pas un chat Messenger natif, mais il arrive directement au club.</p>
+        </div>
+        <form class="site-chat-form" id="chat-form" action="contact.php" method="post" novalidate>
+          <input type="hidden" name="form_context" value="bears" />
+          <input type="hidden" name="form_start" id="chat-form-start" />
+          <input type="hidden" name="csrf_token" id="chat-csrf-token" />
+          <input type="hidden" name="Profil" value="autre" />
+          <input type="hidden" name="Canal prefere" value="messenger" />
+          <input type="hidden" name="Age" value="" />
+          <label class="site-chat-field">
+            <span>Nom</span>
+            <input name="Nom" type="text" autocomplete="name" required />
+          </label>
+          <label class="site-chat-field">
+            <span>Contact</span>
+            <input name="Contact" type="text" autocomplete="off" placeholder="Pseudo, email ou téléphone" required />
+          </label>
+          <label class="site-chat-field">
+            <span>Message</span>
+            <textarea name="Message" rows="3" placeholder="Ta question, ton âge si tu viens essayer, tes disponibilités..." required></textarea>
+          </label>
+          <label class="honeypot" aria-hidden="true">
+            <span>Ne pas remplir</span>
+            <input type="text" name="company" tabindex="-1" autocomplete="off" />
+          </label>
+          <button class="button button-primary" type="submit">
+            <svg class="icon" aria-hidden="true"><use href="#icon-send"></use></svg>
+            Envoyer au club
+          </button>
+          <div class="site-chat-result" id="chat-result" hidden></div>
+        </form>
+      </section>
+      <button
+        class="site-chat-toggle"
+        type="button"
+        data-site-chat-toggle
+        aria-controls="site-chat-panel"
+        aria-expanded="false"
+        aria-label="Ouvrir le message au club"
+      >
+        <svg class="icon brand-icon" aria-hidden="true"><use href="#brand-messenger"></use></svg>
+        <span>Message</span>
+      </button>
+    </aside>
     <script src="scripts/bears.js" defer></script>
+    <!-- ChangeThis feedback is temporarily disabled until the flow is ready. -->
+    <!--
     <script src="scripts/changethis-widget.js" defer></script>
     <script src="scripts/changethis-init.js" defer></script>
+    -->
   </body>
 </html>
 

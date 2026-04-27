@@ -9,6 +9,12 @@ const photoCarousel = document.querySelector(".photo-carousel");
 const photoCarouselTrack = document.querySelector(".photo-carousel-track");
 const photoCarouselPrev = document.querySelector("[data-carousel-prev]");
 const photoCarouselNext = document.querySelector("[data-carousel-next]");
+const siteChat = document.querySelector("[data-site-chat]");
+const siteChatToggle = document.querySelector("[data-site-chat-toggle]");
+const siteChatClose = document.querySelector("[data-site-chat-close]");
+const siteChatPanel = document.querySelector("#site-chat-panel");
+const chatForm = document.querySelector("#chat-form");
+const chatResult = document.querySelector("#chat-result");
 
 const escapeHTML = (value) =>
   String(value).replace(/[&<>"']/g, (char) => ({
@@ -99,8 +105,10 @@ const messageField = document.querySelector("#message");
 const ageStatus = document.querySelector('[data-field-status="age"]');
 const messageStatus = document.querySelector('[data-field-status="message"]');
 const formStart = document.querySelector("#form-start");
-const csrfToken = document.querySelector("#csrf-token");
+const chatFormStart = document.querySelector("#chat-form-start");
+const csrfTokens = document.querySelectorAll('input[name="csrf_token"]');
 const formSubmit = form?.querySelector('button[type="submit"]');
+const chatSubmit = chatForm?.querySelector('button[type="submit"]');
 let isContactBackendAvailable = false;
 
 const setRequiredState = (field, status, isRequired) => {
@@ -147,6 +155,10 @@ if (formStart) {
   formStart.value = String(Date.now());
 }
 
+if (chatFormStart) {
+  chatFormStart.value = String(Date.now());
+}
+
 const readJsonResponse = async (response) => {
   const text = await response.text();
   try {
@@ -163,7 +175,7 @@ const readJsonResponse = async (response) => {
 };
 
 const loadCsrfToken = async () => {
-  if (!csrfToken) {
+  if (!csrfTokens.length) {
     return;
   }
 
@@ -176,7 +188,9 @@ const loadCsrfToken = async () => {
     });
     const parsed = await readJsonResponse(response);
     if (response.ok && parsed.isJson && parsed.data?.csrfToken) {
-      csrfToken.value = parsed.data.csrfToken;
+      csrfTokens.forEach((token) => {
+        token.value = parsed.data.csrfToken;
+      });
       isContactBackendAvailable = true;
     }
   } catch {
@@ -185,6 +199,42 @@ const loadCsrfToken = async () => {
 };
 
 loadCsrfToken();
+
+const openSiteChat = () => {
+  if (!siteChatPanel || !siteChatToggle) {
+    return;
+  }
+
+  siteChatPanel.hidden = false;
+  siteChatToggle.setAttribute("aria-expanded", "true");
+  siteChatToggle.setAttribute("aria-label", "Fermer le message au club");
+  siteChat?.classList.add("is-open");
+  siteChatPanel
+    .querySelector('.site-chat-form input:not([type="hidden"]), .site-chat-form textarea, .site-chat-form button')
+    ?.focus();
+};
+
+const closeSiteChat = () => {
+  if (!siteChatPanel || !siteChatToggle) {
+    return;
+  }
+
+  siteChatPanel.hidden = true;
+  siteChatToggle.setAttribute("aria-expanded", "false");
+  siteChatToggle.setAttribute("aria-label", "Ouvrir le message au club");
+  siteChat?.classList.remove("is-open");
+  siteChatToggle.focus();
+};
+
+siteChatToggle?.addEventListener("click", () => {
+  if (siteChatPanel?.hidden) {
+    openSiteChat();
+  } else {
+    closeSiteChat();
+  }
+});
+
+siteChatClose?.addEventListener("click", closeSiteChat);
 
 const closeMenu = () => {
   siteHeader?.classList.remove("is-menu-open");
@@ -264,6 +314,9 @@ updateCarouselButtons();
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeMenu();
+    if (!siteChatPanel?.hidden) {
+      closeSiteChat();
+    }
   }
 });
 
@@ -314,8 +367,8 @@ form?.addEventListener("submit", (event) => {
         if (formStart) {
           formStart.value = String(Date.now());
         }
-        await loadCsrfToken();
       }
+      await loadCsrfToken();
     })
     .catch(() => {
       result.classList.add("is-error");
@@ -326,5 +379,58 @@ form?.addEventListener("submit", (event) => {
     })
     .finally(() => {
       formSubmit.disabled = false;
+    });
+});
+
+chatForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  chatResult.hidden = false;
+  chatResult.classList.remove("is-success", "is-error");
+
+  if (!isContactBackendAvailable) {
+    chatResult.classList.add("is-error");
+    chatResult.textContent = "Le message au club est momentanément indisponible. Réessaie dans quelques instants.";
+    return;
+  }
+
+  chatSubmit.disabled = true;
+  chatResult.textContent = "Envoi en cours...";
+
+  fetch(chatForm.action, {
+    method: "POST",
+    body: new FormData(chatForm),
+    headers: {
+      Accept: "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(async (response) => {
+      const parsed = await readJsonResponse(response);
+      if (!parsed.isJson) {
+        throw new Error("invalid-response");
+      }
+
+      const message = parsed.data?.message || "Une erreur est survenue.";
+      const isSuccess = Boolean(response.ok && parsed.data?.success);
+      chatResult.classList.add(isSuccess ? "is-success" : "is-error");
+      chatResult.textContent = isSuccess
+        ? "Message envoyé. On te répond via Messenger, email ou téléphone."
+        : message;
+
+      if (isSuccess) {
+        chatForm.reset();
+        if (chatFormStart) {
+          chatFormStart.value = String(Date.now());
+        }
+      }
+      await loadCsrfToken();
+    })
+    .catch(() => {
+      chatResult.classList.add("is-error");
+      chatResult.textContent = "Une erreur réseau empêche l'envoi du message.";
+    })
+    .finally(() => {
+      chatSubmit.disabled = false;
     });
 });
