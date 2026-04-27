@@ -615,26 +615,26 @@ h3 {
 }
 
 .heartbeat-line-base {
-  opacity: 0.18;
-  stroke: rgba(238, 207, 43, 0.86);
-  stroke-width: 3.2;
+  opacity: 0.035;
+  stroke: rgba(238, 207, 43, 0.78);
+  stroke-width: 2.4;
 }
 
 .heartbeat-line-glow {
   animation: heartbeat-glow 4.8s ease-in-out infinite;
   filter: url("#heartbeat-glow-filter");
-  opacity: 0.36;
-  stroke: rgba(238, 207, 43, 0.7);
-  stroke-width: 13;
+  opacity: 0.08;
+  stroke: rgba(238, 207, 43, 0.52);
+  stroke-width: 10;
 }
 
 .heartbeat-line-scan {
   animation: heartbeat-scan 2.8s linear infinite;
-  filter: drop-shadow(0 0 12px rgba(238, 207, 43, 0.58));
+  filter: drop-shadow(0 0 10px rgba(238, 207, 43, 0.44));
   stroke: url("#heartbeat-scan-gradient");
-  stroke-dasharray: 190 1000;
+  stroke-dasharray: 230 1000;
   stroke-dashoffset: 560;
-  stroke-width: 6;
+  stroke-width: 5.6;
 }
 
 @keyframes heartbeat-scan {
@@ -650,11 +650,11 @@ h3 {
 @keyframes heartbeat-glow {
   0%,
   100% {
-    opacity: 0.24;
+    opacity: 0.04;
   }
 
   42% {
-    opacity: 0.48;
+    opacity: 0.12;
   }
 }
 
