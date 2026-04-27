@@ -1338,6 +1338,12 @@ h3 {
   text-transform: uppercase;
 }
 
+.member-tags .member-tag-vacant {
+  border-color: rgba(159, 20, 53, 0.2);
+  color: var(--red);
+  background: rgba(159, 20, 53, 0.1);
+}
+
 .member-card h4 {
   margin: 0;
   color: var(--black);
