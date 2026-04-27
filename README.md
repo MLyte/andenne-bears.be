@@ -54,21 +54,87 @@ avant le chargement de `scripts/changethis-init.js`.
 
 ## Deployer sur OVH en FTP/FTPS
 
-Le script `scripts/deploy-ovh.ps1` envoie uniquement les fichiers publics :
+Deux scripts sont disponibles :
 
+- `scripts/deploy-ovh.ps1` (PowerShell, Windows)
+- `scripts/deploy-ovh.sh` (bash + `curl`, Linux/macOS)
+
+Les scripts envoient les fichiers publics suivants :
+
+- `.ovhconfig`
 - `index.html`
 - `bears.css`
+- `contact.php`
+- `config/contact-config.php` (si present)
 - `fonts/`
 - `images/`
+- `scripts/`
 
-Configurer les variables locales PowerShell :
+### Mode recommande (safe + sans saisie manuelle)
 
-```powershell
-$env:OVH_FTP_HOST = "ftp.clusterXXX.hosting.ovh.net"
-$env:OVH_FTP_USER = "ton-login-ovh"
-$env:OVH_FTP_PASSWORD = "ton-mot-de-passe"
-$env:OVH_FTP_PATH = "www"
+Creer un fichier local `.ovh-ftp.netrc` (non versionne) :
+
+```text
+machine ftp.clusterXXX.hosting.ovh.net
+login ton-login-ovh
+password ton-mot-de-passe
 ```
+
+Puis proteger le fichier :
+
+```bash
+chmod 600 .ovh-ftp.netrc
+```
+
+Ensuite, il suffit de lancer :
+
+```bash
+./scripts/deploy-ovh.sh --dry-run
+./scripts/deploy-ovh.sh
+```
+
+Le script utilisera automatiquement `.ovh-ftp.netrc` (ou `OVH_FTP_NETRC`) et refusera un fichier avec des permissions trop ouvertes.
+Il affiche aussi une progression `[x/N]` pour chaque fichier (`UPLOAD` puis `DONE`).
+Pour OVH, utiliser le port `21` (FTP ou FTPS explicite).
+Les chemins distants sont encodes automatiquement (`%20`), donc les noms de fichiers avec espaces fonctionnent.
+
+### Variables d'environnement (alternative)
+
+```bash
+export OVH_FTP_HOST="ftp.clusterXXX.hosting.ovh.net"
+export OVH_FTP_USER="ton-login-ovh"
+export OVH_FTP_PASSWORD="ton-mot-de-passe"
+export OVH_FTP_PATH="/www"
+export OVH_FTP_PORT="21"
+```
+
+### Linux/macOS (bash)
+
+Envoyer en FTPS (par defaut) :
+
+```bash
+./scripts/deploy-ovh.sh
+```
+
+Basculer en FTP simple si necessaire :
+
+```bash
+./scripts/deploy-ovh.sh --ftp
+```
+
+Forcer explicitement le port OVH :
+
+```bash
+./scripts/deploy-ovh.sh --port 21
+```
+
+Si un transfert semble bloque, activer les logs FTP/FTPS detailles :
+
+```bash
+./scripts/deploy-ovh.sh --debug
+```
+
+### Windows (PowerShell)
 
 Verifier sans envoyer :
 
@@ -76,11 +142,10 @@ Verifier sans envoyer :
 powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -DryRun
 ```
 
-Envoyer sur OVH :
+Envoyer en FTPS :
 
 ```powershell
-powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -Ssl
 ```
 
-Par defaut, le script force FTPS via `--ssl-reqd`. Si l'hebergement n'accepte
-que le FTP simple, ajouter `-PlainFtp`.
+Si l'hebergement n'accepte que le FTP simple, ne pas ajouter `-Ssl`.
