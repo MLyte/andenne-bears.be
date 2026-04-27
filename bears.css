@@ -1525,6 +1525,31 @@ h3 {
   font-weight: 600;
 }
 
+.field select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 3rem;
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(90deg, transparent, transparent calc(100% - 2.75rem), rgba(5, 5, 5, 0.08) calc(100% - 2.75rem), rgba(5, 5, 5, 0.08) calc(100% - 2.7rem), transparent calc(100% - 2.7rem)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23050505' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: center right 2.7rem, center right 0.86rem;
+  background-repeat: no-repeat;
+  background-size: 1px 1.55rem, 1.25rem;
+  cursor: pointer;
+}
+
+.field select::-ms-expand {
+  display: none;
+}
+
+.field select:hover {
+  border-color: rgba(5, 5, 5, 0.34);
+  background-image:
+    linear-gradient(90deg, transparent, transparent calc(100% - 2.75rem), rgba(5, 5, 5, 0.12) calc(100% - 2.75rem), rgba(5, 5, 5, 0.12) calc(100% - 2.7rem), transparent calc(100% - 2.7rem)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23050505' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
 .field textarea {
   resize: vertical;
 }
