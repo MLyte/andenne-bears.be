@@ -15,6 +15,8 @@ const siteChatClose = document.querySelector("[data-site-chat-close]");
 const siteChatPanel = document.querySelector("#site-chat-panel");
 const chatForm = document.querySelector("#chat-form");
 const chatResult = document.querySelector("#chat-result");
+const siteFooter = document.querySelector(".site-footer");
+const backToTop = document.querySelector("[data-back-to-top]");
 
 const escapeHTML = (value) =>
   String(value).replace(/[&<>"']/g, (char) => ({
@@ -217,9 +219,13 @@ const openSiteChat = () => {
   siteChatToggle.setAttribute("aria-expanded", "true");
   siteChatToggle.setAttribute("aria-label", "Fermer le message au club");
   siteChat?.classList.add("is-open");
-  siteChatPanel
-    .querySelector('.site-chat-form input:not([type="hidden"]), .site-chat-form textarea, .site-chat-form button')
-    ?.focus();
+
+  const canAutoFocus = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (canAutoFocus) {
+    siteChatPanel
+      .querySelector('.site-chat-form input:not([type="hidden"]), .site-chat-form textarea, .site-chat-form button')
+      ?.focus();
+  }
 };
 
 const closeSiteChat = () => {
@@ -233,6 +239,44 @@ const closeSiteChat = () => {
   siteChat?.classList.remove("is-open");
   siteChatToggle.focus();
 };
+
+const updateSiteChatFooterOffset = () => {
+  if (!siteFooter) {
+    return;
+  }
+
+  const footerRect = siteFooter.getBoundingClientRect();
+  const viewport = window.visualViewport;
+  const viewportBottom = (viewport?.height ?? window.innerHeight) + (viewport?.offsetTop ?? 0);
+  const overlap = Math.max(0, viewportBottom - footerRect.top);
+  const footerOffset = `${Math.round(overlap)}px`;
+  siteChat?.style.setProperty("--footer-offset", footerOffset);
+  siteChat?.classList.toggle("is-above-footer", overlap > 0);
+  backToTop?.style.setProperty("--footer-offset", footerOffset);
+  backToTop?.classList.toggle("is-above-footer", overlap > 0);
+};
+
+const updateBackToTopVisibility = () => {
+  backToTop?.classList.toggle("is-visible", window.scrollY > 520);
+};
+
+if (siteFooter) {
+  window.addEventListener("scroll", updateSiteChatFooterOffset, { passive: true });
+  window.addEventListener("resize", updateSiteChatFooterOffset);
+  window.visualViewport?.addEventListener("scroll", updateSiteChatFooterOffset, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateSiteChatFooterOffset);
+  updateSiteChatFooterOffset();
+}
+
+if (backToTop) {
+  window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+  window.addEventListener("resize", updateBackToTopVisibility);
+  updateBackToTopVisibility();
+}
+
+backToTop?.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 siteChatToggle?.addEventListener("click", () => {
   if (siteChatPanel?.hidden) {
@@ -295,6 +339,9 @@ const updateCarouselButtons = () => {
 };
 
 let carouselScrollFrame = null;
+let carouselDragPointerId = null;
+let carouselDragStartX = 0;
+let carouselDragStartScrollLeft = 0;
 
 const requestCarouselUpdate = () => {
   if (carouselScrollFrame) {
@@ -315,6 +362,50 @@ photoCarouselNext?.addEventListener("click", () => {
   photoCarousel?.scrollBy({ left: getCarouselStep(), behavior: "smooth" });
 });
 
+photoCarousel?.addEventListener("pointerdown", (event) => {
+  if (event.button !== 0 || !photoCarousel) {
+    return;
+  }
+
+  event.preventDefault();
+  carouselDragPointerId = event.pointerId;
+  carouselDragStartX = event.clientX;
+  carouselDragStartScrollLeft = photoCarousel.scrollLeft;
+  photoCarousel.classList.add("is-dragging");
+  photoCarousel.setPointerCapture(event.pointerId);
+});
+
+photoCarousel?.addEventListener("pointermove", (event) => {
+  if (!photoCarousel || carouselDragPointerId !== event.pointerId) {
+    return;
+  }
+
+  const dragDelta = event.clientX - carouselDragStartX;
+  photoCarousel.scrollLeft = carouselDragStartScrollLeft - dragDelta;
+  event.preventDefault();
+});
+
+const stopCarouselDrag = (event) => {
+  if (!photoCarousel || carouselDragPointerId !== event.pointerId) {
+    return;
+  }
+
+  carouselDragPointerId = null;
+  photoCarousel.classList.remove("is-dragging");
+
+  if (photoCarousel.hasPointerCapture(event.pointerId)) {
+    photoCarousel.releasePointerCapture(event.pointerId);
+  }
+};
+
+photoCarousel?.addEventListener("pointerup", stopCarouselDrag);
+photoCarousel?.addEventListener("pointercancel", stopCarouselDrag);
+photoCarousel?.addEventListener("lostpointercapture", (event) => {
+  if (carouselDragPointerId === event.pointerId) {
+    carouselDragPointerId = null;
+    photoCarousel?.classList.remove("is-dragging");
+  }
+});
 photoCarousel?.addEventListener("scroll", requestCarouselUpdate, { passive: true });
 window.addEventListener("resize", requestCarouselUpdate);
 updateCarouselButtons();

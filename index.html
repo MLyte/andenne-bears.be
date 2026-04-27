@@ -120,6 +120,9 @@
       <symbol id="icon-chevron-down" viewBox="0 0 24 24">
         <path d="m6 9 6 6 6-6" />
       </symbol>
+      <symbol id="icon-chevron-up" viewBox="0 0 24 24">
+        <path d="m18 15-6-6-6 6" />
+      </symbol>
     </svg>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Accueil Andenne Bears">
@@ -177,7 +180,7 @@
             width="1200"
           />
           <p class="hero-copy">
-            Découvre le football américain à Andenne, <strong>même sans expérience</strong>.
+            Viens essayer le football américain à Andenne, <strong class="super-strong">même sans expérience</strong>.
             On t'oriente vers le bon groupe, avec 3&nbsp;entraînements gratuits et un staff qui t'accompagne.
           </p>
           <div class="hero-actions" aria-label="Actions principales">
@@ -209,7 +212,7 @@
             Envoie-nous ton âge, ton niveau et ce qui t'attire. On te répond
             avec <strong>le bon groupe</strong>, <strong>le bon terrain</strong>
             et ce qu'il faut prévoir pour venir sereinement. La ligue couvre tes
-            <strong>3 premiers entraînements</strong>&nbsp;: c'est gratuit et
+            <strong class="super-strong">3 premiers entraînements</strong>&nbsp;: c'est gratuit et
             sans engagement.
           </p>
           <a class="button button-dark" href="#contact">
@@ -217,9 +220,18 @@
             Préparer mon essai
           </a>
           <div class="audience-links" aria-label="Accès rapides par profil">
-            <a href="#parents">Je suis parent</a>
-            <a href="#partenaires">Je veux sponsoriser</a>
-            <a href="#contact">Je veux aider le club</a>
+            <a href="#parents">
+              <svg class="icon" aria-hidden="true"><use href="#icon-users"></use></svg>
+              Je suis parent
+            </a>
+            <a href="#partenaires">
+              <svg class="icon" aria-hidden="true"><use href="#icon-handshake"></use></svg>
+              Je veux sponsoriser
+            </a>
+            <a href="#contact">
+              <svg class="icon" aria-hidden="true"><use href="#icon-user-plus"></use></svg>
+              Je veux aider le club
+            </a>
           </div>
         </div>
       </section>
@@ -232,7 +244,7 @@
             <p>
               Tu n'as pas besoin de connaître les règles par cœur ni d'avoir
               déjà porté un casque. Si tu viens avec
-              <strong>de l'envie, de l'écoute et l'esprit d'équipe</strong>, on
+              de l'envie, de l'écoute et <strong class="super-strong">l'esprit d'équipe</strong>, on
               t'aide à prendre tes marques.
             </p>
           </div>
@@ -281,6 +293,10 @@
             <figure class="photo-card">
               <img src="images/flag/AndenneBearsOctobre2024--35.jpg" alt="Jeunes joueurs des Andenne Bears alignés avant une action de flag football" loading="lazy" decoding="async" />
               <figcaption>Flag : apprendre vite, avec du jeu et des repères.</figcaption>
+            </figure>
+            <figure class="photo-card">
+              <img src="images/flag/AndenneBearsOctobre2024--28.jpg" alt="Joueur des Andenne Bears en course pendant un match de flag football" loading="lazy" decoding="async" />
+              <figcaption>Course ouverte, appuis rapides et lecture du terrain.</figcaption>
             </figure>
             <figure class="photo-card">
               <img src="images/bears-huddle.jpg" alt="Joueurs des Andenne Bears rassemblés en cercle pendant un entraînement" loading="lazy" decoding="async" />
@@ -385,18 +401,18 @@
           </div>
           <div class="info-grid">
             <article>
-              <span class="info-label">Qui</span>
+              <span class="info-label"><svg class="icon" aria-hidden="true"><use href="#icon-users"></use></svg>Qui</span>
               <h3>Jeunes, moins de 20 ans et seniors</h3>
               <p>Le club accueille les débutants comme les joueurs confirmés, avec <strong>flag dès 8 ans</strong> et <strong>tackle dès 14 ans</strong>.</p>
             </article>
             <article>
-              <span class="info-label">Quoi</span>
+              <span class="info-label"><svg class="icon" aria-hidden="true"><use href="#icon-shield"></use></svg>Quoi</span>
               <h3>Flag et football américain</h3>
-              <p><strong>Flag pour du football sans contact</strong>, <strong>tackle équipé</strong> pour jouer la version complète du football américain.</p>
+              <p><strong>Flag pour du football <span class="super-strong">sans contact</span></strong>, <strong>tackle équipé</strong> pour jouer la version complète du football américain.</p>
             </article>
             <article class="schedule-card">
-              <span class="info-label">Quand</span>
-              <h3 class="heading-with-icon"><svg class="icon"><use href="#icon-calendar-days"></use></svg>Entraînements</h3>
+              <span class="info-label"><svg class="icon" aria-hidden="true"><use href="#icon-calendar-days"></use></svg>Quand</span>
+              <h3>Entraînements</h3>
               <div class="schedule-list" aria-label="Horaires d'entraînement">
                 <div class="schedule-row">
                   <span>Seniors tackle</span>
@@ -410,13 +426,16 @@
                 </div>
                 <div class="schedule-row">
                   <span>Flag toutes catégories</span>
-                  <strong>Mardi</strong>
-                  <time>18h30 - 20h</time>
-                </div>
-                <div class="schedule-row">
-                  <span>Flag toutes catégories</span>
-                  <strong>Samedi</strong>
-                  <time>10h - 12h</time>
+                  <div class="schedule-slots">
+                    <div>
+                      <strong>Mardi</strong>
+                      <time>18h30 - 20h</time>
+                    </div>
+                    <div>
+                      <strong>Samedi</strong>
+                      <time>10h - 12h</time>
+                    </div>
+                  </div>
                 </div>
               </div>
               <p class="schedule-note">
@@ -425,7 +444,7 @@
             </article>
             <article class="location-card">
               <img src="images/arena3.jpg" alt="Vue aérienne de l'Andenne Arena et de son terrain" loading="lazy" decoding="async" />
-              <span class="info-label">Où</span>
+              <span class="info-label"><svg class="icon" aria-hidden="true"><use href="#icon-map-pin"></use></svg>Où</span>
               <h3>Andenne Arena</h3>
               <p>Un complexe sportif complet à Andenne, avec terrain synthétique et tracé football américain.</p>
               <a class="location-link" href="https://www.andenne.be/poi/andenne-arena/" target="_blank" rel="noreferrer">
@@ -434,17 +453,17 @@
               </a>
             </article>
             <article>
-              <span class="info-label">Pourquoi</span>
+              <span class="info-label"><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"></use></svg>Pourquoi</span>
               <h3>Progresser dans une équipe</h3>
               <p>Tu travailles la vitesse, la discipline, le physique et l'esprit collectif dans un cadre encadré, avec des coaches qui t'aident à progresser à ton rythme et une équipe qui te pousse à te dépasser.</p>
             </article>
             <article>
-              <span class="info-label">Comment</span>
+              <span class="info-label"><svg class="icon" aria-hidden="true"><use href="#icon-user-plus"></use></svg>Comment</span>
               <h3>Un essai simple</h3>
               <p><strong>Contacte le club</strong>, puis viens léger pour découvrir.</p>
               <ul class="trial-list">
                 <li>3 entraînements assurés par la ligue</li>
-                <li>Gratuit, sans engagement</li>
+                <li><strong class="super-strong">Gratuit, sans engagement</strong></li>
                 <li>Tenue de sport</li>
                 <li>Chaussures adaptées au terrain</li>
                 <li>Gourde d'eau</li>
@@ -519,7 +538,7 @@
             <p>
               Le flag football donne aux jeunes un terrain pour courir,
               réfléchir vite, respecter des consignes et jouer ensemble
-              <strong>sans plaquage</strong>. Les parents peuvent venir voir,
+              <strong class="super-strong">sans plaquage</strong>. Les parents peuvent venir voir,
               poser leurs questions et <strong>comprendre le cadre</strong>
               avant toute décision.
             </p>
@@ -582,6 +601,26 @@
                   <div>
                     <p class="member-role">Responsable communication</p>
                     <h4>Et si c'était toi&nbsp;?</h4>
+                  </div>
+                </article>
+              </div>
+            </section>
+            <section class="member-group" aria-labelledby="volunteers-title">
+              <div class="member-group-heading">
+                <p class="card-tag">Bénévoles</p>
+                <h3 id="volunteers-title">Vie du club</h3>
+              </div>
+              <p class="member-group-intro">
+                Les Bears avancent aussi grâce aux coups de main autour du terrain, des événements et de l'accueil.
+              </p>
+              <div class="members-grid">
+                <article class="member-card member-card-future">
+                  <img src="images/UncleBear.png" alt="Ours Uncle Sam des Andenne Bears pour rejoindre les bénévoles" loading="lazy" decoding="async" />
+                  <div>
+                    <p class="member-role">Bénévole club</p>
+                    <p class="member-tags" aria-label="Statut"><span>Bénévole</span></p>
+                    <h4>Ta place est avec nous</h4>
+                    <p class="member-note">Un coup de main ponctuel ou régulier pour faire vivre les Bears.</p>
                   </div>
                 </article>
               </div>
@@ -699,7 +738,7 @@
             <p class="section-kicker">Partenaires</p>
             <h2 id="partners-title">Soutenir un club local qui fait <span>bouger Andenne.</span></h2>
             <p>
-              Aider les Bears, c'est soutenir du <strong>sport amateur</strong>,
+              Aider les Bears, c'est soutenir du <strong class="super-strong">sport amateur</strong>,
               des <strong>bénévoles</strong>, des jeunes, des adultes et une
               communauté qui porte les couleurs de la région sur le terrain.
               Votre entreprise gagne en visibilité locale tout en s'associant à
@@ -725,7 +764,7 @@
             <p class="section-kicker">Contact</p>
             <h2 id="contact-title">On te répond, puis on t'attend sur le terrain.</h2>
             <p>
-              Choisis le canal qui te ressemble. Pour un <strong>essai</strong>,
+              Choisis le canal qui te ressemble. Pour un <strong class="super-strong">essai</strong>,
               une <strong>question parent</strong>, un partenariat ou un coup de
               main bénévole, on te répond avec les prochaines étapes.
             </p>
@@ -876,6 +915,7 @@
     <footer class="site-footer">
       <div>
         <p>Copyright &copy; 2026 - Andenne Bears ASBL</p>
+        <p class="footer-note">Club affilié à la <a href="https://lffa.be/" target="_blank" rel="noopener">Ligue Francophone de Football Américain</a>.</p>
         <p class="footer-note">Site réalisé par <a href="https://mathieuluyten.be/" target="_blank" rel="noopener">mathieuluyten.be</a></p>
         <p class="footer-note">Portraits stylisés générés à partir des photos fournies pour la maquette du site.</p>
       </div>
@@ -943,6 +983,9 @@
         <span>Message</span>
       </button>
     </aside>
+    <button class="back-to-top" type="button" data-back-to-top aria-label="Remonter en haut">
+      <svg class="icon" aria-hidden="true"><use href="#icon-chevron-up"></use></svg>
+    </button>
     <script src="scripts/bears.js" defer></script>
     <!-- ChangeThis feedback is temporarily disabled until the flow is ready. -->
     <!--
