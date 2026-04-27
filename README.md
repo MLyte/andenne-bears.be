@@ -134,11 +134,15 @@ Si un transfert semble bloque, activer les logs FTP/FTPS detailles :
 ./scripts/deploy-ovh.sh --debug
 ```
 
-Uploader uniquement les fichiers modifies (compare taille et date distante quand disponible) :
+Uploader uniquement les fichiers modifies :
 
 ```bash
 ./scripts/deploy-ovh.sh --changed-only
 ```
+
+En mode `--changed-only`, le script maintient un manifeste distant
+`/www/.deploy-manifest-sha256.txt` (hash SHA-256 par fichier). Le premier run
+peut tout uploader, puis les runs suivants ignorent les fichiers inchanges.
 
 Forcer l'upload complet (comportement historique) :
 

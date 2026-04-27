@@ -41,6 +41,10 @@ USE_ACTIVE=0
 DRY_RUN=0
 DEBUG=0
 CHANGED_ONLY=0
+MANIFEST_NAME=".deploy-manifest-sha256.txt"
+REMOTE_MANIFEST_LOADED=0
+declare -A REMOTE_MANIFEST_HASHES=()
+declare -A LOCAL_MANIFEST_HASHES=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -167,20 +171,83 @@ parse_http_date_epoch() {
   echo ""
 }
 
+file_sha256() {
+  local file="$1"
+
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$file" | awk '{print $1}'
+    return
+  fi
+
+  if command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$file" | awk '{print $1}'
+    return
+  fi
+
+  echo "Missing sha256 utility (sha256sum or shasum)." >&2
+  exit 1
+}
+
+load_remote_manifest() {
+  local manifest_remote_url="$1"
+  local manifest_tmp="$2"
+  local line
+  local hash
+  local path
+
+  if ! curl "${CURL_ARGS[@]}" "$manifest_remote_url" -o "$manifest_tmp" >/dev/null 2>&1; then
+    return
+  fi
+
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    hash="${line%%  *}"
+    path="${line#*  }"
+    if [[ -n "$hash" && -n "$path" ]]; then
+      REMOTE_MANIFEST_HASHES["$path"]="$hash"
+    fi
+  done < "$manifest_tmp"
+
+  REMOTE_MANIFEST_LOADED=1
+}
+
+write_local_manifest() {
+  local output_file="$1"
+  local key
+
+  : > "$output_file"
+  for key in "${!LOCAL_MANIFEST_HASHES[@]}"; do
+    printf '%s  %s\n' "${LOCAL_MANIFEST_HASHES[$key]}" "$key" >> "$output_file"
+  done
+  sort -o "$output_file" "$output_file"
+}
+
 should_upload_file() {
   local local_file="$1"
-  local remote_url="$2"
+  local relative_path="$2"
+  local remote_url="$3"
 
   if [[ "$CHANGED_ONLY" -eq 0 ]]; then
     return 0
   fi
 
   local local_size
+  local local_hash
   local remote_size
   local local_epoch
   local remote_epoch
   local remote_last_modified
   local headers
+
+  local_hash="$(file_sha256 "$local_file")"
+  LOCAL_MANIFEST_HASHES["$relative_path"]="$local_hash"
+
+  if [[ "$REMOTE_MANIFEST_LOADED" -eq 1 ]]; then
+    if [[ "${REMOTE_MANIFEST_HASHES[$relative_path]:-}" == "$local_hash" ]]; then
+      return 1
+    fi
+    return 0
+  fi
 
   local_size="$(wc -c < "$local_file" | tr -d '[:space:]')"
   if ! headers="$(curl "${CURL_ARGS[@]}" --head "$remote_url" 2>/dev/null)"; then
@@ -348,6 +415,20 @@ echo "Auth: $( [[ "$NETRC_ACTIVE" -eq 1 ]] && echo "netrc ($NETRC_FILE)" || echo
 echo "Debug: $( [[ "$DEBUG" -eq 1 ]] && echo enabled || echo disabled )"
 echo "Changed-only: $( [[ "$CHANGED_ONLY" -eq 1 ]] && echo enabled || echo disabled )"
 
+manifest_remote_path="$REMOTE_PATH/$MANIFEST_NAME"
+manifest_remote_url="${PROTO}://${HOST}:${PORT}/$(urlencode_path "$manifest_remote_path")"
+manifest_local_tmp="$(mktemp)"
+trap 'rm -f "$manifest_local_tmp"' EXIT
+
+if [[ "$CHANGED_ONLY" -eq 1 && "$DRY_RUN" -eq 0 ]]; then
+  load_remote_manifest "$manifest_remote_url" "$manifest_local_tmp"
+  if [[ "$REMOTE_MANIFEST_LOADED" -eq 1 ]]; then
+    echo "Manifest: loaded remote hash list (${#REMOTE_MANIFEST_HASHES[@]} entries)"
+  else
+    echo "Manifest: not found remotely, first changed-only run will upload all files"
+  fi
+fi
+
 index=0
 for local_file in "${FILES[@]}"; do
   index=$((index + 1))
@@ -360,7 +441,7 @@ for local_file in "${FILES[@]}"; do
     continue
   fi
 
-  if ! should_upload_file "$local_file" "$remote_url"; then
+  if ! should_upload_file "$local_file" "$relative_path" "$remote_url"; then
     echo "SKIP     [${index}/${#FILES[@]}] ${relative_path} (unchanged)"
     continue
   fi
@@ -369,6 +450,12 @@ for local_file in "${FILES[@]}"; do
   curl "${CURL_ARGS[@]}" --ftp-create-dirs --upload-file "$local_file" "$remote_url"
   echo "DONE     [${index}/${#FILES[@]}] ${relative_path}"
 done
+
+if [[ "$DRY_RUN" -eq 0 && "$CHANGED_ONLY" -eq 1 ]]; then
+  write_local_manifest "$manifest_local_tmp"
+  curl "${CURL_ARGS[@]}" --ftp-create-dirs --upload-file "$manifest_local_tmp" "$manifest_remote_url"
+  echo "DONE     manifest ${MANIFEST_NAME}"
+fi
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   echo "Dry run complete. Nothing was uploaded."
