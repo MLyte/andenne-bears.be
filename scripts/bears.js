@@ -59,30 +59,35 @@ const profileSettings = {
     name: "Je veux essayer",
     ageRequired: true,
     messageRequired: false,
+    submitLabel: "Envoyer ma demande d'essai",
     messagePlaceholder: "Dis-nous ce que tu veux découvrir, ton expérience éventuelle et tes disponibilités.",
   },
   parent: {
     name: "Question parent",
     ageRequired: false,
     messageRequired: true,
+    submitLabel: "Envoyer ma question parent",
     messagePlaceholder: "Pose ta question et ajoute l'âge du jeune si c'est utile.",
   },
   partenariat: {
     name: "Partenariat",
     ageRequired: false,
     messageRequired: true,
+    submitLabel: "Envoyer ma demande partenaire",
     messagePlaceholder: "Explique le type de partenariat ou de soutien envisagé.",
   },
   benevolat: {
     name: "Bénévolat",
     ageRequired: false,
     messageRequired: true,
+    submitLabel: "Proposer mon aide",
     messagePlaceholder: "Dis-nous comment tu aimerais aider le club.",
   },
   autre: {
     name: "Autre demande",
     ageRequired: false,
     messageRequired: true,
+    submitLabel: "Envoyer ma demande",
     messagePlaceholder: "Explique ta demande en quelques lignes.",
   },
 };
@@ -135,6 +140,9 @@ const updateProfileRequirements = () => {
   setRequiredState(messageField, messageStatus, settings.messageRequired);
   if (messageField) {
     messageField.placeholder = settings.messagePlaceholder;
+  }
+  if (formSubmit) {
+    formSubmit.textContent = settings.submitLabel || "Envoyer ma demande";
   }
 };
 

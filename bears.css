@@ -693,6 +693,33 @@ h3 {
   margin-bottom: 0;
 }
 
+.audience-links {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.audience-links a {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(5, 5, 5, 0.16);
+  border-radius: 999px;
+  padding: 0.5rem 0.75rem;
+  color: var(--black);
+  background: rgba(255, 255, 255, 0.4);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.audience-links a:hover {
+  border-color: var(--black);
+  background: var(--black);
+  color: var(--cream);
+}
+
 .split {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
@@ -1197,6 +1224,34 @@ h3 {
 
 .section-parents {
   background: #ffffff;
+}
+
+.parent-points {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0;
+  margin: 1rem 0 0;
+  list-style: none;
+}
+
+.parent-points li {
+  position: relative;
+  padding-left: 1.35rem;
+  color: rgba(5, 5, 5, 0.72);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.parent-points li::before {
+  content: "";
+  position: absolute;
+  top: 0.58em;
+  left: 0;
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 999px;
+  background: var(--yellow);
+  box-shadow: 0 0 0 4px rgba(238, 207, 43, 0.18);
 }
 
 .feature-panel {
