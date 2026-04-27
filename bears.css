@@ -1322,6 +1322,29 @@ h3 {
   text-transform: uppercase;
 }
 
+.member-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.45rem;
+}
+
+.member-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.35rem;
+  padding: 0.18rem 0.42rem;
+  border: 1px solid rgba(5, 5, 5, 0.12);
+  border-radius: 999px;
+  color: rgba(5, 5, 5, 0.72);
+  background: rgba(238, 207, 43, 0.12);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .member-card h4 {
   margin: 0;
   color: var(--black);
