@@ -7,11 +7,20 @@ param(
   [switch] $Ssl,
   [switch] $Active,
   [switch] $DryRun,
+  [switch] $ChangedOnly,
+  [switch] $ForceAll,
   [switch] $SkipChangeThisSync
 )
 
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
+$ManifestName = ".deploy-manifest-sha256.txt"
+$RemoteManifestHashes = @{}
+$LocalManifestHashes = @{}
+
+if ($ForceAll) {
+  $ChangedOnly = $false
+}
 
 $ItemsToDeploy = @(
   ".ovhconfig",
@@ -164,6 +173,107 @@ function Send-FtpFile {
   $response.Close()
 }
 
+function Send-FtpBytes {
+  param([byte[]] $Bytes, [string] $RemoteFilePath)
+
+  $remoteDirectory = Split-Path $RemoteFilePath.Replace("/", "\") -Parent
+  if ($remoteDirectory) {
+    Ensure-RemoteDirectory -DirectoryPath $remoteDirectory.Replace("\", "/")
+  }
+
+  $request = New-FtpRequest -RemotePathValue $RemoteFilePath -Method ([Net.WebRequestMethods+Ftp]::UploadFile)
+  $request.ContentLength = $Bytes.Length
+  $stream = $request.GetRequestStream()
+  $stream.Write($Bytes, 0, $Bytes.Length)
+  $stream.Close()
+  $response = $request.GetResponse()
+  $response.Close()
+}
+
+function Receive-FtpTextFile {
+  param([string] $RemoteFilePath)
+
+  $request = New-FtpRequest -RemotePathValue $RemoteFilePath -Method ([Net.WebRequestMethods+Ftp]::DownloadFile)
+  try {
+    $response = $request.GetResponse()
+    try {
+      $stream = $response.GetResponseStream()
+      $reader = [IO.StreamReader]::new($stream, [Text.Encoding]::UTF8)
+      try {
+        return $reader.ReadToEnd()
+      } finally {
+        $reader.Close()
+      }
+    } finally {
+      $response.Close()
+    }
+  } catch [Net.WebException] {
+    $response = $_.Exception.Response
+    if ($response) {
+      $response.Close()
+    }
+    return $null
+  }
+}
+
+function Get-FileSha256 {
+  param([string] $LocalPath)
+
+  $sha = [Security.Cryptography.SHA256]::Create()
+  $stream = [IO.File]::OpenRead($LocalPath)
+  try {
+    $hashBytes = $sha.ComputeHash($stream)
+    return ([BitConverter]::ToString($hashBytes)).Replace("-", "").ToLowerInvariant()
+  } finally {
+    $stream.Close()
+    $sha.Dispose()
+  }
+}
+
+function Import-Manifest {
+  param([string] $Content)
+
+  $hashes = @{}
+  if (-not $Content) {
+    return $hashes
+  }
+
+  foreach ($line in ($Content -split "`r?`n")) {
+    if ($line -match "^([0-9a-fA-F]{64})  (.+)$") {
+      $hashes[$Matches[2]] = $Matches[1].ToLowerInvariant()
+    }
+  }
+
+  return $hashes
+}
+
+function ConvertTo-ManifestContent {
+  param([hashtable] $Hashes)
+
+  $lines = foreach ($key in ($Hashes.Keys | Sort-Object)) {
+    "$($Hashes[$key])  $key"
+  }
+
+  return ($lines -join "`n") + "`n"
+}
+
+function Test-ShouldUploadFile {
+  param([string] $LocalPath, [string] $RelativePath)
+
+  if (-not $ChangedOnly) {
+    return $true
+  }
+
+  $localHash = Get-FileSha256 -LocalPath $LocalPath
+  $LocalManifestHashes[$RelativePath] = $localHash
+
+  if (-not $RemoteManifestHashes.ContainsKey($RelativePath)) {
+    return $true
+  }
+
+  return $RemoteManifestHashes[$RelativePath] -ne $localHash
+}
+
 function Test-FtpLogin {
   $request = New-FtpRequest -RemotePathValue "" -Method ([Net.WebRequestMethods+Ftp]::PrintWorkingDirectory)
   try {
@@ -215,22 +325,48 @@ Write-Host "Deploy target: ftp://$HostName/$($RemotePath.Trim('/'))"
 Write-Host "Files: $($Files.Count)"
 Write-Host "TLS: $(if ($Ssl) { "enabled" } else { "disabled" })"
 Write-Host "FTP mode: $(if ($Active) { "active" } else { "passive" })"
+Write-Host "Changed-only: $(if ($ChangedOnly) { "enabled" } else { "disabled" })"
 
 if (-not $DryRun) {
   Test-FtpLogin
 }
 
+$remoteManifestFile = Join-RemotePath -Base $RemotePath -Child $ManifestName
+if ($ChangedOnly -and -not $DryRun) {
+  $manifestContent = Receive-FtpTextFile -RemoteFilePath $remoteManifestFile
+  $RemoteManifestHashes = Import-Manifest -Content $manifestContent
+  if ($RemoteManifestHashes.Count -gt 0) {
+    Write-Host "Manifest: loaded remote hash list ($($RemoteManifestHashes.Count) entries)"
+  } else {
+    Write-Host "Manifest: not found remotely, first changed-only run will upload all files"
+  }
+}
+
+$index = 0
 foreach ($file in $Files) {
+  $index += 1
   $relativePath = Get-RelativeDeployPath -BasePath $ProjectRoot -FilePath $file.FullName
   $remoteFile = Join-RemotePath -Base $RemotePath -Child $relativePath
 
   if ($DryRun) {
-    Write-Host "DRY RUN  $relativePath -> $remoteFile"
+    Write-Host "DRY RUN  [$index/$($Files.Count)] $relativePath -> $remoteFile"
     continue
   }
 
-  Write-Host "UPLOAD   $relativePath"
+  if (-not (Test-ShouldUploadFile -LocalPath $file.FullName -RelativePath $relativePath)) {
+    Write-Host "SKIP     [$index/$($Files.Count)] $relativePath (unchanged)"
+    continue
+  }
+
+  Write-Host "UPLOAD   [$index/$($Files.Count)] $relativePath"
   Send-FtpFile -LocalPath $file.FullName -RemoteFilePath $remoteFile
+  Write-Host "DONE     [$index/$($Files.Count)] $relativePath"
+}
+
+if ($ChangedOnly -and -not $DryRun) {
+  $manifestBytes = [Text.Encoding]::UTF8.GetBytes((ConvertTo-ManifestContent -Hashes $LocalManifestHashes))
+  Send-FtpBytes -Bytes $manifestBytes -RemoteFilePath $remoteManifestFile
+  Write-Host "DONE     manifest $ManifestName"
 }
 
 if ($DryRun) {

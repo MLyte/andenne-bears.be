@@ -39,6 +39,9 @@
       <symbol id="brand-instagram" viewBox="0 0 448 512">
         <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9s-58-34.4-93.9-36.2C279.5 31.3 168.6 31.3 131.6 33.4c-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2s34.4-58 36.2-93.9c2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
       </symbol>
+      <symbol id="brand-whatsapp" viewBox="0 0 448 512">
+        <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32 101.5 32 2 131.5 2 253.9c0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.5 224.1-221.9 0-59.3-25.2-115-67.1-157.1zM223.9 438.7h-.1c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3 18.6-68.1-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.5 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.5-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.5-19.4 19-19.4 46.3s19.9 53.7 22.6 57.4c2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+      </symbol>
       <!-- Lucide icon sprite -->
       <symbol id="icon-user-plus" viewBox="0 0 24 24">
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -143,7 +146,14 @@
         <a href="#contact"><svg class="icon"><use href="#icon-message-circle"></use></svg>Contact</a>
       </nav>
       <div class="header-social" aria-label="Réseaux sociaux">
-        <a href="https://www.facebook.com/andennebears" target="_blank" rel="noopener" aria-label="Facebook Andenne Bears">
+        <a
+          href="https://www.facebook.com/andennebears"
+          target="_blank"
+          rel="noopener"
+          aria-label="Facebook Andenne Bears"
+          data-facebook-link
+          data-app-url="fb://facewebmodal/f?href=https%3A%2F%2Fwww.facebook.com%2Fandennebears"
+        >
           <svg class="icon brand-icon" aria-hidden="true"><use href="#brand-facebook"></use></svg>
         </a>
         <a href="https://m.me/andennebears" target="_blank" rel="noopener" aria-label="Messenger Andenne Bears">
@@ -789,7 +799,12 @@
                 <h3>Suivre le club ou écrire en direct</h3>
               </div>
               <div class="instant-contact" aria-label="Contacts rapides">
-                <a href="https://www.facebook.com/andennebears" aria-label="Contacter les Bears sur Facebook">
+                <a
+                  href="https://www.facebook.com/andennebears"
+                  aria-label="Contacter les Bears sur Facebook"
+                  data-facebook-link
+                  data-app-url="fb://facewebmodal/f?href=https%3A%2F%2Fwww.facebook.com%2Fandennebears"
+                >
                   <span class="social-icon" aria-hidden="true">
                     <svg class="icon brand-icon"><use href="#brand-facebook"></use></svg>
                   </span>
@@ -823,6 +838,10 @@
             <input type="hidden" name="form_context" value="bears" />
             <input type="hidden" name="form_start" id="form-start" />
             <input type="hidden" name="csrf_token" id="csrf-token" />
+            <p class="contact-form-note">
+              Ce formulaire envoie un email au comit&eacute;. Pour une r&eacute;ponse plus rapide,
+              <button type="button" data-site-chat-open>ouvre Contact direct</button>.
+            </p>
             <div class="field">
               <label for="name">
                 <span>Nom et prénom</span>
@@ -936,55 +955,64 @@
       </div>
       <a href="#top">Retour en haut</a>
     </footer>
-    <aside class="site-chat" data-site-chat aria-label="Message au club Andenne Bears">
+    <aside class="site-chat" data-site-chat aria-label="Contact direct Andenne Bears">
       <section class="site-chat-panel" id="site-chat-panel" aria-labelledby="site-chat-title" hidden>
         <div class="site-chat-header">
           <img class="site-chat-avatar" src="images/logoBears.png" alt="" width="44" height="44" />
           <div class="site-chat-heading">
             <p class="site-chat-kicker">Andenne Bears</p>
-            <h2 id="site-chat-title">Message au club</h2>
+            <h2 id="site-chat-title">Contact direct</h2>
             <p class="site-chat-status">
               <span aria-hidden="true"></span>
-              Réponse via Messenger, email ou téléphone
+              Choisis ton canal social
             </p>
           </div>
-          <button class="site-chat-close" type="button" data-site-chat-close aria-label="Fermer le chat">
+          <button class="site-chat-close" type="button" data-site-chat-close aria-label="Fermer le panneau de contact">
             <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
           </button>
         </div>
         <div class="site-chat-thread" aria-live="polite">
-          <p class="site-chat-message is-club">Salut ! Laisse ton message ici. On te répond ensuite par le canal le plus pratique.</p>
-          <p class="site-chat-note">Ce formulaire n'est pas un chat Messenger natif, mais il arrive directement au club.</p>
+          <p class="site-chat-message is-club">&Eacute;cris-nous directement via le canal que tu utilises d&eacute;j&agrave;.</p>
+          <p class="site-chat-note">Si Messenger reste dans le navigateur, Instagram ou l'e-mail restent disponibles ci-dessous.</p>
         </div>
-        <form class="site-chat-form" id="chat-form" action="contact.php" method="post" novalidate>
-          <input type="hidden" name="form_context" value="bears" />
-          <input type="hidden" name="form_start" id="chat-form-start" />
-          <input type="hidden" name="csrf_token" id="chat-csrf-token" />
-          <input type="hidden" name="Profil" value="autre" />
-          <input type="hidden" name="Canal prefere" value="messenger" />
-          <input type="hidden" name="Age" value="" />
-          <label class="site-chat-field">
-            <span>Nom</span>
-            <input name="Nom" type="text" autocomplete="name" required />
-          </label>
-          <label class="site-chat-field">
-            <span>Contact</span>
-            <input name="Contact" type="text" autocomplete="off" placeholder="Pseudo, email ou téléphone" required />
-          </label>
-          <label class="site-chat-field">
-            <span>Message</span>
-            <textarea name="Message" rows="3" placeholder="Ta question, ton âge si tu viens essayer, tes disponibilités..." required></textarea>
-          </label>
-          <label class="honeypot" aria-hidden="true">
-            <span>Ne pas remplir</span>
-            <input type="text" name="company" tabindex="-1" autocomplete="off" />
-          </label>
-          <button class="button button-primary" type="submit">
-            <svg class="icon" aria-hidden="true"><use href="#icon-send"></use></svg>
-            Envoyer au club
-          </button>
-          <div class="site-chat-result" id="chat-result" hidden></div>
-        </form>
+        <div class="site-chat-actions" aria-label="Canaux de contact direct">
+          <a class="site-chat-action" href="https://m.me/andennebears" target="_blank" rel="noopener" aria-label="Ecrire aux Andenne Bears sur Messenger">
+            <span class="site-chat-action-icon" aria-hidden="true">
+              <svg class="icon brand-icon"><use href="#brand-messenger"></use></svg>
+            </span>
+            <span>
+              Messenger
+              <small>App ou navigateur</small>
+            </span>
+          </a>
+          <a class="site-chat-action" href="https://www.instagram.com/andennebears/" target="_blank" rel="noopener" aria-label="Ecrire aux Andenne Bears sur Instagram">
+            <span class="site-chat-action-icon" aria-hidden="true">
+              <svg class="icon brand-icon"><use href="#brand-instagram"></use></svg>
+            </span>
+            <span>
+              Instagram
+              <small>Contacte-nous sur notre compte</small>
+            </span>
+          </a>
+          <span class="site-chat-action is-disabled" aria-disabled="true">
+            <span class="site-chat-action-icon" aria-hidden="true">
+              <svg class="icon brand-icon"><use href="#brand-whatsapp"></use></svg>
+            </span>
+            <span>
+              WhatsApp
+              <small>Bient&ocirc;t disponible</small>
+            </span>
+          </span>
+          <a class="site-chat-action is-secondary" href="#contact" data-site-chat-close-panel>
+            <span class="site-chat-action-icon" aria-hidden="true">
+              <svg class="icon"><use href="#icon-send"></use></svg>
+            </span>
+            <span>
+              Envoyer un e-mail &agrave; la place
+              <small>Via le formulaire du comit&eacute;</small>
+            </span>
+          </a>
+        </div>
       </section>
       <button
         class="site-chat-toggle"
@@ -992,10 +1020,10 @@
         data-site-chat-toggle
         aria-controls="site-chat-panel"
         aria-expanded="false"
-        aria-label="Ouvrir le message au club"
+        aria-label="Ouvrir les contacts directs du club"
       >
-        <svg class="icon brand-icon" aria-hidden="true"><use href="#brand-messenger"></use></svg>
-        <span>Message</span>
+        <svg class="icon" aria-hidden="true"><use href="#icon-message-circle"></use></svg>
+        <span>Contact direct</span>
       </button>
     </aside>
     <button class="back-to-top" type="button" data-back-to-top aria-label="Remonter en haut">

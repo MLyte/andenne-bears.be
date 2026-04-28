@@ -164,4 +164,14 @@ Envoyer en FTPS :
 powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -Ssl
 ```
 
+Uploader uniquement les fichiers modifies :
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -Ssl -ChangedOnly
+```
+
+En mode `-ChangedOnly`, le script maintient le meme manifeste distant que la
+version bash : `/www/.deploy-manifest-sha256.txt`. Le premier run peut tout
+uploader, puis les runs suivants ignorent les fichiers inchanges.
+
 Si l'hebergement n'accepte que le FTP simple, ne pas ajouter `-Ssl`.
