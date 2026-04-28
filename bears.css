@@ -729,6 +729,10 @@ textarea:focus-visible {
   color: var(--gold);
 }
 
+.eyebrow span {
+  color: #fff;
+}
+
 .hero-logo {
   width: clamp(86px, 9vw, 112px);
   height: auto;
