@@ -725,8 +725,12 @@ textarea:focus-visible {
 }
 
 .eyebrow {
+  display: block;
+  max-width: min(100%, 25rem);
   margin-bottom: 1.25rem;
   color: var(--gold);
+  line-height: 1.35;
+  text-align: center;
 }
 
 .eyebrow span {
