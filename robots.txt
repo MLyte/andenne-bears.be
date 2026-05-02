@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /v0/
+
+Sitemap: https://www.andenne-bears.be/sitemap.xml

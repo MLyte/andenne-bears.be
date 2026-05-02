@@ -24,6 +24,8 @@ if ($ForceAll) {
 
 $ItemsToDeploy = @(
   ".ovhconfig",
+  "robots.txt",
+  "sitemap.xml",
   "index.html",
   "bears.css",
   "contact.php",
