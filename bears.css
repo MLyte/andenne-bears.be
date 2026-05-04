@@ -313,6 +313,13 @@ a {
   font-weight: 900;
 }
 
+.site-notice-separator {
+  display: inline-block;
+  margin: 0 0.35rem;
+  color: rgba(5, 5, 5, 0.28);
+  font-weight: 900;
+}
+
 .site-chat {
   --site-chat-edge: clamp(1rem, 3vw, 2rem);
   --site-chat-bottom: max(var(--site-chat-edge), env(safe-area-inset-bottom));
