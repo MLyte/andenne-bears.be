@@ -18,6 +18,8 @@ const siteChatPanel = document.querySelector("#site-chat-panel");
 const siteFooter = document.querySelector(".site-footer");
 const backToTop = document.querySelector("[data-back-to-top]");
 const facebookLinks = document.querySelectorAll("[data-facebook-link]");
+const gamedayNotice = document.querySelector("[data-gameday-notice]");
+const gamedayNoticeEnd = new Date("2026-05-10T12:00:00+02:00");
 
 const escapeHTML = (value) =>
   String(value).replace(/[&<>"']/g, (char) => ({
@@ -107,6 +109,19 @@ const profileSettings = {
 
 const requiredText = "Obligatoire";
 const optionalText = "Facultatif";
+
+const updateGamedayNotice = () => {
+  if (!gamedayNotice) {
+    return;
+  }
+
+  gamedayNotice.hidden = Date.now() >= gamedayNoticeEnd.getTime();
+};
+
+updateGamedayNotice();
+if (gamedayNotice && Date.now() < gamedayNoticeEnd.getTime()) {
+  window.setTimeout(updateGamedayNotice, gamedayNoticeEnd.getTime() - Date.now());
+}
 
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
   || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
