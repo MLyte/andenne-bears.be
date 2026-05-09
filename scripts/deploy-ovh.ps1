@@ -9,7 +9,8 @@ param(
   [switch] $DryRun,
   [switch] $ChangedOnly,
   [switch] $ForceAll,
-  [switch] $SkipChangeThisSync
+  [switch] $SkipChangeThisSync,
+  [int] $UploadAttempts = 3
 )
 
 $ErrorActionPreference = "Stop"
@@ -20,6 +21,10 @@ $LocalManifestHashes = @{}
 
 if ($ForceAll) {
   $ChangedOnly = $false
+}
+
+if (-not $PSBoundParameters.ContainsKey("ChangedOnly") -and -not $ForceAll) {
+  $ChangedOnly = $true
 }
 
 $ItemsToDeploy = @(
@@ -157,25 +162,7 @@ function Ensure-RemoteDirectory {
   }
 }
 
-function Send-FtpFile {
-  param([string] $LocalPath, [string] $RemoteFilePath)
-
-  $remoteDirectory = Split-Path $RemoteFilePath.Replace("/", "\") -Parent
-  if ($remoteDirectory) {
-    Ensure-RemoteDirectory -DirectoryPath $remoteDirectory.Replace("\", "/")
-  }
-
-  $request = New-FtpRequest -RemotePathValue $RemoteFilePath -Method ([Net.WebRequestMethods+Ftp]::UploadFile)
-  $bytes = [IO.File]::ReadAllBytes($LocalPath)
-  $request.ContentLength = $bytes.Length
-  $stream = $request.GetRequestStream()
-  $stream.Write($bytes, 0, $bytes.Length)
-  $stream.Close()
-  $response = $request.GetResponse()
-  $response.Close()
-}
-
-function Send-FtpBytes {
+function Send-FtpPayload {
   param([byte[]] $Bytes, [string] $RemoteFilePath)
 
   $remoteDirectory = Split-Path $RemoteFilePath.Replace("/", "\") -Parent
@@ -183,13 +170,49 @@ function Send-FtpBytes {
     Ensure-RemoteDirectory -DirectoryPath $remoteDirectory.Replace("\", "/")
   }
 
-  $request = New-FtpRequest -RemotePathValue $RemoteFilePath -Method ([Net.WebRequestMethods+Ftp]::UploadFile)
-  $request.ContentLength = $Bytes.Length
-  $stream = $request.GetRequestStream()
-  $stream.Write($Bytes, 0, $Bytes.Length)
-  $stream.Close()
-  $response = $request.GetResponse()
-  $response.Close()
+  for ($attempt = 1; $attempt -le $UploadAttempts; $attempt += 1) {
+    $stream = $null
+    $response = $null
+
+    try {
+      $request = New-FtpRequest -RemotePathValue $RemoteFilePath -Method ([Net.WebRequestMethods+Ftp]::UploadFile)
+      $request.ContentLength = $Bytes.Length
+      $stream = $request.GetRequestStream()
+      $stream.Write($Bytes, 0, $Bytes.Length)
+      $stream.Close()
+      $stream = $null
+      $response = $request.GetResponse()
+      $response.Close()
+      return
+    } catch {
+      if ($stream) {
+        $stream.Close()
+      }
+
+      if ($response) {
+        $response.Close()
+      }
+
+      if ($attempt -ge $UploadAttempts) {
+        throw
+      }
+
+      Write-Host "RETRY    $RemoteFilePath after upload error: $($_.Exception.Message)"
+      Start-Sleep -Seconds ([Math]::Min(10, 2 * $attempt))
+    }
+  }
+}
+
+function Send-FtpFile {
+  param([string] $LocalPath, [string] $RemoteFilePath)
+
+  Send-FtpPayload -Bytes ([IO.File]::ReadAllBytes($LocalPath)) -RemoteFilePath $RemoteFilePath
+}
+
+function Send-FtpBytes {
+  param([byte[]] $Bytes, [string] $RemoteFilePath)
+
+  Send-FtpPayload -Bytes $Bytes -RemoteFilePath $RemoteFilePath
 }
 
 function Receive-FtpTextFile {
