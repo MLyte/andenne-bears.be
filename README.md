@@ -1,21 +1,22 @@
 # Andenne Bears
 
-Depot du site des Andenne Bears.
+Depot du site public des Andenne Bears.
 
-## Voir le site en local
+Le site est volontairement simple : une page HTML statique, une feuille CSS,
+un script JavaScript cote navigateur, et deux endpoints PHP pour les formulaires
+ou integrations serveur.
 
-L'etat actuel du site est une page HTML statique. Il n'y a pas encore de build,
-de framework ou de dependances a installer.
+## Lancer en local
 
-Depuis ce dossier, ouvrir simplement :
+Il n'y a pas de build, pas de framework et pas de dependances a installer.
+
+Pour une verification rapide, ouvrir directement :
 
 ```text
 index.html
 ```
 
-Sur Windows, on peut double-cliquer sur le fichier `index.html`.
-
-Option avec un petit serveur local :
+Pour tester avec un petit serveur local :
 
 ```powershell
 python -m http.server 8000
@@ -27,78 +28,90 @@ Puis ouvrir :
 http://localhost:8000/
 ```
 
+Le formulaire de contact et les endpoints PHP ne fonctionneront completement que
+sur un serveur avec PHP actif.
+
+## Structure
+
+- `index.html` : page principale du site.
+- `bears.css` : styles du site.
+- `scripts/bears.js` : interactions front, formulaire de contact, navigation et panneau de contact.
+- `contact.php` : endpoint du formulaire de contact.
+- `changethis.php` : endpoint PHP historique pour le flux ChangeThis self-hosted / GitHub issues.
+- `config/*.example.php` : exemples de configuration locale.
+- `images/` : photos, logo, favicon et visuels sociaux.
+- `fonts/` : polices embarquees.
+- `docs/` : contenus de support, dont les posts de lancement.
+- `v0/` : ancienne version conservee comme reference.
+
+Les documents `refonte-contenu-andenne-bears.md`,
+`designer-ux-architecture.md`, `designer-ui-direction-visuelle.md` et
+`brief-binome-web-designers.md` documentent les choix de refonte.
+
+## Configuration PHP
+
+Les fichiers de configuration reels ne sont pas fournis par les exemples.
+
+Pour le formulaire de contact :
+
+```text
+config/contact-config.php
+```
+
+Voir `config/contact-config.example.php`.
+
+Pour l'ancien endpoint ChangeThis local :
+
+```text
+config/changethis-config.php
+```
+
+Voir `config/changethis-config.example.php`.
+
 ## ChangeThis
 
-Le site embarque le widget ChangeThis via :
+L'integration active du site charge le widget heberge directement dans le
+`<head>` de `index.html` :
 
-- `scripts/changethis-widget.js`
-- `scripts/changethis-init.js`
+```html
+<script src="https://app.changethis.dev/widget.js" data-project="ct_146aeb29a18049799d9d9cd474dbceab" data-locale="fr" data-position="bottom-right" data-button-variant="subtle" data-reporter-fields="optional"></script>
+```
 
-En local, `changethis-init.js` envoie les retours vers `http://localhost:3000/api/public/feedback`.
-En production, il utilise `https://app.changethis.dev/api/public/feedback`.
+Les anciens fichiers locaux `scripts/changethis-widget.js`,
+`scripts/changethis-init.js` et `scripts/vendor/changethis-widget.global.js`
+sont conserves pour le flux self-hosted et la synchronisation depuis le projet
+ChangeThis, mais ils ne sont plus charges par `index.html`.
 
-Pour forcer un endpoint pendant un test, definir `window.CHANGETHIS_ENDPOINT`
-avant le chargement de `scripts/changethis-init.js`.
+## Bannieres temporaires
 
-## Fichiers principaux
+La banniere `Nouveau site` existe encore dans `index.html`, mais elle est
+actuellement masquee avec l'attribut `hidden`. Pour la reactiver, retirer
+simplement cet attribut sur le bloc `.site-notice`.
 
-- `index.html` : page actuelle du site.
-- `bears.css` : styles actuels.
-- `scripts/` : scripts du site, dont le widget ChangeThis.
-- `images/` : logo, favicon et fond.
-- `fonts/` : polices utilisees par le site actuel.
-- `refonte-contenu-andenne-bears.md` : audit de contenu et refonte.
-- `designer-ux-architecture.md` : proposition UX.
-- `designer-ui-direction-visuelle.md` : proposition UI.
-- `brief-binome-web-designers.md` : synthese pour le binome de designers.
-
-## Deployer sur OVH en FTP/FTPS
+## Deployer sur OVH
 
 Deux scripts sont disponibles :
 
-- `scripts/deploy-ovh.ps1` (PowerShell, Windows)
-- `scripts/deploy-ovh.sh` (bash + `curl`, Linux/macOS)
+- `scripts/deploy-ovh.ps1` pour Windows / PowerShell.
+- `scripts/deploy-ovh.sh` pour Linux/macOS avec `curl`.
 
-Les scripts envoient les fichiers publics suivants :
+Avant un envoi reel, lancer toujours un dry-run.
 
-- `.ovhconfig`
-- `index.html`
-- `bears.css`
-- `contact.php`
-- `config/contact-config.php` (si present)
-- `fonts/`
-- `images/`
-- `scripts/`
+PowerShell :
 
-### Mode recommande (safe + sans saisie manuelle)
-
-Creer un fichier local `.ovh-ftp.netrc` (non versionne) :
-
-```text
-machine ftp.clusterXXX.hosting.ovh.net
-login ton-login-ovh
-password ton-mot-de-passe
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -DryRun
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -Ssl
 ```
 
-Puis proteger le fichier :
-
-```bash
-chmod 600 .ovh-ftp.netrc
-```
-
-Ensuite, il suffit de lancer :
+Bash :
 
 ```bash
 ./scripts/deploy-ovh.sh --dry-run
 ./scripts/deploy-ovh.sh
 ```
 
-Le script utilisera automatiquement `.ovh-ftp.netrc` (ou `OVH_FTP_NETRC`) et refusera un fichier avec des permissions trop ouvertes.
-Il affiche aussi une progression `[x/N]` pour chaque fichier (`UPLOAD` puis `DONE`).
-Pour OVH, utiliser le port `21` (FTP ou FTPS explicite).
-Les chemins distants sont encodes automatiquement (`%20`), donc les noms de fichiers avec espaces fonctionnent.
-
-### Variables d'environnement (alternative)
+Les identifiants peuvent etre fournis via variables d'environnement :
 
 ```bash
 export OVH_FTP_HOST="ftp.clusterXXX.hosting.ovh.net"
@@ -108,70 +121,23 @@ export OVH_FTP_PATH="/www"
 export OVH_FTP_PORT="21"
 ```
 
-### Linux/macOS (bash)
+Ou via un fichier local `.ovh-ftp.netrc` non versionne :
 
-Envoyer en FTPS (par defaut) :
-
-```bash
-./scripts/deploy-ovh.sh
+```text
+machine ftp.clusterXXX.hosting.ovh.net
+login ton-login-ovh
+password ton-mot-de-passe
 ```
 
-Basculer en FTP simple si necessaire :
+Options utiles :
 
-```bash
-./scripts/deploy-ovh.sh --ftp
+- `--changed-only` ou `-ChangedOnly` : uploader uniquement les fichiers modifies.
+- `--force-all` : forcer un upload complet avec le script bash.
+- `--debug` : activer les logs FTP/FTPS detailles avec le script bash.
+- `-SkipChangeThisSync` : eviter la synchronisation du bundle ChangeThis local avec le script PowerShell.
+
+Le mode changed-only utilise le manifeste distant :
+
+```text
+/www/.deploy-manifest-sha256.txt
 ```
-
-Forcer explicitement le port OVH :
-
-```bash
-./scripts/deploy-ovh.sh --port 21
-```
-
-Si un transfert semble bloque, activer les logs FTP/FTPS detailles :
-
-```bash
-./scripts/deploy-ovh.sh --debug
-```
-
-Uploader uniquement les fichiers modifies :
-
-```bash
-./scripts/deploy-ovh.sh --changed-only
-```
-
-En mode `--changed-only`, le script maintient un manifeste distant
-`/www/.deploy-manifest-sha256.txt` (hash SHA-256 par fichier). Le premier run
-peut tout uploader, puis les runs suivants ignorent les fichiers inchanges.
-
-Forcer l'upload complet (comportement historique) :
-
-```bash
-./scripts/deploy-ovh.sh --force-all
-```
-
-### Windows (PowerShell)
-
-Verifier sans envoyer :
-
-```powershell
-powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -DryRun
-```
-
-Envoyer en FTPS :
-
-```powershell
-powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -Ssl
-```
-
-Uploader uniquement les fichiers modifies :
-
-```powershell
-powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -Ssl -ChangedOnly
-```
-
-En mode `-ChangedOnly`, le script maintient le meme manifeste distant que la
-version bash : `/www/.deploy-manifest-sha256.txt`. Le premier run peut tout
-uploader, puis les runs suivants ignorent les fichiers inchanges.
-
-Si l'hebergement n'accepte que le FTP simple, ne pas ajouter `-Ssl`.
