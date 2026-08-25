@@ -179,7 +179,7 @@ const validateContactValue = () => {
     return true;
   }
 
-  const selectedChannel = contactMethod?.value || "messenger";
+  const selectedChannel = contactMethod?.value || "telephone";
   const value = contactValue.value.trim();
   let validationMessage = "";
 
@@ -214,8 +214,8 @@ const setRequiredState = (field, status, isRequired) => {
 };
 
 const updateContactField = () => {
-  const selectedChannel = contactMethod?.value || "messenger";
-  const settings = channelSettings[selectedChannel] || channelSettings.messenger;
+  const selectedChannel = contactMethod?.value || "telephone";
+  const settings = channelSettings[selectedChannel] || channelSettings.telephone;
   if (contactValueLabel) {
     contactValueLabel.textContent = settings.label;
   }

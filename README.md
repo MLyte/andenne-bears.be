@@ -1,22 +1,27 @@
 # Andenne Bears
 
-Depot du site public des Andenne Bears.
+Depot du site public des Andenne Bears : une page statique, des assets, un
+script front et quelques endpoints PHP pour les besoins serveur.
 
-Le site est volontairement simple : une page HTML statique, une feuille CSS,
-un script JavaScript cote navigateur, et deux endpoints PHP pour les formulaires
-ou integrations serveur.
+## Etat Actuel
 
-## Lancer en local
+- Site sans build ni dependances npm.
+- Entree principale : `index.html`.
+- Styles : `bears.css`.
+- JavaScript front : `scripts/bears.js`.
+- Formulaire de contact : POST vers `contact.php`.
+- Widget feedback actif : script heberge ChangeThis dans le `<head>` de `index.html`.
+- Banniere `Nouveau site` : encore dans le HTML, mais masquee temporairement avec `hidden`.
 
-Il n'y a pas de build, pas de framework et pas de dependances a installer.
+## Lancer En Local
 
-Pour une verification rapide, ouvrir directement :
+Pour relire la page sans serveur :
 
 ```text
 index.html
 ```
 
-Pour tester avec un petit serveur local :
+Pour servir les assets comme en production :
 
 ```powershell
 python -m http.server 8000
@@ -28,76 +33,83 @@ Puis ouvrir :
 http://localhost:8000/
 ```
 
-Le formulaire de contact et les endpoints PHP ne fonctionneront completement que
-sur un serveur avec PHP actif.
+Le formulaire de contact et les endpoints PHP demandent un serveur PHP. Avec le
+serveur Python, la page s'affiche, mais les soumissions serveur ne sont pas
+representatives.
 
-## Structure
+## Fichiers Importants
 
-- `index.html` : page principale du site.
-- `bears.css` : styles du site.
-- `scripts/bears.js` : interactions front, formulaire de contact, navigation et panneau de contact.
-- `contact.php` : endpoint du formulaire de contact.
-- `changethis.php` : endpoint PHP historique pour le flux ChangeThis self-hosted / GitHub issues.
-- `config/*.example.php` : exemples de configuration locale.
-- `images/` : photos, logo, favicon et visuels sociaux.
-- `fonts/` : polices embarquees.
-- `docs/` : contenus de support, dont les posts de lancement.
-- `v0/` : ancienne version conservee comme reference.
+- `index.html` : structure de la page, SEO, script ChangeThis heberge.
+- `bears.css` : styles complets du site.
+- `scripts/bears.js` : menu, ancres, formulaire, panneau de contact et logique UI.
+- `contact.php` : validation, rate-limit et envoi du formulaire de contact.
+- `changethis.php` : ancien endpoint ChangeThis local vers GitHub issues.
+- `robots.txt` et `sitemap.xml` : indexation.
+- `config/contact-config.example.php` : modele de config contact.
+- `config/changethis-config.example.php` : modele pour l'ancien endpoint ChangeThis local.
+- `scripts/deploy-ovh.ps1` : deploiement OVH principal sous Windows.
+- `scripts/deploy-ovh.sh` : deploiement OVH bash.
+- `v0/` : ancienne version conservee comme archive de reference.
 
-Les documents `refonte-contenu-andenne-bears.md`,
-`designer-ux-architecture.md`, `designer-ui-direction-visuelle.md` et
-`brief-binome-web-designers.md` documentent les choix de refonte.
+Les documents de conception (`refonte-contenu-andenne-bears.md`,
+`designer-ux-architecture.md`, `designer-ui-direction-visuelle.md`,
+`brief-binome-web-designers.md`) sont des notes de refonte, pas du code runtime.
 
-## Configuration PHP
+## Configuration Serveur
 
-Les fichiers de configuration reels ne sont pas fournis par les exemples.
+Les fichiers reels de configuration ne sont pas versionnes.
 
-Pour le formulaire de contact :
+Pour activer le formulaire de contact, creer :
 
 ```text
 config/contact-config.php
 ```
 
-Voir `config/contact-config.example.php`.
+a partir de :
 
-Pour l'ancien endpoint ChangeThis local :
+```text
+config/contact-config.example.php
+```
+
+Pour l'ancien endpoint local ChangeThis, creer si necessaire :
 
 ```text
 config/changethis-config.php
 ```
 
-Voir `config/changethis-config.example.php`.
+a partir de :
+
+```text
+config/changethis-config.example.php
+```
+
+Le token GitHub attendu par cet exemple vient de `GITHUB_ISSUES_TOKEN`.
 
 ## ChangeThis
 
-L'integration active du site charge le widget heberge directement dans le
-`<head>` de `index.html` :
+L'integration active ne charge plus le bundle local. Elle utilise :
 
 ```html
 <script src="https://app.changethis.dev/widget.js" data-project="ct_146aeb29a18049799d9d9cd474dbceab" data-locale="fr" data-position="bottom-right" data-button-variant="subtle" data-reporter-fields="optional"></script>
 ```
 
-Les anciens fichiers locaux `scripts/changethis-widget.js`,
-`scripts/changethis-init.js` et `scripts/vendor/changethis-widget.global.js`
-sont conserves pour le flux self-hosted et la synchronisation depuis le projet
-ChangeThis, mais ils ne sont plus charges par `index.html`.
+Les fichiers suivants restent dans le depot pour l'ancien flux self-hosted et la
+synchronisation manuelle du bundle :
 
-## Bannieres temporaires
+- `changethis.php`
+- `scripts/changethis-widget.js`
+- `scripts/changethis-init.js`
+- `scripts/vendor/changethis-widget.global.js`
+- `scripts/sync-changethis-widget.ps1`
 
-La banniere `Nouveau site` existe encore dans `index.html`, mais elle est
-actuellement masquee avec l'attribut `hidden`. Pour la reactiver, retirer
-simplement cet attribut sur le bloc `.site-notice`.
+Ils ne sont pas appeles par `index.html` tant que le script heberge reste en
+place.
 
-## Deployer sur OVH
+## Deploiement OVH
 
-Deux scripts sont disponibles :
+Faire un dry-run avant tout envoi reel.
 
-- `scripts/deploy-ovh.ps1` pour Windows / PowerShell.
-- `scripts/deploy-ovh.sh` pour Linux/macOS avec `curl`.
-
-Avant un envoi reel, lancer toujours un dry-run.
-
-PowerShell :
+PowerShell, recommande sur cette machine :
 
 ```powershell
 powershell.exe -ExecutionPolicy Bypass -File .\scripts\deploy-ovh.ps1 -DryRun
@@ -111,7 +123,7 @@ Bash :
 ./scripts/deploy-ovh.sh
 ```
 
-Les identifiants peuvent etre fournis via variables d'environnement :
+Variables d'environnement supportees :
 
 ```bash
 export OVH_FTP_HOST="ftp.clusterXXX.hosting.ovh.net"
@@ -121,23 +133,32 @@ export OVH_FTP_PATH="/www"
 export OVH_FTP_PORT="21"
 ```
 
-Ou via un fichier local `.ovh-ftp.netrc` non versionne :
+Le script bash peut aussi utiliser `.ovh-ftp.netrc` ou `OVH_FTP_NETRC`.
 
-```text
-machine ftp.clusterXXX.hosting.ovh.net
-login ton-login-ovh
-password ton-mot-de-passe
-```
+Attention : les deux scripts n'ont pas exactement la meme liste de fichiers.
+
+- PowerShell envoie notamment `.ovhconfig`, `robots.txt`, `sitemap.xml`,
+  `index.html`, `bears.css`, `contact.php`, `changethis.php`, `config/contact-config.php`,
+  `fonts/`, `images/`, `scripts/` et, si present, `config/changethis-config.php`.
+- Bash envoie `.ovhconfig`, `index.html`, `bears.css`, `contact.php`,
+  `config/contact-config.php`, `fonts/`, `images/` et `scripts/`.
 
 Options utiles :
 
-- `--changed-only` ou `-ChangedOnly` : uploader uniquement les fichiers modifies.
-- `--force-all` : forcer un upload complet avec le script bash.
-- `--debug` : activer les logs FTP/FTPS detailles avec le script bash.
-- `-SkipChangeThisSync` : eviter la synchronisation du bundle ChangeThis local avec le script PowerShell.
+- `-ChangedOnly` / `--changed-only` : envoyer uniquement les fichiers modifies.
+- `-ForceAll` / `--force-all` : forcer un upload complet.
+- `-SkipChangeThisSync` : PowerShell uniquement, evite la synchronisation du bundle ChangeThis local.
+- `--debug` : bash uniquement, logs FTP/FTPS detailles.
 
-Le mode changed-only utilise le manifeste distant :
+Le mode changed-only s'appuie sur le manifeste distant :
 
 ```text
 /www/.deploy-manifest-sha256.txt
 ```
+
+## Maintenance Rapide
+
+- Reactiver la banniere : retirer `hidden` du bloc `.site-notice` dans `index.html`.
+- Modifier le widget feedback : changer les attributs `data-*` du script ChangeThis dans le `<head>`.
+- Modifier le contact : ajuster le HTML du formulaire, `scripts/bears.js`, puis verifier `contact.php` si les champs serveur changent.
+- Mettre a jour l'indexation : modifier `robots.txt` ou `sitemap.xml`, puis deployer.

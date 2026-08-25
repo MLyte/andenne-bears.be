@@ -244,8 +244,6 @@ if ($isBearsForm) {
         'autre' => 'Autre demande',
     ];
     $channelLabels = [
-        'messenger' => 'Messenger',
-        'instagram' => 'Instagram',
         'telephone' => 'Téléphone',
         'email' => 'Email',
     ];
@@ -253,7 +251,7 @@ if ($isBearsForm) {
 
     $profile = trim((string) ($_POST['Profil'] ?? 'essai'));
     $age = trim((string) ($_POST['Age'] ?? ''));
-    $channel = trim((string) ($_POST['Canal prefere'] ?? 'messenger'));
+    $channel = trim((string) ($_POST['Canal prefere'] ?? 'telephone'));
     $contact = trim((string) ($_POST['Contact'] ?? ''));
     $profileLabel = $profileLabels[$profile] ?? 'Autre demande';
     $channelLabel = $channelLabels[$channel] ?? '';
