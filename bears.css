@@ -1922,6 +1922,22 @@ h3 {
   object-fit: contain;
 }
 
+.venue-partner-banner {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.venue-partner.venue-partner-banner > .venue-partner-label {
+  display: block;
+}
+
+.venue-partner.venue-partner-banner img {
+  display: block;
+  width: 100%;
+  max-height: none;
+  height: auto;
+}
+
 .venue-partner-logo-light {
   width: 104px;
 }
