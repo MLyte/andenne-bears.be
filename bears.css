@@ -885,6 +885,128 @@ h3 {
   margin: 0 auto;
 }
 
+.section.promotion-section {
+  padding-block: clamp(2rem, 4vw, 3.5rem);
+  border-top: 3px solid var(--gold);
+  background: var(--gold);
+  color: var(--black);
+}
+
+.promotion-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.promotion-section .section-kicker,
+.promotion-section h2 span {
+  color: var(--black);
+}
+
+.promotion-section h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.95rem, 3.5vw, 2.8rem);
+  line-height: 1.12;
+}
+
+.promotion-section h2 span {
+  white-space: nowrap;
+}
+
+.promotion-section .super-strong {
+  background: var(--black);
+  color: var(--cream);
+}
+
+.promotion-copy p {
+  margin-bottom: 0.75rem;
+  color: rgba(5, 5, 5, 0.85);
+}
+
+.promotion-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.promotion-copy strong {
+  color: var(--black);
+  font-weight: 600;
+}
+
+.promotion-press {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.promotion-press-label {
+  flex-basis: 100%;
+  color: rgba(5, 5, 5, 0.75);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.promotion-press a {
+  padding-block: 0.25rem;
+  color: var(--black);
+  font-weight: 600;
+  text-underline-offset: 0.2em;
+}
+
+.promotion-press a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.promotion-press a:focus-visible {
+  outline: 2px solid var(--black);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.promotion-press a span {
+  color: rgba(5, 5, 5, 0.75);
+  font-weight: 400;
+}
+
+.promotion-join {
+  grid-column: 1 / -1;
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+}
+
+.promotion-join a {
+  display: inline-block;
+  padding-block: 0.25rem;
+  color: var(--red);
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.promotion-join a:hover {
+  color: var(--black);
+}
+
+.promotion-join a:focus-visible {
+  outline: 2px solid var(--black);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.promotion-section + .section-alert {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.promotion-section + .section-alert .alert-card {
+  margin-top: 0;
+}
+
 .section-heading {
   max-width: 760px;
   margin-bottom: 2rem;
@@ -2413,6 +2535,7 @@ h3 {
   }
 
   .alert-card,
+  .promotion-inner,
   .split,
   .reverse,
   .contact-grid,
