@@ -1,5 +1,6 @@
 .publish-mathieuluyten/
 config/contact-config.php
+config/family-day-config.php
 .andenne-*.log
 .ovh-local.ps1
 .ovh-ftp.netrc

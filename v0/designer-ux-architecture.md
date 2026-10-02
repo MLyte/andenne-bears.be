@@ -366,7 +366,7 @@ Informations a obtenir avant design final ou mise en ligne :
 
 - Adresse officielle du terrain actuel.
 - Adresse du terrain habituel si differente.
-- Confirmation d'un lieu temporaire eventuel a Evelette-Jallet / Ohey.
+- Confirmation d'un lieu temporaire eventuel a Évelette-Jallet / Ohey.
 - Horaires actuels par discipline.
 - Date ou periode de fin des travaux, si le terrain est en renovation.
 - Categories actives : U13, U16, seniors, tackle, flag, autres.

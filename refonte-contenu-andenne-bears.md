@@ -215,7 +215,7 @@ Annuaire de la Ville d'Andenne :
 LFFA :
 
 - Site d'entrainement en renovation.
-- Entrainements temporairement sur le terrain d'Evelette-Jallet, rue du Tige, Ohey, jusqu'a la fin des travaux.
+- Entrainements temporairement sur le terrain d'Évelette-Jallet, rue du Tige, Ohey, jusqu'a la fin des travaux.
 - Tackle : mercredi et vendredi de 19h30 a 21h30.
 - Flag football : mardi de 18h30 a 20h et samedi de 10h a 12h.
 - Adresse principale affichee : Rue Dr Melin 14, 5300 Andenne.
@@ -491,7 +491,7 @@ Les deux designers doivent converger sur :
 - Conditions d'essai.
 - Cotisation ou fourchette indicative, si communicable.
 - Confirmation des informations publiees par la Ville d'Andenne et la LFFA.
-- Confirmation du lieu temporaire eventuel a Evelette-Jallet / Ohey.
+- Confirmation du lieu temporaire eventuel a Évelette-Jallet / Ohey.
 - Confirmation du lieu habituel : Andenne Arena, Rue de Halbosart, ou Rue Dr Melin.
 - Photos recentes en haute qualite.
 - Logos partenaires.

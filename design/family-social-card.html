@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8" />
+<title>Visuel de partage — journée Bears</title>
+<style>
+  @font-face { font-family: Montserrat; src: url('../fonts/Montserrat-900.ttf'); font-weight: 900; }
+  @font-face { font-family: Montserrat; src: url('../fonts/Montserrat-700.ttf'); font-weight: 700; }
+  @font-face { font-family: City; src: url('../fonts/BertholdCityBold.ttf'); font-weight: 700; }
+  * { box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; margin: 0; overflow: hidden; }
+  body { font-family: Montserrat, Arial, sans-serif; color: #fff; background: #050505; }
+  .card { position: relative; width: 1200px; height: 630px; overflow: hidden; border-top: 14px solid #eecf2b; }
+  .photo { position: absolute; inset: 0 0 0 390px; background: url('../images/family-flag-teams-2026-v2.png') 50% 48% / cover no-repeat; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(90deg, #050505 0%, #050505 31%, rgba(5,5,5,.88) 46%, rgba(5,5,5,.35) 72%, rgba(5,5,5,.13) 100%); }
+  .brand { position: absolute; top: 48px; left: 70px; display: flex; align-items: center; gap: 14px; font-size: 20px; font-weight: 900; letter-spacing: .06em; }
+  .brand img { width: 54px; height: 54px; object-fit: contain; }
+  .date { position: absolute; top: 48px; right: 62px; padding: 13px 18px 10px; background: #eecf2b; color: #050505; font-family: City, Impact, sans-serif; font-size: 35px; line-height: 1; white-space: nowrap; }
+  .content { position: absolute; left: 70px; top: 162px; max-width: 800px; }
+  .eyebrow { margin: 0 0 18px; color: #eecf2b; font-size: 19px; font-weight: 900; letter-spacing: .075em; text-transform: uppercase; }
+  h1 { margin: 0; font-size: 82px; font-weight: 900; line-height: .99; letter-spacing: -.055em; }
+  h1 span { color: #eecf2b; }
+  .venue { margin: 24px 0 0; font-size: 24px; font-weight: 900; }
+  .program { position: absolute; right: 0; bottom: 0; left: 0; display: flex; align-items: center; gap: 22px; height: 93px; padding: 0 70px; background: #eecf2b; color: #050505; font-size: 23px; font-weight: 900; white-space: nowrap; }
+  .program b { font-family: City, Impact, sans-serif; font-size: 32px; }
+  .program i { width: 8px; height: 8px; border-radius: 50%; background: #050505; }
+</style>
+<main class="card">
+  <div class="photo"></div><div class="shade"></div>
+  <div class="brand"><img src="../images/logoBears.png" alt="" />ANDENNE BEARS</div>
+  <div class="date">25 OCT 2026</div>
+  <div class="content">
+    <p class="eyebrow">Une journée à partager</p>
+    <h1>Journée<br /><span>Bears</span></h1>
+    <p class="venue">Terrain d’Évelette</p>
+  </div>
+  <div class="program"><b>9 H</b> FLAG <i></i> <b>13 H</b> BARBECUE <i></i> <b>14 H 30</b> NFL PARIS GAME</div>
+</main>
+</html>

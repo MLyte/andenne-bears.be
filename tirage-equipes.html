@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Tirage des équipes · Journée familiale | Andenne Bears</title>
+  <link rel="icon" href="images/favicon.png" />
+  <link rel="stylesheet" href="bears.css?v=family-2026-15" />
+  <script type="module" src="scripts/family-teams-ui.mjs?v=1"></script>
+</head>
+<body class="family-page">
+  <header class="family-header">
+    <a class="brand" href="index.html" aria-label="Andenne Bears, retour à l'accueil"><img src="images/logoBears.png" alt="" /><span>ANDENNE BEARS</span></a>
+    <a href="journee-familiale.html">Journée familiale</a>
+  </header>
+  <main class="family-wrap family-draw">
+    <p class="section-kicker">Outil des organisateurs</p>
+    <h1>Tirage des équipes</h1>
+    <p>Importez le CSV des inscriptions, obtenu depuis l’export réservé aux organisateurs. <strong>Le fichier est lu dans ce navigateur</strong> : les noms et les réponses ne sont pas envoyés au serveur par cet outil. <strong>Les coordonnées de contact ne sont pas affichées.</strong></p>
+    <p>Le tirage cherche, dans chaque équipe, <strong>au moins une femme, une personne de moins de 18 ans et une personne qui ne joue pas aux Bears</strong>. Une même personne peut compter pour plusieurs critères. L’objectif est <strong>cinq personnes par équipe</strong> ; les équipes de quatre ou moins, les minimums manquants et les effectifs insuffisants sont signalés. <strong>La composition reste à valider par les organisateurs.</strong></p>
+    <div class="family-draw-controls">
+      <div class="field"><label for="draw-file">Importer les inscriptions CSV</label><input id="draw-file" type="file" accept=".csv,text/csv" /></div>
+      <p id="draw-import-status" role="status">Aucun fichier importé.</p>
+    </div>
+    <section aria-labelledby="draw-roster-title">
+      <h2 id="draw-roster-title">Personnes inscrites au flag</h2>
+      <p><strong>Décochez les absents et corrigez les réponses</strong> si nécessaire avant le tirage. « Hors Bears » signifie que la personne ne joue pas au flag ou au tackle dans le club.</p>
+      <div class="family-roster-scroll">
+        <table class="family-roster"><thead><tr><th scope="col">Présent</th><th scope="col">Nom</th><th scope="col">Bears</th><th scope="col">Femme</th><th scope="col">−18 ans</th></tr></thead><tbody id="draw-roster"></tbody></table>
+      </div>
+      <form id="draw-add" class="family-draw-add">
+        <div class="field"><label for="draw-add-name">Ajouter une personne sur place</label><input id="draw-add-name" maxlength="100" required /></div>
+        <label><input id="draw-add-bears" type="checkbox" /> Joue aux Bears</label>
+        <label><input id="draw-add-woman" type="checkbox" /> Femme</label>
+        <label><input id="draw-add-minor" type="checkbox" /> Moins de 18 ans</label>
+        <button class="button" type="submit">Ajouter</button>
+      </form>
+      <p class="contact-form-note">Pour une personne ajoutée sur place, <strong>vérifiez séparément les modalités d’autorisation et de couverture</strong> avant de la faire jouer.</p>
+    </section>
+    <section aria-labelledby="draw-result-title">
+      <h2 id="draw-result-title">Composer les équipes</h2>
+      <div class="family-draw-actions">
+        <div class="field"><label for="draw-count">Nombre d’équipes</label><input id="draw-count" type="number" min="1" step="1" value="1" /></div>
+        <button id="draw-generate" class="button button-primary" type="button">Tirer les équipes</button>
+        <button id="draw-download" class="button" type="button" disabled>Télécharger le tirage CSV</button>
+      </div>
+      <p id="draw-message" role="status" aria-live="polite"></p>
+      <div id="draw-results" class="family-draw-results"></div>
+    </section>
+  </main>
+  <footer class="site-footer"><p>Copyright &copy; 2026 - Andenne Bears ASBL</p><a href="journee-familiale.html">Journée familiale</a></footer>
+</body>
+</html>

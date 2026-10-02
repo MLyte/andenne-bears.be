@@ -32,8 +32,11 @@ $ItemsToDeploy = @(
   "robots.txt",
   "sitemap.xml",
   "index.html",
+  "journee-familiale.html",
+  "tirage-equipes.html",
   "bears.css",
   "contact.php",
+  "family-day.php",
   "changethis.php",
   "config/contact-config.php",
   "fonts",
@@ -42,7 +45,8 @@ $ItemsToDeploy = @(
 )
 
 $OptionalItemsToDeploy = @(
-  "config/changethis-config.php"
+  "config/changethis-config.php",
+  "config/family-day-config.php"
 )
 
 function Import-FileZillaServer {

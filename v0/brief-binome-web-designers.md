@@ -190,7 +190,7 @@ Contenu :
 
 - Adresse actuelle du terrain.
 - Adresse habituelle du terrain.
-- Existence et duree d'un lieu temporaire a Evelette-Jallet / Ohey.
+- Existence et duree d'un lieu temporaire a Évelette-Jallet / Ohey.
 - Horaires tackle.
 - Horaires flag football.
 - Categories actives : U13, U16, seniors, autres.

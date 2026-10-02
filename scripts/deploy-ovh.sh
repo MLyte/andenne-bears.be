@@ -348,10 +348,16 @@ fi
 
 DEPLOY_ITEMS=(
   ".ovhconfig"
+  "robots.txt"
+  "sitemap.xml"
   "index.html"
+  "journee-familiale.html"
+  "tirage-equipes.html"
   "bears.css"
   "contact.php"
+  "family-day.php"
   "config/contact-config.php"
+  "config/family-day-config.php"
   "fonts"
   "images"
   "scripts"
@@ -361,7 +367,7 @@ FILES=()
 for item in "${DEPLOY_ITEMS[@]}"; do
   abs="$PROJECT_ROOT/$item"
   if [[ ! -e "$abs" ]]; then
-    if [[ "$item" == "config/contact-config.php" ]]; then
+    if [[ "$item" == "config/contact-config.php" || "$item" == "config/family-day-config.php" ]]; then
       continue
     fi
     echo "Deploy item not found: $item" >&2
