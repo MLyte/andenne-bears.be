@@ -33,6 +33,7 @@ $ItemsToDeploy = @(
   "sitemap.xml",
   "index.html",
   "journee-familiale.html",
+  "camp-blegny.html",
   "tirage-equipes.html",
   "bears.css",
   "contact.php",
