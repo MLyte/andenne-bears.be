@@ -6,49 +6,87 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>Tirage des équipes · Journée familiale | Andenne Bears</title>
   <link rel="icon" href="images/favicon.png" />
-  <link rel="stylesheet" href="bears.css?v=family-2026-15" />
-  <script type="module" src="scripts/family-teams-ui.mjs?v=1"></script>
+  <link rel="stylesheet" href="bears.css?v=family-draw-2026-3" />
+  <link rel="stylesheet" href="tirage-equipes.css?v=1" />
+  <script type="module" src="scripts/family-teams-ui.js?v=7"></script>
 </head>
 <body class="family-page">
   <header class="family-header">
     <a class="brand" href="index.html" aria-label="Andenne Bears, retour à l'accueil"><img src="images/logoBears.png" alt="" /><span>ANDENNE BEARS</span></a>
-    <a href="journee-familiale.html">Journée familiale</a>
+    <a href="suivi-inscriptions.php">Suivi des inscriptions</a>
   </header>
   <main class="family-wrap family-draw">
-    <p class="section-kicker">Outil des organisateurs</p>
-    <h1>Tirage des équipes</h1>
-    <p>Importez le CSV des inscriptions, obtenu depuis l’export réservé aux organisateurs. <strong>Le fichier est lu dans ce navigateur</strong> : les noms et les réponses ne sont pas envoyés au serveur par cet outil. <strong>Les coordonnées de contact ne sont pas affichées.</strong></p>
-    <p>Le tirage cherche, dans chaque équipe, <strong>au moins une femme, une personne de moins de 18 ans et une personne qui ne joue pas aux Bears</strong>. Une même personne peut compter pour plusieurs critères. L’objectif est <strong>cinq personnes par équipe</strong> ; les équipes de quatre ou moins, les minimums manquants et les effectifs insuffisants sont signalés. <strong>La composition reste à valider par les organisateurs.</strong></p>
-    <div class="family-draw-controls">
-      <div class="field"><label for="draw-file">Importer les inscriptions CSV</label><input id="draw-file" type="file" accept=".csv,text/csv" /></div>
-      <p id="draw-import-status" role="status">Aucun fichier importé.</p>
+    <div class="family-draw-hero">
+      <p class="section-kicker">Organisateurs · tournoi de flag</p>
+      <h1>Construire les équipes</h1>
+      <p>Une simulation à partir des inscriptions actuelles. Les trois premières cases de chaque équipe représentent <strong>une femme, une personne de moins de 18 ans et une personne hors Bears, toutes différentes</strong>. Les deux autres places sont libres.</p>
+      <p id="draw-data-status" class="family-draw-live" role="status" aria-live="polite">Connexion aux inscriptions…</p>
+      <a href="suivi-inscriptions.php">Ouvrir le suivi des inscriptions</a>
     </div>
-    <section aria-labelledby="draw-roster-title">
-      <h2 id="draw-roster-title">Personnes inscrites au flag</h2>
-      <p><strong>Décochez les absents et corrigez les réponses</strong> si nécessaire avant le tirage. « Hors Bears » signifie que la personne ne joue pas au flag ou au tackle dans le club.</p>
-      <div class="family-roster-scroll">
-        <table class="family-roster"><thead><tr><th scope="col">Présent</th><th scope="col">Nom</th><th scope="col">Bears</th><th scope="col">Femme</th><th scope="col">−18 ans</th></tr></thead><tbody id="draw-roster"></tbody></table>
-      </div>
-      <form id="draw-add" class="family-draw-add">
-        <div class="field"><label for="draw-add-name">Ajouter une personne sur place</label><input id="draw-add-name" maxlength="100" required /></div>
-        <label><input id="draw-add-bears" type="checkbox" /> Joue aux Bears</label>
-        <label><input id="draw-add-woman" type="checkbox" /> Femme</label>
-        <label><input id="draw-add-minor" type="checkbox" /> Moins de 18 ans</label>
-        <button class="button" type="submit">Ajouter</button>
-      </form>
-      <p class="contact-form-note">Pour une personne ajoutée sur place, <strong>vérifiez séparément les modalités d’autorisation et de couverture</strong> avant de la faire jouer.</p>
-    </section>
-    <section aria-labelledby="draw-result-title">
-      <h2 id="draw-result-title">Composer les équipes</h2>
-      <div class="family-draw-actions">
-        <div class="field"><label for="draw-count">Nombre d’équipes</label><input id="draw-count" type="number" min="1" step="1" value="1" /></div>
-        <button id="draw-generate" class="button button-primary" type="button">Tirer les équipes</button>
-        <button id="draw-download" class="button" type="button" disabled>Télécharger le tirage CSV</button>
-      </div>
-      <p id="draw-message" role="status" aria-live="polite"></p>
-      <div id="draw-results" class="family-draw-results"></div>
-    </section>
+    <div id="draw-workspace" hidden>
+      <section class="family-draw-overview" aria-labelledby="draw-overview-title">
+        <h2 id="draw-overview-title">Où en est le tournoi&nbsp;?</h2>
+        <div class="family-draw-metrics">
+          <article><span>Joueurs retenus</span><strong id="draw-total">—</strong><small>dans cette simulation</small></article>
+          <article><span>Équipes de 5 par effectif</span><strong id="draw-by-size">—</strong><small>avant vérification des profils</small></article>
+          <article><span>Potentiel selon les profils</span><strong id="draw-by-profiles">—</strong><small>trois représentants distincts</small></article>
+        </div>
+        <div class="family-draw-next">
+          <div><p class="section-kicker">Prochain seuil</p><h3 id="draw-next-title">Une équipe de plus</h3><p id="draw-next-summary"></p></div>
+          <div class="family-draw-needs">
+            <div><label for="draw-progress-places">Places <strong id="draw-places-label">—</strong></label><progress id="draw-progress-places" max="1" value="0"></progress></div>
+            <div><label for="draw-progress-women">Femmes <strong id="draw-women-label">—</strong></label><progress id="draw-progress-women" max="1" value="0"></progress></div>
+            <div><label for="draw-progress-minors">Moins de 18 ans <strong id="draw-minors-label">—</strong></label><progress id="draw-progress-minors" max="1" value="0"></progress></div>
+            <div><label for="draw-progress-nonbears">Hors Bears <strong id="draw-nonbears-label">—</strong></label><progress id="draw-progress-nonbears" max="1" value="0"></progress></div>
+          </div>
+        </div>
+        <p id="draw-overview-note" class="family-draw-overview-note"></p>
+      </section>
+      <section aria-labelledby="draw-result-title">
+        <div class="family-draw-section-heading"><div><p class="section-kicker">Composition provisoire</p><h2 id="draw-result-title">Les équipes en cases</h2></div><p>Les équipes suggérées accueillent autant de joueurs que possible. Une case de règle reste vide tant qu’aucun joueur admissible ne peut l’occuper. Glisse un joueur sur un autre pour les échanger. Sur mobile ou au clavier, sélectionne deux cases. Un échange qui casse une règle ou sépare un enfant de son proche est refusé.</p></div>
+        <div class="family-draw-actions">
+          <div class="field"><label for="draw-count">Nombre maximal d’équipes à former</label><input id="draw-count" type="number" min="1" step="1" value="1" /></div>
+          <button id="draw-generate" class="button button-primary" type="button">Nouvelle simulation</button>
+          <button id="draw-download" class="button" type="button" disabled>Exporter les équipes</button>
+        </div>
+        <p id="draw-message" role="status" aria-live="polite"></p>
+        <p id="draw-swap-status" role="status" aria-live="polite"></p>
+        <div id="draw-waiting" class="family-draw-waiting" hidden>
+          <h3>En attente d’une équipe supplémentaire</h3>
+          <p>Ces joueurs ne peuvent pas encore être placés dans les cases disponibles sans enfreindre une règle. Corrige les présences ou les profils, puis relance la simulation.</p>
+          <div id="draw-waiting-players" class="family-draw-waiting-players"></div>
+        </div>
+        <div id="draw-results" class="family-draw-results"></div>
+      </section>
+      <section aria-labelledby="draw-roster-title">
+        <h2 id="draw-roster-title">Ajuster la simulation</h2>
+        <p>Les corrections et les présences choisies ici restent dans ce navigateur. Pour modifier une inscription enregistrée, utilise le <a href="suivi-inscriptions.php">suivi des inscriptions</a>.</p>
+        <details class="family-draw-adjustments">
+          <summary>Voir les inscrits et corriger les profils de la simulation</summary>
+          <div class="family-roster-scroll"><table class="family-roster"><thead><tr><th scope="col">Présent</th><th scope="col">Nom</th><th scope="col">Bears</th><th scope="col">Femme</th><th scope="col">−18 ans</th></tr></thead><tbody id="draw-roster"></tbody></table></div>
+          <form id="draw-add" class="family-draw-add">
+            <div class="field"><label for="draw-add-name">Ajouter une personne sur place</label><input id="draw-add-name" maxlength="100" required /></div>
+            <label><input id="draw-add-bears" type="checkbox" /> Joue aux Bears</label>
+            <label><input id="draw-add-woman" type="checkbox" /> Femme</label>
+            <label><input id="draw-add-minor" type="checkbox" /> Moins de 18 ans</label>
+            <button class="button" type="submit">Ajouter</button>
+          </form>
+          <p class="contact-form-note">Pour une personne ajoutée sur place, vérifie séparément les modalités d’autorisation et de couverture avant de la faire jouer.</p>
+        </details>
+      </section>
+      <section aria-labelledby="draw-family-title">
+        <h2 id="draw-family-title">Garder un enfant avec un proche</h2>
+        <p>Le suivi indique seulement si une personne a moins de 18 ans. Pour un jeune enfant, choisis ici le proche qui jouera avec lui. Ils seront placés dans la même colonne.</p>
+        <form id="draw-family-add" class="family-draw-actions">
+          <div class="field"><label for="draw-child">Enfant</label><select id="draw-child" required></select></div>
+          <div class="field"><label for="draw-relative">Proche qui joue</label><select id="draw-relative" required></select></div>
+          <button class="button" type="submit">Les garder ensemble</button>
+        </form>
+        <p id="draw-family-status" role="status" aria-live="polite"></p>
+        <ul id="draw-family-links" class="family-draw-links"></ul>
+      </section>
+    </div>
   </main>
-  <footer class="site-footer"><p>Copyright &copy; 2026 - Andenne Bears ASBL</p><a href="journee-familiale.html">Journée familiale</a></footer>
+  <footer class="site-footer"><p>Copyright &copy; 2026 - Andenne Bears ASBL</p><a href="suivi-inscriptions.php">Suivi des inscriptions</a></footer>
 </body>
 </html>

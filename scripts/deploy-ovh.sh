@@ -352,12 +352,13 @@ DEPLOY_ITEMS=(
   "sitemap.xml"
   "index.html"
   "journee-familiale.html"
+  "export-inscriptions.html"
   "tirage-equipes.html"
   "bears.css"
   "contact.php"
   "family-day.php"
+  "suivi-inscriptions.php"
   "config/contact-config.php"
-  "config/family-day-config.php"
   "fonts"
   "images"
   "scripts"
@@ -367,7 +368,7 @@ FILES=()
 for item in "${DEPLOY_ITEMS[@]}"; do
   abs="$PROJECT_ROOT/$item"
   if [[ ! -e "$abs" ]]; then
-    if [[ "$item" == "config/contact-config.php" || "$item" == "config/family-day-config.php" ]]; then
+    if [[ "$item" == "config/contact-config.php" ]]; then
       continue
     fi
     echo "Deploy item not found: $item" >&2

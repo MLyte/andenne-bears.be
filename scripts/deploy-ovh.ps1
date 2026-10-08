@@ -33,11 +33,16 @@ $ItemsToDeploy = @(
   "sitemap.xml",
   "index.html",
   "journee-familiale.html",
+<<<<<<< Updated upstream
   "camp-blegny.html",
+=======
+  "export-inscriptions.html",
+>>>>>>> Stashed changes
   "tirage-equipes.html",
   "bears.css",
   "contact.php",
   "family-day.php",
+  "suivi-inscriptions.php",
   "changethis.php",
   "config/contact-config.php",
   "fonts",
@@ -46,8 +51,7 @@ $ItemsToDeploy = @(
 )
 
 $OptionalItemsToDeploy = @(
-  "config/changethis-config.php",
-  "config/family-day-config.php"
+  "config/changethis-config.php"
 )
 
 function Import-FileZillaServer {
