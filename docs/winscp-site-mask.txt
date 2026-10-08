@@ -1,0 +1,1 @@
+*.html; *.php; *.css; *.js; *.mjs; *.png; *.jpg; *.jpeg; *.webp; *.gif; *.svg; *.ico; *.avif; *.ttf; *.otf; *.woff; *.woff2; .ovhconfig; .htaccess; robots.txt; sitemap.xml | .git/; .github/; .agents/; .codex/; .aws/; deploy/; dist/; docs/; tests/; design/; v0/; node_modules/; family-day-config.php; *.example.php; *.bak; *.tmp; *.log

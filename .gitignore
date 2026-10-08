@@ -5,3 +5,4 @@ config/family-day-config.php
 .ovh-local.ps1
 .ovh-ftp.netrc
 ux-guerilla-test/
+dist/

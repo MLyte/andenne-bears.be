@@ -192,6 +192,16 @@ Le fichier source du compteur et de l'export est `storage_dir/family-day-2026.cs
 
 Pour préparer les équipes, l'organisateur se connecte à `suivi-inscriptions.php`, puis ouvre `tirage-equipes.html`. La page lit automatiquement les inscriptions au flag à travers la session organisateur ; `suivi-inscriptions.php?team_roster=1` ne renvoie que les références, les noms et les trois réponses utiles au tirage, sans coordonnées de contact, et refuse les demandes non authentifiées. Une rangée de cartes montre d'abord les joueurs non placés dans la simulation actuelle. Les équipes suggérées apparaissent ensuite, même incomplètes : la simulation utilise au maximum les cases admissibles, avec une femme, une personne de moins de 18 ans et une personne hors Bears représentées par trois joueurs différents, puis deux places libres. Une case de règle non couverte reste vide. Les indicateurs montrent le potentiel actuel selon les profils et les minima pour atteindre le prochain seuil d'équipes de cinq. Les organisateurs peuvent corriger localement les présences, ajouter une personne sur place, lier un enfant à un proche et échanger des joueurs entre équipes par glisser-déposer ou sélection de deux cases. Un échange qui sépare un lien familial ou fait perdre une règle couverte est refusé. Les corrections locales ne modifient pas les inscriptions enregistrées ; l'export du résultat porte `statut_equipe` (`conforme`, `provisoire` ou `en_attente`) et `proche_avec`. Les organisateurs valident la composition avant le jeu.
 
+## Dossier prêt à envoyer avec WinSCP
+
+Régénérer le dossier de publication après les modifications :
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-dist.ps1
+```
+
+Dans WinSCP, ouvrir `dist/` côté local et `www/` côté serveur, puis envoyer le **contenu** de `dist/`. La configuration des inscriptions est incluse : le dossier contient les fichiers nécessaires au fonctionnement de `www/`. Les CSV restent dans le dossier privé voisin `bears-family-day-private/`, hors de `www/`. Le script ne lance aucun transfert. Voir [les instructions détaillées](docs/winscp-publication.md).
+
 ## Maintenance Rapide
 
 - Reactiver la banniere : retirer `hidden` du bloc `.site-notice` dans `index.html`.
