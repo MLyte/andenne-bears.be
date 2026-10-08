@@ -1,0 +1,13 @@
+Visuels des tenues actuelles des Andenne Bears
+
+Travail mis en pause : le fichier principal andenne-bears-wikipedia-2026.txt ne contient plus les tenues actuelles. Ne pas utiliser andenne-bears-wikipedia-2026-apres-upload.txt tant que ce travail n'est pas repris.
+
+- Andenne_Bears_tenues_actuelles-apercu.png : aperçu local des deux tenues.
+- Andenne_Bears_casque_noir_grille_rouge.svg : casque vectoriel noir à grille rouge. Adaptation du fichier FootballHelmet.svg de Simanek, sous licence CC0 : https://commons.wikimedia.org/wiki/File:FootballHelmet.svg
+- Kit_helmet_af_Andenne_Bears.png : casque au format 100 × 31 pixels attendu par le modèle Wikipédia « Uniforme de football américain ». Adaptation du fichier Kit_helmet_af.png de Rolando, sous licence CC BY-SA 3.0 : https://commons.wikimedia.org/wiki/File:Kit_helmet_af.png
+
+Les fichiers de casque et l'aperçu restent conservés pour une reprise ultérieure.
+
+Pour afficher les casques rouges dans l'article, téléverser Kit_helmet_af_Andenne_Bears.png sur Wikimedia Commons sous ce nom exact, avec la licence CC BY-SA 3.0, le lien vers le fichier source et le crédit à Rolando. Ensuite, copier le fichier andenne-bears-wikipedia-2026-apres-upload.txt, déjà préparé avec le bon nom d'image. Le SVG est un visuel supplémentaire ; le modèle d'uniforme utilise le PNG.
+
+L'aperçu des maillots assemble les éléments de tenue déjà utilisés par le modèle Wikipédia : https://fr.wikipedia.org/wiki/Modèle:Uniforme_de_football_américain

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Export des inscriptions | Andenne Bears</title>
+  <link rel="icon" href="images/favicon.png" />
+  <link rel="stylesheet" href="bears.css?v=family-2026-42" />
+</head>
+<body class="family-page family-export-page">
+  <header class="family-header">
+    <a class="brand" href="index.html" aria-label="Andenne Bears, retour à l’accueil"><img src="images/logoBears.png" alt="" /><span>ANDENNE BEARS</span></a>
+    <nav class="family-header-actions" aria-label="Navigation"><a href="journee-familiale.html">Retour à la journée</a></nav>
+  </header>
+  <main class="family-wrap family-export-main">
+    <p class="section-kicker">Réservé aux organisateurs</p>
+    <h1>Exporter les inscriptions</h1>
+    <p>Le fichier CSV contient les inscriptions au flag et le nombre de burgers réservés pour chaque demande. Il contient aussi des noms et des adresses e-mail : conserve-le dans un espace privé.</p>
+    <form class="contact-form family-form" action="family-day.php?export=1" method="post">
+      <div class="field"><label for="export-username">Identifiant</label><input id="export-username" name="export_username" autocomplete="username" required /></div>
+      <div class="field"><label for="export-password">Mot de passe</label><input id="export-password" name="export_password" type="password" autocomplete="current-password" required /></div>
+      <button class="button button-primary" type="submit">Télécharger le CSV</button>
+    </form>
+  </main>
+</body>
+</html>

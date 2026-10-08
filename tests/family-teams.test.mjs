@@ -90,6 +90,27 @@ test('autorise un échange valide et refuse de perdre un critère distinct', () 
   assert.throws(() => swapPlayers(changed, woman.id, other.id), /perdrait un profil déjà représenté/);
 });
 
+test('échange un joueur placé avec un joueur en attente sans perdre les règles ni les proches', () => {
+  const teams = [
+    [person(1, true, false, true), person(2, false, true, true), person(3, false, false, false), person(4, false, false, true), person(5, false, false, true)],
+    [person(6, true, false, true), person(7, false, true, true), person(8, false, false, false), person(9, false, false, true), person(10, false, false, true)],
+  ];
+  const waiting = [person(11, false, false, true), person(12, false, true, true), person(13, false, false, true)];
+  const draw = { teams, waiting, assessment: assessTeams(teams), links: [{ childId: '12', relativeId: '13' }], revision: 0 };
+  const changed = swapPlayers(draw, '11', '4');
+  assert.equal(changed.revision, 1);
+  assert.equal(changed.teams[0].find(player => player.id === '11')?.id, '11');
+  assert.equal(changed.waiting[0].id, '4');
+  assert.deepEqual(changed.assessment.map(team => team.distinctCriteria), [3, 3]);
+  assert.equal(draw.teams[0][3].id, '4');
+  assert.equal(draw.waiting[0].id, '11');
+  assert.deepEqual(swapPlayers(changed, '4', '11').teams, teams);
+  assert.throws(() => swapPlayers(draw, '11', '1'), /perdrait un profil déjà représenté/);
+  assert.throws(() => swapPlayers(draw, '12', '4'), /séparerait un enfant/);
+  assert.throws(() => swapPlayers(draw, '11', '13'), /Choisissez deux joueurs/);
+  assert.throws(() => swapPlayers(draw, 'absent', '4'), /Choisissez deux joueurs/);
+});
+
 test('affiche trois cases de règles avec trois personnes distinctes, puis deux places libres', () => {
   const players = [person(1, true, true, true), person(2, false, true, true), person(3, false, false, false), person(4, false, false, true)];
   const slots = teamSlots(players);

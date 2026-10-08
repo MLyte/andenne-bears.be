@@ -1,0 +1,9 @@
+option batch abort
+option confirm off
+open andenne-bears.be
+lcd C:\www\andenne-bears.be\deploy\backup-camp-20261008
+cd /www
+get camp-blegny.html
+get bears.css
+get suivi-inscriptions.php
+exit

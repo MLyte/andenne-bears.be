@@ -1,4 +1,4 @@
-import { analyzeCapacity, makeSuggestedTeams, swapPlayers, teamSlots } from './family-teams.mjs?v=6';
+import { analyzeCapacity, makeSuggestedTeams, swapPlayers, teamSlots } from './family-teams.js?v=8';
 
 const workspace = document.querySelector('#draw-workspace');
 const dataStatus = document.querySelector('#draw-data-status');

@@ -1,0 +1,13 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+cd /home/andennebh/www
+lcd "C:\www\andenne-bears.be\deploy\team-draw-backup-2026-10-07-v2"
+get tirage-equipes.html
+cd scripts
+lcd "C:\www\andenne-bears.be\deploy\team-draw-backup-2026-10-07-v2\scripts"
+get family-teams.js
+get family-teams-ui.js
+cd /home/andennebh/bears-family-day-private
+ls
+exit

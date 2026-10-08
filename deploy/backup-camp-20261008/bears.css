@@ -508,14 +508,9 @@ a {
 .family-dashboard-status-unknown { color: #555; }
 .family-dashboard-cancelled { display: block; margin-top: 0.2rem; color: #8a1830; font-weight: 800; }
 .family-dashboard-edit { min-width: 7.5rem; }
-.family-dashboard-edit[open] { min-width: 13.5rem; }
 .family-dashboard-edit summary { cursor: pointer; font-weight: 800; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.2em; }
 .family-dashboard-edit summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .family-dashboard-edit form { margin-top: 0.6rem; }
-.family-dashboard-delete { display: grid; gap: 0.5rem; padding-top: 0.8rem; border-top: 1px solid #d9c6c9; }
-.family-dashboard-delete label { font-size: 0.78rem; line-height: 1.4; }
-.family-dashboard-delete-button { border: 1px solid #8a1830; background: #8a1830; color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
-.family-dashboard-delete-button:hover { background: #651123; border-color: #651123; }
 .family-dashboard-field { display: none; }
 .family-dashboard-row:has(.family-dashboard-edit[open]) { background: #fff8db; }
 .family-dashboard-row:has(.family-dashboard-edit[open]) .family-dashboard-read { display: none; }

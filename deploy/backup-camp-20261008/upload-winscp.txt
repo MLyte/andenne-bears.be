@@ -1,0 +1,19 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+cd /home/andennebh/www/images
+put "C:\www\andenne-bears.be\images\camp-breakfast-2026.webp" camp-breakfast-2026.webp
+put "C:\www\andenne-bears.be\images\camp-lunch-2026.webp" camp-lunch-2026.webp
+put "C:\www\andenne-bears.be\images\camp-dinner-2026.webp" camp-dinner-2026.webp
+put "C:\www\andenne-bears.be\images\camp-football-field-2026.webp" camp-football-field-2026.webp
+put "C:\www\andenne-bears.be\images\camp-theory-room-2026.jpg" camp-theory-room-2026.jpg
+cd /home/andennebh/www/scripts
+put "C:\www\andenne-bears.be\scripts\camp-registration.js" camp-registration.js
+cd /home/andennebh/www
+put "C:\www\andenne-bears.be\camp-dashboard.css" camp-dashboard.css
+put "C:\www\andenne-bears.be\bears.css" bears.css
+put "C:\www\andenne-bears.be\camp-registration.php" camp-registration.php
+put "C:\www\andenne-bears.be\suivi-camp-blegny.php" suivi-camp-blegny.php
+put "C:\www\andenne-bears.be\suivi-inscriptions.php" suivi-inscriptions.php
+put "C:\www\andenne-bears.be\camp-blegny.html" camp-blegny.html
+exit

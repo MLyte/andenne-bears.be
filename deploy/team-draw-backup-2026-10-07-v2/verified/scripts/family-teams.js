@@ -425,32 +425,27 @@ export function makeSuggestedTeams(players, requestedCount, seed, links = []) {
 
 export function swapPlayers(draw, firstId, secondId) {
   const teams = draw.teams.map(team => [...team]);
-  const waiting = [...(draw.waiting || [])];
-  const groups = [...teams, waiting];
-  const firstGroup = groups.findIndex(group => group.some(player => player.id === firstId));
-  const secondGroup = groups.findIndex(group => group.some(player => player.id === secondId));
-  if (firstGroup < 0 || secondGroup < 0 || firstGroup === secondGroup) {
-    throw new Error('Choisissez deux joueurs de deux équipes différentes, ou un joueur en attente et un joueur placé.');
-  }
-  const firstIndex = groups[firstGroup].findIndex(player => player.id === firstId);
-  const secondIndex = groups[secondGroup].findIndex(player => player.id === secondId);
-  [groups[firstGroup][firstIndex], groups[secondGroup][secondIndex]] = [groups[secondGroup][secondIndex], groups[firstGroup][firstIndex]];
+  const firstTeam = teams.findIndex(team => team.some(player => player.id === firstId));
+  const secondTeam = teams.findIndex(team => team.some(player => player.id === secondId));
+  if (firstTeam < 0 || secondTeam < 0 || firstTeam === secondTeam) throw new Error('Choisissez deux joueurs de deux équipes différentes.');
+  const firstIndex = teams[firstTeam].findIndex(player => player.id === firstId);
+  const secondIndex = teams[secondTeam].findIndex(player => player.id === secondId);
+  [teams[firstTeam][firstIndex], teams[secondTeam][secondIndex]] = [teams[secondTeam][secondIndex], teams[firstTeam][firstIndex]];
   for (const link of draw.links || []) {
-    if (!groups.some(group => group.some(player => player.id === link.childId) && group.some(player => player.id === link.relativeId))) {
+    if (!teams.some(team => team.some(player => player.id === link.childId) && team.some(player => player.id === link.relativeId))) {
       throw new Error('Échange refusé : il séparerait un enfant du proche choisi.');
     }
   }
   const assessment = assessTeams(teams);
-  const affectedTeams = [firstGroup, secondGroup].filter(index => index < teams.length);
-  for (const index of affectedTeams) {
+  for (const index of [firstTeam, secondTeam]) {
     const before = draw.assessment[index];
     const after = assessment[index];
     if (['women', 'minors', 'nonBears'].some(key => before[key] > 0 && after[key] === 0)) {
       throw new Error('Échange refusé : une équipe perdrait un profil déjà représenté.');
     }
   }
-  if (affectedTeams.some(index => assessment[index].distinctCriteria < draw.assessment[index].distinctCriteria)) {
+  if ([firstTeam, secondTeam].some(index => assessment[index].distinctCriteria < draw.assessment[index].distinctCriteria)) {
     throw new Error('Échange refusé : une équipe perdrait un des trois critères attribués à des joueurs différents.');
   }
-  return { ...draw, teams, waiting, assessment, revision: (draw.revision || 0) + 1 };
+  return { ...draw, teams, assessment, revision: (draw.revision || 0) + 1 };
 }

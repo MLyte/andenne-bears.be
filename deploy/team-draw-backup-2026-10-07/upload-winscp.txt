@@ -1,0 +1,11 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+cd /home/andennebh/www
+put "C:\www\andenne-bears.be\tirage-equipes.css" tirage-equipes.css
+cd scripts
+put "C:\www\andenne-bears.be\scripts\family-teams.js" family-teams.js
+put "C:\www\andenne-bears.be\scripts\family-teams-ui.js" family-teams-ui.js
+cd /home/andennebh/www
+put "C:\www\andenne-bears.be\tirage-equipes.html" tirage-equipes.html
+exit

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 186" role="img" aria-labelledby="title desc">
+<title id="title">L&#8217;esprit d&#8217;&#233;quipe des Bears</title><desc id="desc">Deux ours adultes entourent un jeune ours. Leurs &#233;paules se rejoignent autour d&#8217;un c&#339;ur bordeaux.</desc>
+<defs><g id="bear" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Sculpted cheek tufts and broad brow echo the club crest. -->
+  <path d="M-43-34C-66-53-83-31-66-12L-72 14-62 11-65 31-51 28C-47 49-26 60 0 69 26 60 47 49 51 28L65 31 62 11 72 14 66-12C83-31 66-53 43-34 28-43 11-39 0-37-11-39-28-43-43-34Z" fill="#eccb29" stroke="#111512" stroke-width="5"/>
+  <path d="M-46-29C-60-40-71-28-61-17L-56-25ZM46-29C60-40 71-28 61-17L56-25Z" fill="#111512"/>
+  <path d="M-46-15-53 8-46 4-49 24-38 21C-30 44-18 48 0 58 18 48 30 44 38 21L49 24 46 4 53 8 46-15C40 2 35 8 28 13L19 1H-19L-28 13C-35 8-40 2-46-15Z" fill="#111512"/>
+  <path d="M-38-17Q-24-27-10-16L-15-11Q-27-17-38-12ZM38-17Q24-27 10-16L15-11Q27-17 38-12Z" fill="#111512"/>
+  <path d="M-35-7Q-25-12-16-5L-21 1Q-29 2-35-7ZM35-7Q25-12 16-5L21 1Q29 2 35-7Z" fill="#fff0bb"/>
+  <path d="M-24-9Q-18-8-20-2-25 0-26-5ZM24-9Q18-8 20-2 25 0 26-5Z" fill="#111512"/>
+  <path d="M-20 9C-17-3-9-8 0-8S17-3 20 9C34 15 27 38 14 42L0 48-14 42C-27 38-34 15-20 9Z" fill="#fff0bb"/>
+  <path d="M-19 32Q0 44 19 32C14 44 6 48 0 48S-14 44-19 32Z" fill="#dcae35"/>
+  <path d="M-13 12Q0 4 13 12C13 19 6 23 0 24-6 23-13 19-13 12Z" fill="#111512"/>
+  <path d="M-7 12Q0 9 7 12" fill="none" stroke="#fff0bb" stroke-width="2"/>
+  <path d="M0 23V30M-15 28Q0 39 15 28" fill="none" stroke="#111512" stroke-width="3.5"/>
+  <path d="M-4-32 4-29 16-32M-39 18-35 25M39 18 35 25" fill="none" stroke="#d3a51a" stroke-width="2.5"/>
+</g><g id="crest"><path d="M-9-9H9V2Q7 8 0 12-7 8-9 2Z" fill="#eccb29"/><path d="m-5-3 2-3 3 2 3-2 2 3-1 6-4 4-4-4Z" fill="#111512"/></g></defs>
+<path d="M59 154Q240 184 421 154" fill="none" stroke="#eccb29" stroke-width="2" opacity=".45"/>
+<g transform="translate(133 54) rotate(-8) scale(.85)"><path d="M-27 46C-39 49-58 55-67 69L-77 123Q0 145 77 123L67 69C58 55 39 49 27 46L0 60Z" fill="#111512" stroke="#111512" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M-28 49-14 68 0 76 14 68 28 49M-55 66-60 104M55 66 60 104" fill="none" stroke="#eccb29" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-73 117Q0 139 73 117" fill="none" stroke="#eccb29" stroke-width="3"/>
+    <use href="#crest" x="27" y="91"/><use href="#bear"/></g>
+<g transform="translate(347 54) rotate(8) scale(.85)"><path d="M-27 46C-39 49-58 55-67 69L-77 123Q0 145 77 123L67 69C58 55 39 49 27 46L0 60Z" fill="#7f2135" stroke="#111512" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M-28 49-14 68 0 76 14 68 28 49M-55 66-60 104M55 66 60 104" fill="none" stroke="#eccb29" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-73 117Q0 139 73 117" fill="none" stroke="#eccb29" stroke-width="3"/>
+    <use href="#crest" x="27" y="91"/><use href="#bear"/><path d="M-46-25Q0-42 46-25" fill="none" stroke="#7f2135" stroke-width="7"/></g>
+<!-- The parents' arms frame the smaller central figure. -->
+<path d="M129 136Q157 112 200 132M351 136Q323 112 280 132" fill="none" stroke="#111512" stroke-width="25" stroke-linecap="round"/>
+<path d="M129 136Q157 112 200 132M351 136Q323 112 280 132" fill="none" stroke="#eccb29" stroke-width="17" stroke-linecap="round"/>
+<g transform="translate(240 86) scale(.68)"><path d="M-27 46C-39 49-58 55-67 69L-77 123Q0 145 77 123L67 69C58 55 39 49 27 46L0 60Z" fill="#fff0bb" stroke="#111512" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M-28 49-14 68 0 76 14 68 28 49M-55 66-60 104M55 66 60 104" fill="none" stroke="#eccb29" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-73 117Q0 139 73 117" fill="none" stroke="#eccb29" stroke-width="3"/>
+    <use href="#crest" x="27" y="91"/><use href="#bear"/><path d="M-49-25C-46-47-28-54 0-53 24-52 42-41 45-23L6-19Z" fill="#7f2135" stroke="#111512" stroke-width="4"/><path d="M-52-23Q-9-34 37-20L52-14Q15-10-15-18Z" fill="#eccb29" stroke="#111512" stroke-width="3"/><path d="M-7-46 3-45 3-34-7-35Z" fill="#eccb29"/></g>
+<path d="M240 173C229 166 210 155 214 143 218 133 231 134 240 145 249 134 262 133 266 143 270 155 251 166 240 173Z" fill="#7f2135" stroke="#eccb29" stroke-width="3"/>
+</svg>

@@ -1,4 +1,4 @@
-import { analyzeCapacity, makeSuggestedTeams, swapPlayers, teamSlots } from './family-teams.mjs?v=6';
+import { analyzeCapacity, makeReadyTeams, swapPlayers, teamSlots } from './family-teams.js?v=6';
 
 const workspace = document.querySelector('#draw-workspace');
 const dataStatus = document.querySelector('#draw-data-status');
@@ -67,9 +67,9 @@ function renderFamilyLinks() {
 
 function refreshCount(reset = false) {
   const count = presentPlayers().length;
-  const possible = Math.max(1, Math.ceil(count / 5));
+  const possible = Math.max(1, Math.floor(count / 5));
   teamCount.max = String(possible);
-  if (reset || !teamCount.dataset.manual) teamCount.value = String(possible);
+  if (reset || !teamCount.dataset.manual) teamCount.value = String(Math.max(1, Math.floor(count / 5)));
   else if (Number(teamCount.value) > possible) teamCount.value = String(possible);
 }
 
@@ -147,7 +147,7 @@ function initials(name) {
 const roleLabels = { woman: 'Femme', minor: 'Moins de 18 ans', nonBears: 'Hors Bears', free: 'Place libre', extra: 'En surnombre' };
 
 function updateSelection() {
-  document.querySelectorAll('#draw-results .family-draw-player, #draw-waiting-players .family-draw-player').forEach(button => {
+  results.querySelectorAll('.family-draw-player').forEach(button => {
     const selected = button.dataset.playerId === selectedId;
     button.classList.toggle('is-selected', selected);
     button.setAttribute('aria-pressed', selected ? 'true' : 'false');
@@ -169,45 +169,7 @@ function exchange(firstId, secondId) {
 
 function clearDragTargets() {
   draggedId = null;
-  document.querySelectorAll('#draw-results [data-player-id].family-draw-slot, #draw-waiting-players [data-player-id]').forEach(target => {
-    target.classList.remove('is-drop-target', 'can-swap', 'cannot-swap');
-  });
-}
-
-function swapTargets() {
-  return document.querySelectorAll('#draw-results [data-player-id].family-draw-slot, #draw-waiting-players [data-player-id]');
-}
-
-function enablePlayerInteraction(button, target, id) {
-  button.addEventListener('click', () => choosePlayer(id));
-  button.addEventListener('dragstart', event => {
-    event.dataTransfer.setData('text/plain', id);
-    event.dataTransfer.effectAllowed = 'move';
-    button.classList.add('is-dragging');
-    draggedId = id;
-    swapTargets().forEach(other => {
-      if (other.dataset.playerId === id) return;
-      try {
-        swapPlayers(draw, id, other.dataset.playerId);
-        other.classList.add('can-swap');
-      } catch {
-        other.classList.add('cannot-swap');
-      }
-    });
-  });
-  button.addEventListener('dragend', () => { button.classList.remove('is-dragging'); clearDragTargets(); });
-  target.addEventListener('dragover', event => {
-    if (!target.classList.contains('can-swap')) return;
-    event.preventDefault(); event.dataTransfer.dropEffect = 'move'; target.classList.add('is-drop-target');
-  });
-  target.addEventListener('dragleave', () => target.classList.remove('is-drop-target'));
-  target.addEventListener('drop', event => {
-    if (!target.classList.contains('can-swap')) return;
-    event.preventDefault();
-    const sourceId = event.dataTransfer.getData('text/plain');
-    clearDragTargets();
-    if (sourceId && sourceId !== id) exchange(sourceId, id);
-  });
+  results.querySelectorAll('.family-draw-slot').forEach(row => row.classList.remove('is-drop-target', 'can-swap', 'cannot-swap'));
 }
 
 function choosePlayer(id) {
@@ -219,7 +181,7 @@ function choosePlayer(id) {
     exchange(selectedId, id);
   } else {
     selectedId = id;
-    swapStatus.textContent = 'Joueur sélectionné. Choisis un joueur d’une autre équipe ou de la liste d’attente.';
+    swapStatus.textContent = 'Joueur sélectionné. Choisis un joueur d’une autre équipe.';
     updateSelection();
   }
 }
@@ -237,17 +199,11 @@ function renderDraw() {
   waitingPlayers.replaceChildren();
   const { assessment, teams, waiting, seed } = draw;
   waitingSection.hidden = waiting.length === 0;
-  document.body.classList.toggle('has-draw-waiting', waiting.length > 0);
   waitingSection.querySelector('h3').textContent = teams.length
     ? 'En attente d’une équipe supplémentaire' : 'En attente d’une première équipe';
   for (const player of waiting) {
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'family-draw-waiting-card family-draw-player';
-    card.draggable = true;
-    card.dataset.playerId = player.id;
-    card.setAttribute('aria-pressed', 'false');
-    card.setAttribute('aria-label', `${player.name}, en attente. Sélectionner pour échanger avec un joueur placé.`);
+    const card = document.createElement('article');
+    card.className = 'family-draw-waiting-card';
     card.append(textNode('span', initials(player.name), 'family-draw-avatar'));
     const details = document.createElement('span');
     details.className = 'family-draw-player-text';
@@ -255,16 +211,14 @@ function renderDraw() {
     const tags = playerTags(player, waiting);
     if (tags.length) details.append(textNode('small', tags.join(' · ')));
     card.append(details);
-    enablePlayerInteraction(card, card, player.id);
     waitingPlayers.append(card);
   }
-  const complete = assessment.filter(item => item.size === 5 && item.distinctCriteria === 3).length;
-  message.textContent = `${teams.length} équipe(s) suggérée(s), dont ${complete} conforme(s) · ${teams.flat().length} joueur(s) placé(s) · ${waiting.length} en attente · tirage n° ${seed}${draw.revision ? ` · ${draw.revision} échange(s)` : ''}.`;
+  message.textContent = `${teams.length} équipe(s) conformes de cinq joueurs · ${waiting.length} joueur(s) en attente · tirage n° ${seed}${draw.revision ? ` · ${draw.revision} échange(s)` : ''}.`;
   downloadButton.disabled = false;
   teams.forEach((team, teamIndex) => {
     const assessmentItem = assessment[teamIndex];
     const card = document.createElement('article');
-    card.className = `family-draw-team${assessmentItem.size === 5 && assessmentItem.distinctCriteria === 3 ? ' is-complete' : ' is-provisional'}`;
+    card.className = 'family-draw-team is-complete';
     const heading = document.createElement('div');
     heading.className = 'family-draw-team-heading';
     heading.append(textNode('h3', `Équipe ${teamIndex + 1}`));
@@ -293,13 +247,40 @@ function renderDraw() {
         const tags = playerTags(slot.player, team);
         if (tags.length) description.append(textNode('small', tags.join(' · ')));
         button.append(description);
-        enablePlayerInteraction(button, row, slot.player.id);
+        button.addEventListener('click', () => choosePlayer(slot.player.id));
+        button.addEventListener('dragstart', event => {
+          event.dataTransfer.setData('text/plain', slot.player.id);
+          event.dataTransfer.effectAllowed = 'move';
+          button.classList.add('is-dragging');
+          draggedId = slot.player.id;
+          results.querySelectorAll('.family-draw-slot[data-player-id]').forEach(target => {
+            if (target.dataset.playerId === draggedId) return;
+            try {
+              swapPlayers(draw, draggedId, target.dataset.playerId);
+              target.classList.add('can-swap');
+            } catch {
+              target.classList.add('cannot-swap');
+            }
+          });
+        });
+        button.addEventListener('dragend', () => { button.classList.remove('is-dragging'); clearDragTargets(); });
+        row.addEventListener('dragover', event => {
+          if (!row.classList.contains('can-swap')) return;
+          event.preventDefault(); event.dataTransfer.dropEffect = 'move'; row.classList.add('is-drop-target');
+        });
+        row.addEventListener('dragleave', () => row.classList.remove('is-drop-target'));
+        row.addEventListener('drop', event => {
+          if (!row.classList.contains('can-swap')) return;
+          event.preventDefault(); clearDragTargets();
+          const sourceId = event.dataTransfer.getData('text/plain');
+          if (sourceId && sourceId !== slot.player.id) exchange(sourceId, slot.player.id);
+        });
         row.append(button);
       } else row.append(textNode('span', 'En attente d’un joueur', 'family-draw-empty'));
       slots.append(row);
     });
     card.append(slots);
-    card.append(textNode('p', `${assessmentItem.distinctCriteria}/3 règles couvertes par des joueurs différents`, assessmentItem.distinctCriteria === 3 ? 'family-draw-team-ok' : 'family-draw-warning'));
+    card.append(textNode('p', `${assessmentItem.distinctCriteria}/3 règles couvertes par des joueurs différents`, 'family-draw-team-ok'));
     results.append(card);
   });
   updateSelection();
@@ -310,7 +291,6 @@ function simulate() {
   swapStatus.textContent = '';
   results.replaceChildren();
   waitingSection.hidden = true;
-  document.body.classList.remove('has-draw-waiting');
   waitingPlayers.replaceChildren();
   downloadButton.disabled = true;
   const players = presentPlayers();
@@ -320,7 +300,7 @@ function simulate() {
     return;
   }
   try {
-    draw = makeSuggestedTeams(players, Number(teamCount.value), crypto.getRandomValues(new Uint32Array(1))[0], familyLinks);
+    draw = makeReadyTeams(players, Number(teamCount.value), crypto.getRandomValues(new Uint32Array(1))[0], familyLinks);
     renderDraw();
   } catch (error) {
     draw = null;
@@ -402,7 +382,7 @@ downloadButton.addEventListener('click', () => {
   const url = URL.createObjectURL(new Blob(['\uFEFF', lines.join('\r\n'), '\r\n'], { type: 'text/csv;charset=utf-8' }));
   const link = document.createElement('a');
   link.href = url;
-  link.download = `${draw.waiting.length || draw.assessment.some(item => item.size !== 5 || item.distinctCriteria !== 3) ? 'simulation-equipes' : 'equipes'}-25-octobre-2026-${draw.seed}${draw.revision ? `-modifie-${draw.revision}` : ''}.csv`;
+  link.download = `${draw.waiting.length ? 'simulation-equipes' : 'equipes'}-25-octobre-2026-${draw.seed}${draw.revision ? `-modifie-${draw.revision}` : ''}.csv`;
   link.click();
   setTimeout(() => URL.revokeObjectURL(url), 60_000);
 });

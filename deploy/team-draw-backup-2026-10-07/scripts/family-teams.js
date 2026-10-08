@@ -128,6 +128,9 @@ export function teamSlots(players) {
   const slots = criteria.map((role, index) => ({ role, player: assigned[index] === -1 ? null : players[assigned[index]], valid: assigned[index] !== -1 }));
   slots.push({ role: 'free', player: remaining.shift() || null, valid: true });
   slots.push({ role: 'free', player: remaining.shift() || null, valid: true });
+  for (const slot of slots.slice(0, 3)) {
+    if (!slot.player && remaining.length) slot.player = remaining.shift();
+  }
   while (remaining.length) slots.push({ role: 'extra', player: remaining.shift(), valid: false });
   return slots;
 }
@@ -283,174 +286,29 @@ export function makeTeams(players, requestedCount, seed, links = []) {
   return { teams: best, assessment: assessTeams(best), total, seed: seed >>> 0, links: links.map(link => ({ ...link })), revision: 0 };
 }
 
-// Une équipe n'est créée que lorsque cinq joueurs, dont trois représentants
-// distincts des règles, peuvent réellement y être placés.
-export function makeReadyTeams(players, requestedCount, seed, links = []) {
-  if (!Array.isArray(players) || players.length > 200 || !Number.isInteger(requestedCount)
-    || requestedCount < 1 || !Number.isInteger(seed) || !Array.isArray(links)) {
-    throw new Error('Paramètres de simulation invalides.');
-  }
-  const ids = new Set(players.map(player => player.id));
-  if (ids.size !== players.length || players.some(player => !player.id || !player.name
-    || ['minor', 'woman', 'bears'].some(key => typeof player[key] !== 'boolean'))) {
-    throw new Error('La liste des personnes présentes est invalide.');
-  }
-  const groups = linkedGroups(players, links);
-  if (groups.some(group => group.length > 5)) {
-    throw new Error('Un groupe familial dépasse cinq joueurs : modifiez les liens avant le tirage.');
-  }
-  const groupById = new Map(groups.flatMap(group => group.map(player => [player.id, group])));
-  const random = randomFromSeed(seed);
-  const limit = Math.min(requestedCount, Math.floor(players.length / 5), analyzeCapacity(players).teamsByProfiles);
-  let best = [];
-  const feasible = (pool, count) => count === 0 || (pool.length >= count * 5
-    && matchCriteria(pool, Array.from({ length: count }, () => criteria).flat()).every(index => index !== -1));
-
-  for (let target = limit; target > best.length; target--) {
-    for (let attempt = 0; attempt < (players.length > 100 ? 12 : 35) && best.length < target; attempt++) {
-      let available = [...players];
-      const ready = [];
-      while (ready.length < target) {
-        const futureCount = target - ready.length - 1;
-        let chosen = null;
-        for (let pick = 0; pick < 70 && !chosen; pick++) {
-          const shuffled = shuffle(available, random);
-          const roles = matchCriteria(shuffled, criteria);
-          if (roles.some(index => index === -1)) break;
-          const selectedGroups = [...new Set(roles.map(index => groupById.get(shuffled[index].id)))];
-          const base = selectedGroups.flat();
-          if (base.length > 5) continue;
-          const baseIds = new Set(base.map(player => player.id));
-          const others = shuffle(groups.filter(group => group.every(player => available.includes(player) && !baseIds.has(player.id))), random)
-            .sort((a, b) => a.filter(player => player.woman || player.minor || !player.bears).length
-              - b.filter(player => player.woman || player.minor || !player.bears).length);
-          let visits = 0;
-          const fill = (team, start) => {
-            if (team.length === 5) {
-              const used = new Set(team.map(player => player.id));
-              const rest = available.filter(player => !used.has(player.id));
-              return feasible(rest, futureCount) ? team : null;
-            }
-            if (++visits > 500) return null;
-            for (let index = start; index < others.length; index++) {
-              if (team.length + others[index].length > 5) continue;
-              const result = fill([...team, ...others[index]], index + 1);
-              if (result) return result;
-            }
-            return null;
-          };
-          chosen = fill(base, 0);
-        }
-        if (!chosen) break;
-        ready.push(chosen);
-        const used = new Set(chosen.map(player => player.id));
-        available = available.filter(player => !used.has(player.id));
-      }
-      if (ready.length > best.length) best = ready;
-    }
-  }
-  const assigned = new Set(best.flat().map(player => player.id));
-  const waiting = players.filter(player => !assigned.has(player.id));
-  return { teams: best, waiting, assessment: assessTeams(best), seed: seed >>> 0,
-    links: links.map(link => ({ ...link })), revision: 0 };
-}
-
-export function makeSuggestedTeams(players, requestedCount, seed, links = []) {
-  if (!Array.isArray(players) || players.length > 200 || !Number.isInteger(requestedCount)
-    || requestedCount < 1 || requestedCount > 200 || !Number.isInteger(seed) || !Array.isArray(links)) {
-    throw new Error('Paramètres de simulation invalides.');
-  }
-  const ids = new Set(players.map(player => player.id));
-  if (ids.size !== players.length || players.some(player => !player.id || !player.name
-    || ['minor', 'woman', 'bears'].some(key => typeof player[key] !== 'boolean'))) {
-    throw new Error('La liste des personnes présentes est invalide.');
-  }
-  const groups = linkedGroups(players, links);
-  if (groups.some(group => group.length > 5)) {
-    throw new Error('Un groupe familial dépasse cinq joueurs : modifiez les liens avant le tirage.');
-  }
-  const random = randomFromSeed(seed);
-  const required = Array.from({ length: requestedCount }, () => criteria).flat();
-  const matched = matchCriteria(shuffle(players, random), required);
-  const upperBound = Math.min(players.length, requestedCount * 2 + matched.filter(index => index !== -1).length);
-  const fits = team => team.length <= 5 && teamSlots(team).every(slot => slot.role !== 'extra');
-  let best = [];
-
-  if (!links.length) {
-    const shuffled = shuffle(players, random);
-    const roles = matchCriteria(shuffled, required);
-    const teams = Array.from({ length: requestedCount }, () => []);
-    const assigned = new Set();
-    roles.forEach((playerIndex, roleIndex) => {
-      if (playerIndex === -1) return;
-      const player = shuffled[playerIndex];
-      teams[Math.floor(roleIndex / 3)].push(player);
-      assigned.add(player.id);
-    });
-    for (const player of shuffle(players.filter(item => !assigned.has(item.id)), random)) {
-      const team = teams.find(candidate => fits([...candidate, player]));
-      if (!team) continue;
-      team.push(player);
-      assigned.add(player.id);
-    }
-    best = teams;
-  } else {
-    for (let attempt = 0; attempt < (players.length > 100 ? 30 : 100) && best.flat().length < upperBound; attempt++) {
-      const teams = Array.from({ length: requestedCount }, () => []);
-      const order = shuffle(groups, random);
-      if (attempt % 3 === 0) order.sort((a, b) => b.length - a.length);
-      else if (attempt % 3 === 1) order.sort((a, b) => a.length - b.length);
-      for (const group of order) {
-        const choices = shuffle(teams.map((_, index) => index), random)
-          .filter(index => fits([...teams[index], ...group]))
-          .sort((a, b) => {
-            const gainA = distinctCriteriaCovered([...teams[a], ...group]) - distinctCriteriaCovered(teams[a]);
-            const gainB = distinctCriteriaCovered([...teams[b], ...group]) - distinctCriteriaCovered(teams[b]);
-            return (gainB * 10 - teams[b].length) - (gainA * 10 - teams[a].length);
-          });
-        if (choices.length) teams[choices[0]].push(...group);
-      }
-      const placed = teams.flat().length;
-      const bestPlaced = best.flat().length;
-      const score = current => current.filter(team => team.length === 5 && distinctCriteriaCovered(team) === 3).length * 100
-        + current.reduce((sum, team) => sum + distinctCriteriaCovered(team), 0);
-      if (placed > bestPlaced || (placed === bestPlaced && score(teams) > score(best))) best = teams;
-    }
-  }
-  const teams = best.filter(team => team.length);
-  const assigned = new Set(teams.flat().map(player => player.id));
-  return { teams, waiting: players.filter(player => !assigned.has(player.id)), assessment: assessTeams(teams),
-    seed: seed >>> 0, links: links.map(link => ({ ...link })), revision: 0 };
-}
-
 export function swapPlayers(draw, firstId, secondId) {
   const teams = draw.teams.map(team => [...team]);
-  const waiting = [...(draw.waiting || [])];
-  const groups = [...teams, waiting];
-  const firstGroup = groups.findIndex(group => group.some(player => player.id === firstId));
-  const secondGroup = groups.findIndex(group => group.some(player => player.id === secondId));
-  if (firstGroup < 0 || secondGroup < 0 || firstGroup === secondGroup) {
-    throw new Error('Choisissez deux joueurs de deux équipes différentes, ou un joueur en attente et un joueur placé.');
-  }
-  const firstIndex = groups[firstGroup].findIndex(player => player.id === firstId);
-  const secondIndex = groups[secondGroup].findIndex(player => player.id === secondId);
-  [groups[firstGroup][firstIndex], groups[secondGroup][secondIndex]] = [groups[secondGroup][secondIndex], groups[firstGroup][firstIndex]];
+  const firstTeam = teams.findIndex(team => team.some(player => player.id === firstId));
+  const secondTeam = teams.findIndex(team => team.some(player => player.id === secondId));
+  if (firstTeam < 0 || secondTeam < 0 || firstTeam === secondTeam) throw new Error('Choisissez deux joueurs de deux équipes différentes.');
+  const firstIndex = teams[firstTeam].findIndex(player => player.id === firstId);
+  const secondIndex = teams[secondTeam].findIndex(player => player.id === secondId);
+  [teams[firstTeam][firstIndex], teams[secondTeam][secondIndex]] = [teams[secondTeam][secondIndex], teams[firstTeam][firstIndex]];
   for (const link of draw.links || []) {
-    if (!groups.some(group => group.some(player => player.id === link.childId) && group.some(player => player.id === link.relativeId))) {
+    if (!teams.some(team => team.some(player => player.id === link.childId) && team.some(player => player.id === link.relativeId))) {
       throw new Error('Échange refusé : il séparerait un enfant du proche choisi.');
     }
   }
   const assessment = assessTeams(teams);
-  const affectedTeams = [firstGroup, secondGroup].filter(index => index < teams.length);
-  for (const index of affectedTeams) {
+  for (const index of [firstTeam, secondTeam]) {
     const before = draw.assessment[index];
     const after = assessment[index];
     if (['women', 'minors', 'nonBears'].some(key => before[key] > 0 && after[key] === 0)) {
       throw new Error('Échange refusé : une équipe perdrait un profil déjà représenté.');
     }
   }
-  if (affectedTeams.some(index => assessment[index].distinctCriteria < draw.assessment[index].distinctCriteria)) {
+  if ([firstTeam, secondTeam].some(index => assessment[index].distinctCriteria < draw.assessment[index].distinctCriteria)) {
     throw new Error('Échange refusé : une équipe perdrait un des trois critères attribués à des joueurs différents.');
   }
-  return { ...draw, teams, waiting, assessment, revision: (draw.revision || 0) + 1 };
+  return { ...draw, teams, assessment, revision: (draw.revision || 0) + 1 };
 }

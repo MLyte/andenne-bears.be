@@ -7,8 +7,7 @@
   <title>Tirage des équipes · Journée familiale | Andenne Bears</title>
   <link rel="icon" href="images/favicon.png" />
   <link rel="stylesheet" href="bears.css?v=family-draw-2026-3" />
-  <link rel="stylesheet" href="tirage-equipes.css?v=2" />
-  <script type="module" src="scripts/family-teams-ui.js?v=8"></script>
+  <script type="module" src="scripts/family-teams-ui.js?v=5"></script>
 </head>
 <body class="family-page">
   <header class="family-header">
@@ -43,19 +42,14 @@
         <p id="draw-overview-note" class="family-draw-overview-note"></p>
       </section>
       <section aria-labelledby="draw-result-title">
-        <div class="family-draw-section-heading"><div><p class="section-kicker">Composition provisoire</p><h2 id="draw-result-title">Les équipes en cases</h2></div><p>Les équipes suggérées accueillent autant de joueurs que possible. Une case de règle non couverte reste vide. Glisse un joueur sur un autre, y compris depuis la liste d’attente, pour les échanger. Sur mobile ou au clavier, sélectionne deux joueurs. Un échange qui casse une règle ou sépare un enfant de son proche est refusé.</p></div>
+        <div class="family-draw-section-heading"><div><p class="section-kicker">Composition provisoire</p><h2 id="draw-result-title">Les équipes en cases</h2></div><p>Glisse un joueur sur un autre pour les échanger. Sur mobile ou au clavier, sélectionne deux cases. Un échange qui casse une règle ou sépare un enfant de son proche est refusé.</p></div>
         <div class="family-draw-actions">
-          <div class="field"><label for="draw-count">Nombre maximal d’équipes à former</label><input id="draw-count" type="number" min="1" step="1" value="1" /></div>
+          <div class="field"><label for="draw-count">Nombre d’équipes simulées</label><input id="draw-count" type="number" min="1" step="1" value="1" /></div>
           <button id="draw-generate" class="button button-primary" type="button">Nouvelle simulation</button>
           <button id="draw-download" class="button" type="button" disabled>Exporter les équipes</button>
         </div>
         <p id="draw-message" role="status" aria-live="polite"></p>
         <p id="draw-swap-status" role="status" aria-live="polite"></p>
-        <div id="draw-waiting" class="family-draw-waiting" hidden>
-          <h3>En attente d’une équipe supplémentaire</h3>
-          <p>Choisis un joueur ici puis un joueur d’une équipe pour les échanger, ou glisse-le sur sa case.</p>
-          <div id="draw-waiting-players" class="family-draw-waiting-players"></div>
-        </div>
         <div id="draw-results" class="family-draw-results"></div>
       </section>
       <section aria-labelledby="draw-roster-title">

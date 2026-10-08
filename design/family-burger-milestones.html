@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aperçu local des paliers burgers</title>
+  <style>
+    :root { font-family: Arial, sans-serif; color: #151515; background: #f1f1ed; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1260px; margin: auto; padding: 24px 16px 64px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 3vw, 2.3rem); }
+    p { line-height: 1.5; }
+    .intro { margin: 0 0 20px; }
+    .choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; }
+    .choices button { border: 2px solid #151515; border-radius: 5px; background: white; padding: 10px 15px; font: inherit; font-weight: 700; cursor: pointer; }
+    .choices button[aria-pressed="true"] { background: #f6d52d; }
+    .choices button:focus-visible { outline: 3px solid #bc1734; outline-offset: 3px; }
+    .preview { margin: 0 0 30px; }
+    .preview h2 { margin: 0 0 10px; font-size: 1.2rem; }
+    .frame-scroll { max-width: 100%; overflow-x: auto; border: 1px solid #b9b9b4; border-radius: 8px; background: white; }
+    iframe { display: block; border: 0; background: white; }
+    .desktop-frame { width: 1200px; height: 730px; }
+    .mobile-frame { width: 390px; height: 1250px; }
+    .mobile-preview .frame-scroll { width: 392px; }
+    .preview-caption { margin: 6px 0 0; color: #484844; font-size: .9rem; }
+    .png-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .png-grid a { display: grid; gap: 12px; align-content: end; padding: 12px; border: 1px solid #b9b9b4; border-radius: 8px; background: #fff; color: #151515; text-align: center; font-weight: 700; }
+    .png-grid img { width: 100%; height: 340px; object-fit: contain; object-position: center bottom; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Aperçu local des chapeaux</h1>
+    <p class="intro">Choisis un nombre de burgers pour voir le vrai composant avec la feuille de style du site. Les autres compteurs sont simulés : cette page ne lit aucune inscription.</p>
+    <div class="choices" role="group" aria-label="Nombre de burgers à prévisualiser">
+      <button type="button" data-count="16" aria-pressed="true">16 · sans chapeau</button>
+      <button type="button" data-count="30" aria-pressed="false">30</button>
+      <button type="button" data-count="60" aria-pressed="false">60</button>
+      <button type="button" data-count="100" aria-pressed="false">100</button>
+      <button type="button" data-count="150" aria-pressed="false">150</button>
+      <button type="button" data-count="200" aria-pressed="false">200 · finale</button>
+    </div>
+    <section class="preview" aria-labelledby="desktop-title">
+      <h2 id="desktop-title">Ordinateur · fenêtre de 1 200 px</h2>
+      <div class="frame-scroll"><iframe class="desktop-frame" title="Aperçu ordinateur à 16 burgers" src="family-burger-stage.html?count=16"></iframe></div>
+      <p class="preview-caption">Fais défiler horizontalement si la fenêtre de ton navigateur est plus étroite.</p>
+    </section>
+    <section class="preview mobile-preview" aria-labelledby="mobile-title">
+      <h2 id="mobile-title">Téléphone · fenêtre de 390 px</h2>
+      <div class="frame-scroll"><iframe class="mobile-frame" title="Aperçu téléphone à 16 burgers" src="family-burger-stage.html?count=16"></iframe></div>
+    </section>
+    <section class="preview" aria-labelledby="png-title">
+      <h2 id="png-title">Les cinq portraits complets</h2>
+      <p>Clique sur un portrait pour ouvrir son PNG en grand et examiner le raccord entre la tête et la coiffe.</p>
+      <div class="png-grid">
+        <a href="../images/family-burgers-president-30-2026.png" target="_blank" rel="noopener"><img src="../images/family-burgers-president-30-2026.png" alt="Portrait coiffé pour 30 burgers" loading="lazy" />30 burgers</a>
+        <a href="../images/family-burgers-portrait-60-v3.png" target="_blank" rel="noopener"><img src="../images/family-burgers-portrait-60-v3.png" alt="Portrait coiffé pour 60 burgers" loading="lazy" />60 burgers</a>
+        <a href="../images/family-burgers-portrait-100-v3.png" target="_blank" rel="noopener"><img src="../images/family-burgers-portrait-100-v3.png" alt="Portrait coiffé pour 100 burgers" loading="lazy" />100 burgers</a>
+        <a href="../images/family-burgers-portrait-150-v3.png" target="_blank" rel="noopener"><img src="../images/family-burgers-portrait-150-v3.png" alt="Portrait coiffé pour 150 burgers" loading="lazy" />150 burgers</a>
+        <a href="../images/family-burgers-portrait-200-v3.png" target="_blank" rel="noopener"><img src="../images/family-burgers-portrait-200-v3.png" alt="Portrait coiffé pour 200 burgers" loading="lazy" />200 burgers</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    const buttons = [...document.querySelectorAll('[data-count]')];
+    const frames = [...document.querySelectorAll('iframe')];
+    function showCount(button) {
+      const count = button.dataset.count;
+      buttons.forEach((choice) => { choice.setAttribute('aria-pressed', String(choice === button)); });
+      frames.forEach((frame) => {
+        frame.src = `family-burger-stage.html?count=${count}`;
+        frame.title = `Aperçu ${frame.classList.contains('mobile-frame') ? 'téléphone' : 'ordinateur'} à ${count} burgers`;
+      });
+    }
+    buttons.forEach((button) => button.addEventListener('click', () => showCount(button)));
+    const initialCount = new URLSearchParams(location.search).get('count');
+    const initialButton = buttons.find((button) => button.dataset.count === initialCount);
+    if (initialButton) showCount(initialButton);
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+.camp-dashboard-page .family-dashboard-main { width:min(1600px,calc(100% - 2rem)); }
+.camp-dashboard-page .family-dashboard-login .button { font-weight:900; }
+.camp-dashboard-page .family-dashboard-totals { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.camp-dashboard-needs { margin:0 0 1.5rem; padding:.9rem 1rem; border-left:5px solid var(--gold); background:#f4f4f1; }
+.camp-dashboard-empty { padding:1.25rem; background:#f4f4f1; font-weight:800; }
+.camp-dashboard-list-title { margin:1.5rem 0 .2rem; font-size:clamp(1.5rem,2.7vw,2rem); }
+.camp-dashboard-list-note { margin:0 0 .8rem; color:#454545; }
+.camp-dashboard-table-wrap { max-width:100%; overflow-x:auto; }
+.camp-dashboard-table { width:100%; min-width:1020px; border-collapse:collapse; background:#fff; font-size:.9rem; }
+.camp-dashboard-table caption { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.camp-dashboard-table th { padding:.8rem .7rem; background:#080808; color:#fff; text-align:left; white-space:nowrap; }
+.camp-dashboard-table td { padding:.8rem .7rem; border-bottom:1px solid #deded9; vertical-align:top; overflow-wrap:anywhere; }
+.camp-dashboard-table th:nth-child(1) { min-width:125px; }
+.camp-dashboard-table th:nth-child(2) { min-width:180px; }
+.camp-dashboard-table th:nth-child(3) { min-width:105px; }
+.camp-dashboard-table th:nth-child(4),.camp-dashboard-table th:nth-child(5),.camp-dashboard-table th:nth-child(6) { min-width:190px; }
+.camp-dashboard-table th:nth-child(7) { min-width:130px; }
+.camp-dashboard-table tbody tr:nth-child(even) { background:#f8f8f5; }
+.camp-dashboard-table code { font-size:.85rem; white-space:nowrap; }
+.camp-dashboard-role { display:inline-block; justify-self:start; padding:.15rem .45rem; border:1px solid #d4be42; background:#fff6c9; font-size:.8rem; font-weight:900; }
+@media(max-width:900px) { .camp-dashboard-page .family-dashboard-totals { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:760px) {
+  .camp-dashboard-table { display:block; min-width:0; }
+  .camp-dashboard-table thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  .camp-dashboard-table tbody { display:grid; gap:1rem; }
+  .camp-dashboard-table tr { display:block; border:1px solid #deded9; border-top:5px solid var(--gold); }
+  .camp-dashboard-table td { display:grid; grid-template-columns:minmax(6rem,35%) minmax(0,1fr); gap:.75rem; }
+  .camp-dashboard-table td::before { content:attr(data-label); font-weight:800; }
+}
+@media(max-width:500px) { .camp-dashboard-page .family-dashboard-totals { grid-template-columns:1fr 1fr; } .camp-dashboard-table td { grid-template-columns:1fr; gap:.2rem; } }

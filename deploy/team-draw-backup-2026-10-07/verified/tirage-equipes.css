@@ -1,0 +1,6 @@
+.family-draw-waiting { margin-top: 1.5rem; padding: 1.2rem; border: 1px solid #d4d4d4; border-left: 6px solid var(--gold); background: #fff; }
+.family-draw-waiting[hidden] { display: none; }
+.family-draw-waiting h3 { margin: 0 0 0.4rem; font-size: 1.45rem; }
+.family-draw-waiting p { margin: 0 0 1rem; line-height: 1.5; }
+.family-draw-waiting-players { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 0.65rem; }
+.family-draw-waiting-card { display: flex; align-items: center; gap: 0.55rem; min-width: 0; padding: 0.65rem; border: 1px solid #deded9; background: #f8f8f5; }
