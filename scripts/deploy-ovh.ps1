@@ -33,11 +33,8 @@ $ItemsToDeploy = @(
   "sitemap.xml",
   "index.html",
   "journee-familiale.html",
-<<<<<<< Updated upstream
   "camp-blegny.html",
-=======
   "export-inscriptions.html",
->>>>>>> Stashed changes
   "tirage-equipes.html",
   "bears.css",
   "contact.php",
