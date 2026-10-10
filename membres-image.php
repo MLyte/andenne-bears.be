@@ -5,13 +5,15 @@ declare(strict_types=1);
 function memberSavePortrait(string $sourcePath, string $mime, string $photoDir, string $id): string
 {
     if (!extension_loaded('gd') || !function_exists('imagewebp') || !(imagetypes() & IMG_WEBP)) {
-        // The form prepares WebP in the browser; keep uploads working if GD is absent.
-        $image = $mime === 'image/webp' ? @getimagesize($sourcePath) : false;
+        // The browser already resizes these uploads; accept its verified output without GD.
+        $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+        $image = isset($extensions[$mime]) ? @getimagesize($sourcePath) : false;
         $size = @filesize($sourcePath);
-        if (is_array($image) && ($image['mime'] ?? '') === 'image/webp'
-            && $image[0] <= 512 && $image[1] <= 512 && $size !== false && $size > 0 && $size <= 250 * 1024
+        if (is_array($image) && ($image['mime'] ?? '') === $mime
+            && (new finfo(FILEINFO_MIME_TYPE))->file($sourcePath) === $mime
+            && $image[0] >= 128 && $image[1] >= 128 && $image[0] <= 512 && $image[1] <= 512 && $size !== false && $size > 0 && $size <= 250 * 1024
             && is_uploaded_file($sourcePath)) {
-            $filename = $id . '.webp';
+            $filename = $id . '.' . $extensions[$mime];
             $destination = $photoDir . DIRECTORY_SEPARATOR . $filename;
             if (!move_uploaded_file($sourcePath, $destination)) throw new RuntimeException('Enregistrement de la photo impossible.');
             @chmod($destination, 0600);

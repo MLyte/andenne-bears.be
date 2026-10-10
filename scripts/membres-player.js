@@ -34,8 +34,10 @@ if (dialog && form) {
     let image;
     let temporaryUrl;
     try {
-      if (window.createImageBitmap) image = await createImageBitmap(file);
-      else {
+      if (window.createImageBitmap) {
+        try { image = await createImageBitmap(file); } catch { /* Try the image decoder below. */ }
+      }
+      if (!image) {
         temporaryUrl = URL.createObjectURL(file);
         image = new Image();
         image.src = temporaryUrl;
@@ -49,9 +51,36 @@ if (dialog && form) {
         const canvas = document.createElement('canvas');
         canvas.width = Math.max(1, Math.round(width * scale));
         canvas.height = Math.max(1, Math.round(height * scale));
-        canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', quality));
-        if (blob?.type === 'image/webp' && blob.size > 0 && blob.size <= 250 * 1024) return blob;
+        try {
+          const context = canvas.getContext('2d');
+          if (!context) throw new Error('Préparation de la photo indisponible. Réessaie.');
+          context.fillStyle = '#fff';
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          // Some browsers decode WebP but cannot encode it: toBlob returns PNG.
+          const supportedTypes = ['image/webp', 'image/jpeg', 'image/png'];
+          const usable = blob => blob && supportedTypes.includes(blob.type)
+            && blob.size > 0 && blob.size <= 250 * 1024;
+          for (const type of supportedTypes) {
+            let blob;
+            try {
+              blob = await new Promise(resolve => canvas.toBlob(resolve, type, quality));
+            } catch { /* Retry via the synchronous canvas encoder below. */ }
+            if (usable(blob)) return blob;
+            try {
+              const encoded = canvas.toDataURL(type, quality);
+              const match = /^data:(image\/(?:jpeg|webp|png));base64,(.+)$/.exec(encoded);
+              if (!match) continue;
+              const binary = atob(match[2]);
+              if (!binary.length || binary.length > 250 * 1024) continue;
+              const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+              blob = new Blob([bytes], { type: match[1] });
+              if (usable(blob)) return blob;
+            } catch { /* Try the next format or a smaller canvas. */ }
+          }
+        } finally {
+          canvas.width = canvas.height = 0;
+        }
       }
       throw new Error('Impossible de réduire cette photo. Choisis-en une autre.');
     } finally {
@@ -134,7 +163,8 @@ if (dialog && form) {
     try {
       if (file) {
         showMessage('Préparation de la photo…');
-        data.set('photo', await compactPhoto(file), 'portrait.webp');
+        const portrait = await compactPhoto(file);
+        data.set('photo', portrait, 'portrait.' + ({ 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' })[portrait.type]);
       }
       const response = await fetch(form.action, { method: 'POST', body: data, credentials: 'same-origin' });
       const result = await response.json();

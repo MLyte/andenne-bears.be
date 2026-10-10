@@ -4,7 +4,7 @@ const status = document.getElementById('staff-message');
 const responses = document.getElementById('members-response-list');
 const field = document.getElementById('members-field');
 const sideline = document.getElementById('members-sideline-list');
-const unitSelect = document.getElementById('members-unit');
+const unitButtons = document.getElementById('members-units');
 const search = document.getElementById('members-search');
 const undoButton = document.getElementById('members-undo');
 const sidelineButton = document.getElementById('members-send-sideline');
@@ -15,11 +15,22 @@ const unitNames = { attaque: 'Attaque', defense: 'Défense', kickoff: 'Kickoff',
 let data;
 let canUndo = false;
 let view = 'responses';
-let lineup = 'starter';
+let activeUnit = 'attaque';
 let selected = null;
 let editReturnFocus = null;
 
-for (const unit of Object.keys(config.units)) unitSelect.add(new Option(unitNames[unit], unit));
+for (const unit of Object.keys(config.units)) {
+  const button = el('button', '', unitNames[unit]);
+  button.type = 'button';
+  button.dataset.unit = unit;
+  button.setAttribute('aria-pressed', String(unit === activeUnit));
+  button.addEventListener('click', () => {
+    activeUnit = unit;
+    selected = null;
+    renderBoard();
+  });
+  unitButtons.append(button);
+}
 
 function el(tag, className, content) {
   const node = document.createElement(tag);
@@ -45,6 +56,61 @@ function playerPhoto(player) {
   img.alt = '';
   img.loading = 'lazy';
   return img;
+}
+
+// Reuse the protected photo endpoint; no original photo is exposed publicly.
+const photoDialog = el('dialog', 'members-photo-dialog');
+photoDialog.setAttribute('aria-labelledby', 'members-photo-dialog-title');
+const photoHead = el('div', 'members-dialog-head');
+const photoTitle = el('h2', '', 'Photo du joueur');
+photoTitle.id = 'members-photo-dialog-title';
+const photoClose = el('button', 'members-dialog-close', '×');
+photoClose.type = 'button';
+photoClose.setAttribute('aria-label', 'Fermer la photo');
+photoClose.autofocus = true;
+photoHead.append(photoTitle, photoClose);
+const largePhoto = el('img', 'members-photo-full');
+const photoStatus = el('p', 'members-photo-status');
+photoStatus.setAttribute('role', 'status');
+photoDialog.append(photoHead, largePhoto, photoStatus);
+document.body.append(photoDialog);
+let photoReturnFocus = null;
+photoClose.addEventListener('click', () => photoDialog.close());
+photoDialog.addEventListener('click', event => {
+  const bounds = photoDialog.getBoundingClientRect();
+  if (event.target === photoDialog && (event.clientX < bounds.left || event.clientX > bounds.right
+      || event.clientY < bounds.top || event.clientY > bounds.bottom)) photoDialog.close();
+});
+photoDialog.addEventListener('close', () => {
+  largePhoto.removeAttribute('src');
+  (photoReturnFocus?.isConnected ? photoReturnFocus : search).focus();
+});
+largePhoto.addEventListener('load', () => { photoStatus.hidden = true; });
+largePhoto.addEventListener('error', () => {
+  if (!photoDialog.open || !largePhoto.hasAttribute('src')) return;
+  largePhoto.hidden = true;
+  photoStatus.hidden = false;
+  photoStatus.textContent = 'Cette photo est indisponible. Ferme cette fenêtre et réessaie.';
+});
+
+function responsePhoto(player) {
+  if (!player.photo) return playerPhoto(player);
+  const trigger = el('button', 'members-photo-open');
+  trigger.type = 'button';
+  trigger.setAttribute('aria-label', `Agrandir la photo de ${player.name}`);
+  trigger.setAttribute('aria-haspopup', 'dialog');
+  trigger.append(playerPhoto(player));
+  trigger.addEventListener('click', () => {
+    photoReturnFocus = trigger;
+    photoTitle.textContent = player.name;
+    photoStatus.textContent = 'Chargement de la photo…';
+    photoStatus.hidden = false;
+    largePhoto.hidden = false;
+    largePhoto.alt = `Portrait de ${player.name}`;
+    photoDialog.showModal();
+    largePhoto.src = `membres-photo.php?id=${encodeURIComponent(player.id)}`;
+  });
+  return trigger;
 }
 
 function playerLabel(player) {
@@ -79,6 +145,23 @@ function openEditor(player, trigger) {
   editDialog.scrollTop = 0;
 }
 
+function positionLabel(position) {
+  const positionLabels = {
+    punt_return: { L3: 'T - DL', L4: 'N - DL', R3: 'E - DL',
+      L2: 'SAM - LB', L5: 'MIKE - LB', R5: 'WILL - LB', R2: 'BEAR - LB',
+      L1: 'C · CB1', R1: 'C · CB2', R4: 'SS', PR: 'PR - Returner' },
+    kick_return: { L1: 'LT', L2: 'LG', FB: 'C', R2: 'RG', R1: 'RT',
+      L4: 'Wing gauche', R4: 'Wing droit', L3: 'Shield gauche', R3: 'Shield droit',
+      KR1: 'Returner gauche', KR2: 'Returner droit' },
+    attaque: { WR1: 'X · WR1', WR2: 'Z · WR2', WR3: 'H · WR3', TE: 'Y · TE' },
+    punt: { L1: 'G - WR', R1: 'G - WR', L2: 'LT', L3: 'LG', R3: 'RG', R2: 'RT', L4: 'W', R4: 'W' },
+    field_goal: { L: 'X - WR', R: 'Z - WR', C: 'F', B: 'Y' },
+    defense: { DT1: 'T · DT1', DT2: 'N · DT2', DE2: 'E · DE2', DE1: 'SAM - LB',
+      LB1: 'MIKE - LB', LB2: 'WILL - LB', LB3: 'BEAR - LB', CB1: 'C · CB1', CB2: 'C · CB2' },
+  };
+  return positionLabels[activeUnit]?.[position] || position;
+}
+
 function playerCard(player, role, position) {
   const card = el('button', `members-player-card${selected === player.id ? ' is-selected' : ''}`);
   card.type = 'button';
@@ -87,9 +170,12 @@ function playerCard(player, role, position) {
   card.dataset.position = position || '';
   card.draggable = true;
   card.setAttribute('aria-pressed', String(selected === player.id));
-  const wishGroups = [['Attaque', player.offense], ['Défense', player.defense], ['ST', player.special_teams]];
+  const wishGroups = player.preference === 'defense'
+    ? [['Défense', player.defense], ['Attaque', player.offense]]
+    : [['Attaque', player.offense], ['Défense', player.defense]];
+  wishGroups.push(['ST', player.special_teams]);
   const wishSummary = wishGroups.map(([label, choices]) => `${label} : ${Array.isArray(choices) && choices.length ? choices.join(', ') : 'aucun choix'}`).join('. ');
-  card.setAttribute('aria-label', `${playerLabel(player)} · ${role === 'sideline' ? `sideline. ${wishSummary}` : `${position}, ${role === 'starter' ? 'starter' : 'backup'}`}. Sélectionner pour échanger.`);
+  card.setAttribute('aria-label', `${playerLabel(player)} · ${role === 'sideline' ? `sideline. ${wishSummary}` : `${positionLabel(position)}, ${role === 'starter' ? 'starter' : 'backup'}`}. Sélectionner pour échanger.`);
   card.append(playerPhoto(player), el('span', 'members-player-name', player.name));
   if (player.number) card.append(el('span', 'members-player-number', `#${player.number}`));
   if (role === 'sideline') {
@@ -103,7 +189,7 @@ function playerCard(player, role, position) {
   }
   card.addEventListener('click', () => {
     if (selected && selected !== player.id) {
-      const sourceOnField = Object.values(data.boards[unitSelect.value]).some(slot => slot.starter === selected || slot.backup === selected);
+      const sourceOnField = Object.values(data.boards[activeUnit]).some(slot => slot.starter === selected || slot.backup === selected);
       if (role === 'sideline' && !sourceOnField) { selected = player.id; renderBoard(); }
       else move(selected, position, role, player.id);
     }
@@ -137,7 +223,7 @@ function renderResponses() {
     if (!`${player.name} ${player.number}`.toLocaleLowerCase('fr').includes(query)) continue;
     const card = el('article', 'members-response-card');
     const head = el('div', 'members-response-head');
-    head.append(playerPhoto(player));
+    head.append(responsePhoto(player));
     const heading = el('div');
     heading.append(el('h3', '', playerLabel(player)), el('span', `members-badge${player.approved ? ' is-approved' : ''}`, player.approved ? 'Validé' : 'À vérifier'));
     heading.append(el('span', 'members-badge is-public', player.public_profile ? 'Liste joueurs : oui' : 'Liste joueurs : non'));
@@ -188,19 +274,22 @@ function dropTarget(position, role, label) {
 
 function renderBoard() {
   if (!data) return;
-  const unit = unitSelect.value;
+  const unit = activeUnit;
+  unitButtons.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.unit === unit)));
   const board = data.boards[unit];
   const players = new Map(data.players.filter(p => p.approved).map(p => [p.id, p]));
   const occupied = new Set();
+  field.dataset.unit = unit;
   field.replaceChildren();
   for (const position of config.units[unit]) {
     const slot = el('div', 'members-position');
-    slot.append(el('strong', 'members-position-label', position));
-    for (const role of [lineup, lineup === 'starter' ? 'backup' : 'starter']) {
+    slot.dataset.position = position;
+    slot.append(el('strong', 'members-position-label', positionLabel(position)));
+    for (const role of ['starter', 'backup']) {
       const assigned = players.get(board[position]?.[role]);
       if (assigned) {
         occupied.add(assigned.id);
-        const wrapper = el('div', `members-position-person${role !== lineup ? ' is-secondary' : ''}`);
+        const wrapper = el('div', `members-position-person${role === 'backup' ? ' is-secondary' : ''}`);
         wrapper.append(el('small', '', role === 'starter' ? 'Starter' : 'Backup'), playerCard(assigned, role, position));
         slot.append(wrapper);
       } else {
@@ -226,7 +315,6 @@ function render() {
   document.getElementById('members-responses').hidden = view !== 'responses';
   document.getElementById('members-board-view').hidden = view !== 'board';
   document.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
-  document.querySelectorAll('[data-lineup]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.lineup === lineup)));
   renderResponses();
   renderBoard();
 }
@@ -267,7 +355,7 @@ async function mutate(action, values = {}) {
 
 function move(id, position, role, targetId = '') {
   if (!data.players.some(player => player.id === id && player.approved)) return;
-  mutate('move', { player_id: id, unit: unitSelect.value, position: position || '', role, target_player_id: targetId });
+  mutate('move', { player_id: id, unit: activeUnit, position: position || '', role, target_player_id: targetId });
 }
 
 async function load() {
@@ -282,8 +370,6 @@ async function load() {
 }
 
 document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => { view = button.dataset.view; selected = null; render(); }));
-document.querySelectorAll('[data-lineup]').forEach(button => button.addEventListener('click', () => { lineup = button.dataset.lineup; selected = null; render(); }));
-unitSelect.addEventListener('change', () => { selected = null; renderBoard(); });
 search.addEventListener('input', renderResponses);
 document.getElementById('members-edit-close').addEventListener('click', () => editDialog.close());
 document.getElementById('members-edit-cancel').addEventListener('click', () => editDialog.close());
