@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+  <title id="title">Ours footballeur avec casque et épaulières</title>
+  <rect width="240" height="240" rx="28" fill="#eecf2b"/>
+  <path d="M17 201c9-36 35-58 73-63h60c38 5 64 27 73 63v39H17z" fill="#142d23"/>
+  <path d="M21 195c9-22 27-37 51-44l28 16-10 31-39 19H21zM219 195c-9-22-27-37-51-44l-28 16 10 31 39 19h30z" fill="#f5f2e9" stroke="#142d23" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M53 191l36-15M187 191l-36-15" stroke="#eecf2b" stroke-width="10" stroke-linecap="round"/>
+  <path d="M102 168h36l16 72H86z" fill="#eecf2b"/>
+  <path d="M98 167l-13 73M142 167l13 73" stroke="#f5f2e9" stroke-width="6"/>
+  <circle cx="70" cy="90" r="25" fill="#704526"/>
+  <circle cx="170" cy="90" r="25" fill="#704526"/>
+  <circle cx="70" cy="90" r="11" fill="#ab7950"/>
+  <circle cx="170" cy="90" r="11" fill="#ab7950"/>
+  <path d="M54 102c0-43 24-73 66-73s66 30 66 73v22c0 44-28 70-66 70s-66-26-66-70z" fill="#865735"/>
+  <path d="M53 112c2-50 28-79 67-79s65 29 67 79l-10-7c-9-32-26-47-57-47s-48 15-57 47z" fill="#133e2b"/>
+  <path d="M49 105c2-52 29-81 71-81s69 29 71 81l-17 2c-3-38-21-58-54-58s-51 20-54 58z" fill="#174d33" stroke="#0b2419" stroke-width="6"/>
+  <path d="M61 91h118" stroke="#eecf2b" stroke-width="9" stroke-linecap="round"/>
+  <path d="M65 104h110v18H65z" fill="#0b2419"/>
+  <path d="M71 119v19c0 19 17 31 38 33M169 119v19c0 19-17 31-38 33" fill="none" stroke="#f5f2e9" stroke-width="8" stroke-linecap="round"/>
+  <path d="M72 122l14 16m82-16-14 16" stroke="#eecf2b" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="120" cy="140" rx="37" ry="26" fill="#bd8d5b"/>
+  <ellipse cx="120" cy="132" rx="13" ry="10" fill="#1a1a17"/>
+  <path d="M108 151q12 11 24 0" fill="none" stroke="#382516" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="93" cy="113" r="5" fill="#17120f"/>
+  <circle cx="147" cy="113" r="5" fill="#17120f"/>
+</svg>

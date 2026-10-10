@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/private-backup.php';
+
 ini_set('session.use_strict_mode', '1');
 $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
 session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
@@ -70,30 +72,64 @@ if (input('website', 150) !== '') reply(200, 'Inscription reçue.');
 $lastName = input('last_name', 100);
 $firstName = input('first_name', 100);
 $role = input('role', 20);
+$noLodging = input('no_lodging', 3);
 $diet = input('diet', 1000);
 $allergies = input('allergies', 1000);
 $other = input('other', 1000);
 if (preg_match_all('/./us', $lastName) < 2 || preg_match_all('/./us', $firstName) < 2
     || !preg_match('/\p{L}/u', $lastName) || !preg_match('/\p{L}/u', $firstName)
-    || !in_array($role, ['Junior', 'Senior', 'Staff'], true)) {
+    || !in_array($role, ['Junior', 'Senior', 'Staff'], true) || !in_array($noLodging, ['', 'oui'], true)) {
     reply(422, 'Indique un nom, un prénom et une catégorie valides.');
 }
 
 $handle = @fopen($csv, 'c+');
 if ($handle === false || !flock($handle, LOCK_EX)) reply(503, 'Enregistrement impossible. Réessaie plus tard.');
-$header = ['reference', 'date_utc', 'nom', 'prenom', 'categorie', 'exigence_alimentaire', 'allergies', 'autres'];
+$legacyHeader = ['reference', 'date_utc', 'nom', 'prenom', 'categorie', 'exigence_alimentaire', 'allergies', 'autres'];
+$header = [...$legacyHeader, 'logement'];
 if (fstat($handle)['size'] === 0) {
     if (fputcsv($handle, $header, ';') === false) reply(503, 'Enregistrement impossible.');
 } else {
     rewind($handle);
-    if (fgetcsv($handle, 4096, ';') !== $header) reply(503, 'Format CSV inattendu.');
+    $existingHeader = fgetcsv($handle, 4096, ';');
+    if ($existingHeader === $legacyHeader) {
+        rewind($handle);
+        $original = stream_get_contents($handle);
+        if ($original === false) reply(503, 'Lecture des inscriptions indisponible.');
+        rewind($handle);
+        fgetcsv($handle, 4096, ';');
+        $legacyRows = [];
+        while (($existingRow = fgetcsv($handle, 0, ';')) !== false) {
+            if (count($existingRow) !== count($legacyHeader)) reply(503, 'Format CSV inattendu.');
+            $legacyRows[] = [...$existingRow, 'oui'];
+        }
+        $buffer = fopen('php://temp', 'w+');
+        if ($buffer === false || fputcsv($buffer, $header, ';') === false) reply(503, 'Enregistrement impossible.');
+        foreach ($legacyRows as $existingRow) {
+            if (fputcsv($buffer, $existingRow, ';') === false) reply(503, 'Enregistrement impossible.');
+        }
+        rewind($buffer);
+        $migrated = stream_get_contents($buffer);
+        fclose($buffer);
+        if ($migrated === false) reply(503, 'Enregistrement impossible.');
+        rewind($handle);
+        if (!ftruncate($handle, 0) || fwrite($handle, $migrated) !== strlen($migrated) || !fflush($handle)) {
+            rewind($handle);
+            ftruncate($handle, 0);
+            fwrite($handle, $original);
+            fflush($handle);
+            reply(503, 'Enregistrement impossible. Vérifie le fichier des inscriptions.');
+        }
+    } elseif ($existingHeader !== $header) {
+        reply(503, 'Format CSV inattendu.');
+    }
 }
 fseek($handle, 0, SEEK_END);
 $reference = strtoupper(bin2hex(random_bytes(5)));
-$row = [$reference, gmdate('c'), safeCsv($lastName), safeCsv($firstName), $role, safeCsv($diet), safeCsv($allergies), safeCsv($other)];
+$row = [$reference, gmdate('c'), safeCsv($lastName), safeCsv($firstName), $role, safeCsv($diet), safeCsv($allergies), safeCsv($other), $noLodging === 'oui' ? 'non' : 'oui'];
 $written = fputcsv($handle, $row, ';') !== false && fflush($handle) && (!function_exists('fsync') || fsync($handle));
 flock($handle, LOCK_UN);
 fclose($handle);
 if (!$written) reply(503, 'Enregistrement impossible. Réessaie plus tard.');
+bearsBackupAfterWrite($private);
 $_SESSION['camp_last_submit'] = time();
 reply(200, 'Inscription enregistrée. Conserve ta référence : ' . $reference . '.', ['reference' => $reference]);

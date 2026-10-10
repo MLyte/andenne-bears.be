@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/private-backup.php';
+
 ini_set('session.use_strict_mode', '1');
 $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
 session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
@@ -354,6 +356,7 @@ fclose($handle);
 if (!$written) {
     respond(503, 'Enregistrement impossible. Réessayez plus tard.');
 }
+bearsBackupAfterWrite(dirname($path));
 $burgers = $burgerQuantity === 1 ? '1 burger' : $burgerQuantity . ' burgers';
 $confirmation = $playsFlag
     ? ($reservesBurgers ? 'Inscription au tournoi et réservation de ' . $burgers . ' enregistrées.' : 'Inscription au tournoi enregistrée.')

@@ -1,4 +1,4 @@
-import { analyzeCapacity, makeSuggestedTeams, swapPlayers, teamSlots } from './family-teams.js?v=8';
+import { analyzeCapacity, assessTeams, makeSuggestedTeams, swapPlayers, teamSlots } from './family-teams.js?v=8';
 
 const workspace = document.querySelector('#draw-workspace');
 const dataStatus = document.querySelector('#draw-data-status');
@@ -7,6 +7,8 @@ const addForm = document.querySelector('#draw-add');
 const teamCount = document.querySelector('#draw-count');
 const generateButton = document.querySelector('#draw-generate');
 const downloadButton = document.querySelector('#draw-download');
+const saveButton = document.querySelector('#draw-save');
+const saveStatus = document.querySelector('#draw-save-status');
 const message = document.querySelector('#draw-message');
 const results = document.querySelector('#draw-results');
 const waitingSection = document.querySelector('#draw-waiting');
@@ -24,6 +26,25 @@ let selectedId = null;
 let draggedId = null;
 let walkInNumber = 0;
 let incompleteCount = 0;
+let saveCsrf = '';
+let saveVersion = '';
+let dirty = false;
+let changeToken = 0;
+
+function markDirty() {
+  dirty = true;
+  changeToken++;
+  saveButton.disabled = !draw;
+  saveStatus.textContent = 'Modifications non sauvées. Clique sur « Sauver » pour les conserver dans le CSV du tirage.';
+}
+
+function snapshot() {
+  return {
+    roster, teams: draw.teams.map(team => team.map(player => player.id)),
+    waiting: (draw.waiting || []).map(player => player.id), links: familyLinks,
+    seed: draw.seed, teamCount: Number(teamCount.value), revision: draw.revision || 0,
+  };
+}
 
 function presentPlayers() { return roster.filter(player => player.present); }
 
@@ -159,6 +180,7 @@ function exchange(firstId, secondId) {
     draw = swapPlayers(draw, firstId, secondId);
     selectedId = null;
     renderDraw();
+    markDirty();
     swapStatus.textContent = 'Échange effectué. Les règles couvertes et les liens familiaux sont préservés.';
   } catch (error) {
     selectedId = null;
@@ -315,38 +337,83 @@ function simulate() {
   downloadButton.disabled = true;
   const players = presentPlayers();
   if (!players.length) {
-    draw = null;
-    message.textContent = 'Aucun joueur présent pour simuler des équipes.';
+    draw = { teams: [], waiting: [], assessment: [], seed: 0, links: [], revision: 0 };
+    renderDraw();
+    message.textContent = 'Aucun joueur présent. Les choix de présence peuvent être sauvés.';
+    markDirty();
     return;
   }
   try {
     draw = makeSuggestedTeams(players, Number(teamCount.value), crypto.getRandomValues(new Uint32Array(1))[0], familyLinks);
     renderDraw();
+    markDirty();
   } catch (error) {
     draw = null;
     message.textContent = error.message || 'Simulation impossible.';
+    markDirty();
   }
 }
 
 async function loadCurrentRoster() {
   try {
-    const response = await fetch('suivi-inscriptions.php?team_roster=1', { credentials: 'same-origin', cache: 'no-store' });
+    const [response, savedResponse] = await Promise.all([
+      fetch('suivi-inscriptions.php?team_roster=1', { credentials: 'same-origin', cache: 'no-store' }),
+      fetch('tirage-equipes.php', { credentials: 'same-origin', cache: 'no-store' }),
+    ]);
     if (response.status === 401) throw new Error('Connecte-toi d’abord dans le suivi des inscriptions, puis reviens ici pour voir la simulation.');
     if (!response.ok) throw new Error('Impossible de lire les inscriptions actuelles. Réessaie après avoir ouvert le suivi.');
+    if (!savedResponse.ok) throw new Error('Impossible de lire le tirage sauvegardé. Réessaie après avoir ouvert le suivi.');
     const data = await response.json();
+    const saved = await savedResponse.json();
     if (!data.success || !Array.isArray(data.players) || !Number.isInteger(data.incomplete)
       || data.players.some(player => !player.id || !player.name || ['minor', 'bears', 'woman', 'present'].some(key => typeof player[key] !== 'boolean'))) {
       throw new Error('Les inscriptions reçues sont incomplètes ou invalides.');
     }
     roster = data.players;
+    saveCsrf = saved.csrf;
+    saveVersion = saved.version;
     incompleteCount = data.incomplete;
     const updated = new Date(data.generatedAt);
     dataStatus.textContent = `${roster.length} inscription(s) au flag chargée(s) depuis le suivi${Number.isNaN(updated.getTime()) ? '' : ` · état du ${updated.toLocaleString('fr-BE', { dateStyle: 'short', timeStyle: 'short' })}`}${incompleteCount ? ` · ${incompleteCount} fiche(s) à compléter dans le suivi` : ''}.`;
     workspace.hidden = false;
-    renderRoster();
-    refreshCount(true);
-    renderOverview();
-    simulate();
+    if (saved.state) {
+      const state = saved.state;
+      const current = new Map(data.players.map(player => [player.id, player]));
+      const retained = state.roster.filter(player => player.id.startsWith('sur-place-') || current.has(player.id));
+      const renamed = retained.filter(player => !player.id.startsWith('sur-place-') && player.name !== current.get(player.id).name).length;
+      const known = new Set(retained.map(player => player.id));
+      const added = data.players.filter(player => !known.has(player.id));
+      roster = [...retained.map(player => player.id.startsWith('sur-place-') ? player : { ...player, name: current.get(player.id).name }), ...added];
+      const byId = new Map(roster.map(player => [player.id, player]));
+      familyLinks = state.links.filter(link => byId.has(link.childId) && byId.has(link.relativeId));
+      const teams = state.teams.map(team => team.map(id => byId.get(id)).filter(Boolean)).filter(team => team.length);
+      const placed = new Set(teams.flat().map(player => player.id));
+      const waiting = state.waiting.map(id => byId.get(id)).filter(player => player && !placed.has(player.id));
+      const accounted = new Set([...placed, ...waiting.map(player => player.id)]);
+      waiting.push(...roster.filter(player => player.present && !accounted.has(player.id)));
+      draw = { teams, waiting, assessment: assessTeams(teams), links: familyLinks.map(link => ({ ...link })), seed: state.seed, revision: state.revision };
+      walkInNumber = Math.max(0, ...roster.filter(player => player.id.startsWith('sur-place-')).map(player => Number(player.id.slice(10)) || 0));
+      teamCount.value = String(state.teamCount);
+      teamCount.dataset.manual = 'true';
+      refreshCount();
+      renderRoster();
+      renderOverview();
+      renderDraw();
+      if (added.length || retained.length !== state.roster.length || renamed) {
+        markDirty();
+        saveStatus.textContent = `Inscriptions modifiées depuis la sauvegarde (${added.length} ajoutée(s), ${state.roster.length - retained.length} retirée(s), ${renamed} nom(s) corrigé(s)). Vérifie puis sauve le tirage actualisé.`;
+      } else {
+        dirty = false;
+        saveButton.disabled = true;
+        saveStatus.textContent = 'Dernier tirage sauvegardé chargé depuis le CSV.';
+      }
+    } else {
+      renderRoster();
+      refreshCount(true);
+      renderOverview();
+      simulate();
+      saveStatus.textContent = 'Aucun tirage sauvegardé. Clique sur « Sauver » pour conserver cette simulation.';
+    }
   } catch (error) {
     workspace.hidden = true;
     dataStatus.textContent = error.message || 'Chargement des inscriptions impossible.';
@@ -381,6 +448,40 @@ familyForm.addEventListener('submit', event => {
 
 teamCount.addEventListener('change', () => { teamCount.dataset.manual = 'true'; simulate(); });
 generateButton.addEventListener('click', simulate);
+
+saveButton.addEventListener('click', async () => {
+  if (!draw || !dirty) return;
+  const state = snapshot();
+  const submittedToken = changeToken;
+  saveButton.disabled = true;
+  saveStatus.textContent = 'Enregistrement du tirage…';
+  try {
+    const response = await fetch('tirage-equipes.php', {
+      method: 'POST', credentials: 'same-origin', cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ csrf: saveCsrf, version: saveVersion, state }),
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) throw new Error(result.error || 'Enregistrement impossible.');
+    saveVersion = result.version;
+    if (changeToken === submittedToken) {
+      dirty = false;
+      saveStatus.textContent = 'Tirage sauvé dans le CSV privé. Il sera rechargé à la prochaine ouverture.';
+    } else {
+      saveStatus.textContent = 'Le tirage a changé pendant l’enregistrement. Clique à nouveau sur « Sauver ».';
+    }
+  } catch (error) {
+    saveStatus.textContent = error.message || 'Enregistrement impossible. Les changements restent dans cette page.';
+  } finally {
+    saveButton.disabled = !dirty || !draw;
+  }
+});
+
+window.addEventListener('beforeunload', event => {
+  if (!dirty) return;
+  event.preventDefault();
+  event.returnValue = '';
+});
 
 function csvCell(value) {
   const safe = /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;

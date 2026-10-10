@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/private-backup.php';
+
 ini_set('session.use_strict_mode', '1');
 $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
 $local = in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true);
@@ -262,6 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             6 => $flag, 8 => (string) (int) $burgers, 9 => $bearsPlayer,
             10 => $woman, 11 => $volunteer, 12 => $dayHelp,
         ]);
+        bearsBackupAfterWrite(dirname(privateCsvPath($config)));
         header('Location: suivi-inscriptions.php?updated=1', true, 303);
         exit;
     } elseif ($action === 'delete' && $authenticated) {
@@ -274,6 +277,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             fail(422, 'Saisis la référence exacte de l’inscription à supprimer.');
         }
         saveRegistration(privateCsvPath($config), $reference, $version, null);
+        bearsBackupAfterWrite(dirname(privateCsvPath($config)));
         header('Location: suivi-inscriptions.php?deleted=1', true, 303);
         exit;
     } else {
@@ -396,7 +400,7 @@ function statusMark(string $value, string $yesLabel = 'Oui', string $yesNote = '
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <title>Suivi des inscriptions | Andenne Bears</title>
   <link rel="icon" href="images/favicon.png" />
-  <link rel="stylesheet" href="bears.css?v=family-2026-55" />
+  <link rel="stylesheet" href="bears.css?v=cursor-2026-10-10" />
 </head>
 <body class="family-page family-dashboard-page">
   <header class="family-header">

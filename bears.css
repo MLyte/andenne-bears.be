@@ -150,6 +150,24 @@ a {
   color: inherit;
 }
 
+:where(
+  a[href]:not([aria-disabled="true"]),
+  button:not(:disabled):not([aria-disabled="true"]),
+  input:is([type="button"], [type="submit"], [type="reset"], [type="image"], [type="checkbox"], [type="radio"], [type="file"], [type="color"], [type="range"]):not(:disabled),
+  select:not(:disabled),
+  summary,
+  label:has(input:is([type="checkbox"], [type="radio"], [type="file"]):not(:disabled)),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="link"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
+  [role="menuitem"]:not([aria-disabled="true"]),
+  [role="checkbox"]:not([aria-disabled="true"]),
+  [role="radio"]:not([aria-disabled="true"]),
+  [role="switch"]:not([aria-disabled="true"])
+) {
+  cursor: pointer;
+}
+
 .site-header {
   position: sticky;
   z-index: 20;
@@ -187,6 +205,15 @@ a {
   display: flex;
   justify-content: center;
   gap: clamp(0.8rem, 2vw, 1.6rem);
+}
+
+.main-nav-divider {
+  align-self: center;
+  width: 1px;
+  height: 1.1rem;
+  margin-inline: -0.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 0;
 }
 
 .menu-toggle {
@@ -1099,6 +1126,7 @@ a {
 }
 
 .button-secondary {
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.7);
   color: var(--cream);
 }
@@ -2901,6 +2929,10 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.4rem;
     padding-top: 0.75rem;
+  }
+
+  .main-nav-divider {
+    display: none;
   }
 
   .main-nav a {

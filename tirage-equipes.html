@@ -6,9 +6,9 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>Tirage des équipes · Journée familiale | Andenne Bears</title>
   <link rel="icon" href="images/favicon.png" />
-  <link rel="stylesheet" href="bears.css?v=family-draw-2026-3" />
+  <link rel="stylesheet" href="bears.css?v=cursor-2026-10-10" />
   <link rel="stylesheet" href="tirage-equipes.css?v=2" />
-  <script type="module" src="scripts/family-teams-ui.js?v=8"></script>
+  <script type="module" src="scripts/family-teams-ui.js?v=9"></script>
 </head>
 <body class="family-page">
   <header class="family-header">
@@ -47,8 +47,10 @@
         <div class="family-draw-actions">
           <div class="field"><label for="draw-count">Nombre maximal d’équipes à former</label><input id="draw-count" type="number" min="1" step="1" value="1" /></div>
           <button id="draw-generate" class="button button-primary" type="button">Nouvelle simulation</button>
+          <button id="draw-save" class="button button-primary" type="button" disabled>Sauver</button>
           <button id="draw-download" class="button" type="button" disabled>Exporter les équipes</button>
         </div>
+        <p id="draw-save-status" role="status" aria-live="polite">Chargement du tirage sauvegardé…</p>
         <p id="draw-message" role="status" aria-live="polite"></p>
         <p id="draw-swap-status" role="status" aria-live="polite"></p>
         <div id="draw-waiting" class="family-draw-waiting" hidden>
@@ -60,7 +62,7 @@
       </section>
       <section aria-labelledby="draw-roster-title">
         <h2 id="draw-roster-title">Ajuster la simulation</h2>
-        <p>Les corrections et les présences choisies ici restent dans ce navigateur. Pour modifier une inscription enregistrée, utilise le <a href="suivi-inscriptions.php">suivi des inscriptions</a>.</p>
+        <p>Les corrections, présences et équipes sont conservées dans le CSV du tirage après avoir cliqué sur « Sauver ». Pour modifier une inscription enregistrée, utilise le <a href="suivi-inscriptions.php">suivi des inscriptions</a>.</p>
         <details class="family-draw-adjustments">
           <summary>Voir les inscrits et corriger les profils de la simulation</summary>
           <div class="family-roster-scroll"><table class="family-roster"><thead><tr><th scope="col">Présent</th><th scope="col">Nom</th><th scope="col">Bears</th><th scope="col">Femme</th><th scope="col">−18 ans</th></tr></thead><tbody id="draw-roster"></tbody></table></div>

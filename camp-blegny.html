@@ -24,7 +24,7 @@
   <meta name="twitter:description" content="Programme et inscription au camp des Andenne Bears pour Juniors, Seniors et staff." />
   <meta name="twitter:image" content="https://www.andenne-bears.be/images/camp-blegny-share-2026.jpg" />
   <link rel="icon" href="images/favicon.png" />
-  <link rel="stylesheet" href="bears.css?v=camp-blegny-2026-2" />
+  <link rel="stylesheet" href="bears.css?v=cursor-2026-10-10" />
   <style>
     :root { --gold:#eecf2b; --ink:#080808; --soft:#f4f4f1; --red:#9f1435; }
     * { box-sizing:border-box; }
@@ -131,6 +131,7 @@
     .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.1rem; }
     .form .field { display:block; margin-bottom:1.2rem; font-weight:800; }
     .form .field input,.form .field select,.form .field textarea { display:block; width:100%; min-height:48px; margin-top:.4rem; padding:.82rem .9rem; border:1px solid #777; border-radius:6px; background-color:#fff; color:#080808; font:inherit; font-weight:600; }
+    .form .field input[type="checkbox"] { display:inline-block; width:1.25rem; min-height:1.25rem; margin:0 .55rem 0 0; padding:0; vertical-align:middle; accent-color:var(--red); }
     .field textarea { min-height:90px; resize:vertical; }
     .field small { display:block; margin-top:.35rem; color:#4b4b4b; font-weight:400; }
     .required { color:var(--red); }
@@ -219,6 +220,7 @@
       <form class="form" id="camp-form" action="camp-registration.php" method="post">
         <div class="form-grid"><label class="field" for="camp-last-name">Nom <span class="required">*</span><input id="camp-last-name" name="last_name" autocomplete="family-name" maxlength="100" required /></label><label class="field" for="camp-first-name">Prénom <span class="required">*</span><input id="camp-first-name" name="first_name" autocomplete="given-name" maxlength="100" required /></label></div>
         <label class="field" for="camp-role">Tu participes comme <span class="required">*</span><select id="camp-role" name="role" required><option value="">Choisir</option><option value="Junior">Junior</option><option value="Senior">Senior</option><option value="Staff">Staff</option></select></label>
+        <label class="field" for="camp-no-lodging"><input id="camp-no-lodging" name="no_lodging" type="checkbox" value="oui" />Je ne dormirai pas sur place, mais je prendrai les repas<small>Ton inscription reste comptée pour les repas, sans réserver de lit.</small></label>
         <label class="field" for="camp-diet">Exigence alimentaire<textarea id="camp-diet" name="diet" maxlength="1000" placeholder="Par exemple : végétarien, sans porc…"></textarea><small>Laisse vide si tu n’as pas d’exigence particulière.</small></label>
         <label class="field" for="camp-allergies">Allergies<textarea id="camp-allergies" name="allergies" maxlength="1000" placeholder="Précise les aliments ou ingrédients concernés."></textarea><small>Laisse vide si tu n’as pas d’allergie à signaler.</small></label>
         <label class="field" for="camp-other">Autres informations<textarea id="camp-other" name="other" maxlength="1000" placeholder="Une information utile pour organiser ta venue ?"></textarea></label>

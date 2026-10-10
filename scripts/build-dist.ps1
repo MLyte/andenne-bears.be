@@ -7,9 +7,10 @@ $PublicFiles = @(
   '.ovhconfig', 'robots.txt', 'sitemap.xml',
   'index.html', 'journee-familiale.html', 'camp-blegny.html',
   'camp-blegny-comite.html', 'export-inscriptions.html', 'tirage-equipes.html',
-  'bears.css', 'camp-dashboard.css', 'tirage-equipes.css',
+  'bears.css', 'camp-dashboard.css', 'tirage-equipes.css', 'membres.css',
   'contact.php', 'family-day.php', 'camp-registration.php',
-  'suivi-inscriptions.php', 'suivi-camp-blegny.php', 'changethis.php',
+  'suivi-inscriptions.php', 'suivi-camp-blegny.php', 'tirage-equipes.php', 'changethis.php',
+  'membres.php', 'membres-staff.php', 'membres-photo.php', 'membres-data.php', 'membres-image.php', 'private-backup.php',
   'config/family-day-config.php'
 )
 $ResourceTypes = @{
@@ -26,7 +27,7 @@ foreach ($Folder in $ResourceTypes.Keys) {
 }
 # Include runtime configuration so dist is a complete www folder.
 # Registration CSVs live outside www and are never copied into dist.
-foreach ($OptionalFile in @('.htaccess', 'config/contact-config.php', 'config/changethis-config.php')) {
+foreach ($OptionalFile in @('.htaccess', 'config/contact-config.php', 'config/changethis-config.php', 'config/members-config.php')) {
   if (Test-Path -LiteralPath (Join-Path $ProjectRoot $OptionalFile) -PathType Leaf) {
     $SelectedFiles += $OptionalFile
   }
