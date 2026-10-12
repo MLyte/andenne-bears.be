@@ -1,62 +1,122 @@
-# Préparation de la migration MySQL OVH
+# Stockage MySQL OVH
 
-## État
+## État vérifié le 12 octobre 2026
 
-Paramètres reçus le 12 octobre 2026 : MySQL 8.4, base et utilisateur
-`andennebhmlyte01`, hôte `andennebhmlyte01.mysql.db`, serveur indiqué par OVH
-`mysql101.eu002`. Le port 3306 est la valeur habituelle proposée dans le modèle ;
-il reste à confirmer par un test de connexion depuis l'hébergement.
+Migration activée sur OVH à 16:58 UTC : 35 inscriptions familiales,
+19 inscriptions au camp et 22 joueurs du tirage importés. Tous les champs SQL
+correspondaient aux sources. Les exports authentifiés, les compositions du
+tirage, la liste des joueurs et les compteurs ont été comparés avant/après.
+Les compteurs publics étaient de 25 joueurs au flag et 77 burgers.
 
-Le modèle `config/database-config.example.php` ne contient aucun mot de passe.
-Il n'est pas utilisé par les pages actuelles et ne déclenche aucune migration.
-La connexion réelle, le schéma SQL et la bascule restent à réaliser.
+Copie des sources :
+`bears-family-day-private/migration-backups/20261012-165859-5602c0e2/`.
+Copie du code précédent :
+`bears-family-day-private/migration-code-backup-20261012-165525/`.
+La première sauvegarde SQL `backups/2026-10-12-mysql/mysql-data.json` a été
+vérifiée par son empreinte. Les outils temporaires de test et maintenance ont
+été retirés ; leurs URL répondent 404.
 
-## Renseigner le secret sans le partager dans la conversation
+Les écritures SQL ont été testées dans des tables temporaires ; les contrôles
+finaux des pages réelles ont conservé les inscriptions existantes intactes.
 
-1. Dans WinSCP, ouvrir le dossier privé `bears-family-day-private/`, voisin de
-   `www/` et correspondant au `storage_dir` de l'installation.
-2. Y envoyer `config/database-config.example.php` sous le nom
-   `database-config.php`.
-3. Éditer uniquement cette copie privée et remplir la valeur `password`.
-   Dans une chaîne PHP entre apostrophes, écrire `\'` pour une apostrophe et
-   `\\` pour un antislash faisant partie du mot de passe.
-4. Enregistrer le fichier avec des droits limités au compte d'hébergement
-   (600 si PHP s'exécute sous ce compte).
+## Connexion et périmètre
 
-Ne pas remplir le modèle versionné, ni mettre la copie privée dans `www/`,
-`dist/`, Git ou un message. Aucun script actuel ne lit encore cette configuration.
+Connexion vérifiée depuis PHP sur OVH le 12 octobre 2026 : MySQL `8.4.11-11`,
+PHP `8.5.7`, port `3306`, base et utilisateur `andennebhmlyte01`, hôte
+`andennebhmlyte01.mysql.db`. Le serveur indiqué par OVH est `mysql101.eu002`.
 
-## Stockages identifiés dans le code local
+Le secret reste dans `bears-family-day-private/database-config.php`, hors de
+`www/`, avec les droits `600`. Il n'est ni téléchargé pour les tests, ni envoyé
+dans Git, ni inclus dans `dist/`. Le modèle sans secret est
+`config/database-config.example.php`.
 
-| Données | Stockage actuel | Points à adapter |
+| Données | Table MySQL | Ancienne source privée |
 | --- | --- | --- |
-| Journée familiale | `family-day-2026.csv` | formulaire, suivi, corrections, suppressions, compteurs et exports |
-| Camp de Blégny | `camp-blegny-2026.csv` | formulaire, suivi et exports |
-| Tirage des équipes | `family-teams-2026.csv` | chargement et sauvegarde du tirage |
-| Membres et compositions | `members-depth-chart.json` | accès centralisé dans `membres-data.php` |
-| Sauvegardes | copies des fichiers privés | adapter la sauvegarde et la restauration aux données SQL |
+| Journée familiale | `bears_family_registrations` | `family-day-2026.csv` |
+| Camp de Blégny | `bears_camp_registrations` | `camp-blegny-2026.csv` |
+| Tirage des équipes | `bears_team_players` | `family-teams-2026.csv` |
+| État de l'import | `bears_dataset_state` | présence et empreinte de chaque source |
 
-Le périmètre initial est le remplacement des CSV comme stockage principal.
-Le JSON des membres est identifié séparément pour décider de son inclusion.
-Les photos de `member-photos/` peuvent rester des fichiers privés.
-Les exports CSV peuvent être conservés, en étant générés depuis MySQL.
+Chaque inscription et chaque joueur du tirage occupe une ligne SQL, avec les
+champs existants conservés. Les tables utilisent InnoDB et `utf8mb4`. Les
+références restent uniques et l'ordre d'origine est conservé. Les exports CSV
+restent disponibles : en mode MySQL ils sont générés depuis la base, en mémoire.
 
-## Ordre de bascule prévu
+L'espace membres utilise encore `members-depth-chart.json`. Les photos restent
+dans `member-photos/`. Ils ne font pas partie de cette migration des trois CSV.
 
-1. Tester la connexion depuis PHP sur OVH avec PDO MySQL et `utf8mb4`, sans
-   afficher le secret ni une erreur de connexion brute dans une page publique.
-2. Préparer le schéma et les accès SQL, en conservant les références existantes,
-   les contrôles d'accès et la détection des modifications concurrentes.
-3. Sauvegarder les sources et tester un import réexécutable sans doublons,
-   incluant les anciens formats encore acceptés par le code.
-4. Prévoir une courte suspension des écritures pour l'import final ; vérifier
-   chaque enregistrement ainsi que les totaux et les liens entre les données.
-5. Basculer ensemble les lectures et écritures concernées, puis vérifier les
-   formulaires, les interfaces privées, les compteurs, les équipes et les exports.
-6. Conserver temporairement les fichiers d'origine comme sauvegarde privée.
-   Un retour aux fichiers après de nouvelles écritures SQL exige de reporter
-   ces écritures : ne pas réactiver automatiquement un CSV devenu obsolète.
+## Activation et import
 
-Pour les bases incluses dans un hébergement Web OVH, les connexions externes
-sont restreintes : prévoir le test depuis l'hébergement, pas uniquement depuis
-le PC. Voir les [spécificités techniques OVH](https://github.com/ovh/ovhcloud-docs/blob/develop/docs/en/guides/web-cloud/web-hosting/hosting-technical-specificities.mdx).
+La présence de `database-config.php` seule n'active rien. Le fichier privé
+`.mysql-active`, contenant exactement `bears-mysql-v1` suivi d'un saut de ligne,
+active MySQL après un import vérifié. `bears-storage.php` centralise les accès.
+
+Avant activation, le code conserve la compatibilité avec les CSV. Après
+activation, aucune panne SQL ne provoque un retour automatique aux fichiers :
+les pages répondent avec une erreur temporaire, sans confirmer une écriture
+échouée et sans exposer les détails de connexion.
+
+`bears-migration.php` contient l'import ; `scripts/migrate-mysql.php` fournit
+l'entrée CLI. La commande suivante vérifie les sources sans créer les tables
+ni activer MySQL :
+
+```sh
+php scripts/migrate-mysql.php --private=/home/andennebh/bears-family-day-private
+```
+
+Ajouter `--activate` pour importer et activer, après publication de tous les
+fichiers dépendants et extinction des anciennes requêtes. L'hébergement actuel
+accepte SFTP mais pas l'exécution de commandes SSH ; la maintenance à distance
+passe donc par un script PHP temporaire, limité à HTTPS et protégé par un jeton
+aléatoire envoyé en en-tête. Ce script doit être retiré après vérification. Il
+n'est pas inclus dans `dist/` et aucun outil de maintenance permanent n'est publié.
+
+L'import prend un verrou exclusif `.mysql-migration.lock`, partagé par les
+requêtes applicatives, puis verrouille les sources. Il sauvegarde les fichiers
+dans `migration-backups/<date-identifiant>/` avec un manifeste SHA-256. Il accepte
+les formats famille à 11, 12 ou 13 colonnes et camp à 8 ou 9 colonnes, refuse les
+références dupliquées et vérifie chaque champ après insertion. Les insertions
+sont transactionnelles ; le marqueur n'est publié qu'après comparaison exacte.
+
+Une nouvelle exécution après activation ne réimporte rien. Si un import a été
+validé en base sans avoir pu publier le marqueur, la reprise n'est acceptée que
+si les sources et toutes les lignes SQL correspondent encore exactement. Une
+base différente n'est jamais écrasée automatiquement.
+
+## Déploiement
+
+Déployer `bears-storage.php` avant `private-backup.php`, puis les cinq points
+d'accès : `family-day.php`, `camp-registration.php`, `suivi-inscriptions.php`,
+`suivi-camp-blegny.php`, `tirage-equipes.php`. Les textes du tirage sont adaptés
+dans `tirage-equipes.html` et `scripts/family-teams-ui.js`.
+
+Comparer les fichiers distants à la version de départ, conserver une copie,
+envoyer les remplacements, puis vérifier leurs empreintes. Ne pas envoyer
+`bears-migration.php`, les tests et les outils CLI dans le dossier public
+habituel. Pour une maintenance ponctuelle, les placer dans une zone temporaire
+interdite d'accès Web direct et les retirer ensuite.
+
+## Vérifications
+
+- `php tests/mysql-storage.php` vérifie les anciens formats, les références
+  dupliquées, les caractères accentués, les guillemets et les champs multilignes.
+- `node --test tests/registration-storage.test.mjs tests/tirage-save.test.mjs tests/family-teams.test.mjs`
+  couvre les formulaires, suivis, exports, conflits, règles du tirage et le
+  refus du repli CSV après activation.
+- `testStorageMysql()` dans `tests/mysql-storage.php` utilise exclusivement des
+  tables MySQL temporaires, propres à sa connexion, et un répertoire de test
+  privé. Il vérifie les insertions, doublons, corrections concurrentes,
+  suppressions, remplacement transactionnel du tirage et sauvegardes SQL.
+
+## Conservation et retour arrière
+
+Les CSV d'origine deviennent des archives après activation : les modifier ne
+modifie plus le site. Conserver temporairement ces archives et les copies
+d'import, puis appliquer les durées de conservation du projet, y compris aux
+sauvegardes. Les sauvegardes quotidiennes couvrent désormais MySQL : voir
+`docs/sauvegardes-privees.md`.
+
+Ne pas supprimer `.mysql-active` pour revenir à de vieux CSV après des écritures
+SQL. Un retour nécessite une suspension des écritures, un export des données
+SQL actuelles vers les anciens formats, une comparaison complète et une
+bascule coordonnée du code et du stockage.

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/private-backup.php';
+require_once __DIR__ . '/bears-storage.php';
 
 ini_set('session.use_strict_mode', '1');
 $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
@@ -52,6 +53,7 @@ if ($private === false || $webRoot === false || !is_writable($private)
 }
 $csv = $private . DIRECTORY_SEPARATOR . 'camp-blegny-2026.csv';
 if (is_link($csv)) reply(503, 'Stockage privé indisponible.');
+$sql = bearsStorageWeb(static fn () => bearsStorageMode($private));
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['csrf'])) {
     $_SESSION['camp_csrf'] = bin2hex(random_bytes(32));
@@ -82,6 +84,7 @@ if (preg_match_all('/./us', $lastName) < 2 || preg_match_all('/./us', $firstName
     reply(422, 'Indique un nom, un prénom et une catégorie valides.');
 }
 
+if (!$sql) {
 $handle = @fopen($csv, 'c+');
 if ($handle === false || !flock($handle, LOCK_EX)) reply(503, 'Enregistrement impossible. Réessaie plus tard.');
 $legacyHeader = ['reference', 'date_utc', 'nom', 'prenom', 'categorie', 'exigence_alimentaire', 'allergies', 'autres'];
@@ -124,11 +127,17 @@ if (fstat($handle)['size'] === 0) {
     }
 }
 fseek($handle, 0, SEEK_END);
+}
 $reference = strtoupper(bin2hex(random_bytes(5)));
 $row = [$reference, gmdate('c'), safeCsv($lastName), safeCsv($firstName), $role, safeCsv($diet), safeCsv($allergies), safeCsv($other), $noLodging === 'oui' ? 'non' : 'oui'];
+if ($sql) {
+    bearsStorageWeb(static fn () => bearsAppendRow($private, 'camp', $row));
+    $written = true;
+} else {
 $written = fputcsv($handle, $row, ';') !== false && fflush($handle) && (!function_exists('fsync') || fsync($handle));
 flock($handle, LOCK_UN);
 fclose($handle);
+}
 if (!$written) reply(503, 'Enregistrement impossible. Réessaie plus tard.');
 bearsBackupAfterWrite($private);
 $_SESSION['camp_last_submit'] = time();

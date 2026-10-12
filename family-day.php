@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/private-backup.php';
+require_once __DIR__ . '/bears-storage.php';
 
 ini_set('session.use_strict_mode', '1');
 $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
@@ -51,6 +52,7 @@ function storagePath(array $config): string
     if (is_link($path)) {
         respond(503, 'Stockage privé indisponible.');
     }
+    bearsStorageWeb(static fn () => bearsStorageMode($realDir));
     return $path;
 }
 
@@ -114,11 +116,10 @@ function burgerReservationsOpen(?DateTimeImmutable $now = null): bool
 function familyRegistrationCounts(string $path): array
 {
     $counts = ['total' => 0, 'women' => 0, 'under18' => 0, 'nonMembers' => 0, 'members' => 0, 'burgers' => 0];
-    if (!is_file($path)) {
-        return $counts;
-    }
-    $handle = @fopen($path, 'rb');
-    if ($handle === false || !flock($handle, LOCK_SH)) {
+    $sql = bearsStorageWeb(static fn () => bearsStorageMode(dirname($path)));
+    if (!$sql && !is_file($path)) return $counts;
+    $handle = $sql ? bearsStorageWeb(static fn () => bearsReadStream(dirname($path), 'family')) : @fopen($path, 'rb');
+    if ($handle === false || (!$sql && !flock($handle, LOCK_SH))) {
         respond(503, 'Compteur temporairement indisponible.');
     }
     $header = fgetcsv($handle, 4096, ';');
@@ -213,14 +214,15 @@ if (isset($_GET['export'])) {
         respond(401, 'Accès réservé aux organisateurs.');
     }
     $path = storagePath($config);
-    if (!is_file($path)) {
+    $sql = bearsStorageWeb(static fn () => bearsStorageMode(dirname($path)));
+    if (!$sql && !is_file($path)) {
         respond(404, 'Aucune inscription enregistrée.');
     }
+    $handle = $sql ? bearsStorageWeb(static fn () => bearsReadStream(dirname($path), 'family')) : @fopen($path, 'rb');
+    if ($handle === false || (!$sql && !flock($handle, LOCK_SH))) respond(503, 'Export temporairement indisponible.');
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="inscriptions-25-octobre-2026.csv"');
     echo "\xEF\xBB\xBF";
-    $handle = @fopen($path, 'rb');
-    if ($handle === false || !flock($handle, LOCK_SH)) respond(503, 'Export temporairement indisponible.');
     fpassthru($handle);
     flock($handle, LOCK_UN);
     fclose($handle);
@@ -331,6 +333,8 @@ if (!$minor && $guardianConsent !== '' && !(!$playsFlag && $minorValue === 'yes'
 }
 
 $path = storagePath($config);
+$sql = bearsStorageWeb(static fn () => bearsStorageMode(dirname($path)));
+if (!$sql) {
 $handle = @fopen($path, 'c+');
 if ($handle === false || !flock($handle, LOCK_EX)) {
     respond(503, 'Enregistrement impossible. Réessayez plus tard.');
@@ -346,13 +350,19 @@ if (fstat($handle)['size'] === 0) {
     }
 }
 fseek($handle, 0, SEEK_END);
+}
 $reference = strtoupper(bin2hex(random_bytes(5)));
 $safe = static fn (string $value): string => preg_match('/^[=+\-@\t\r]/', $value) ? "'" . $value : $value;
 // Keep the existing CSV column; older rows use oui/non, new rows store the burger count.
 $row = [$reference, gmdate('c'), $safe($name), $safe($email), $playsFlag ? ($minor ? 'oui' : 'non') : '', $minor ? 'autorisation déclarée' : '', $playsFlag ? 'oui' : 'non', 'non', (string) $burgerQuantity, $bearsPlayer === '' ? '' : ($bearsPlayer === 'yes' ? 'oui' : 'non'), $woman === '' ? '' : ($woman === 'yes' ? 'oui' : 'non'), $volunteer, $dayHelp];
+if ($sql) {
+    bearsStorageWeb(static fn () => bearsAppendRow(dirname($path), 'family', $row));
+    $written = true;
+} else {
 $written = fputcsv($handle, $row, ';') !== false && fflush($handle) && (!function_exists('fsync') || fsync($handle));
 flock($handle, LOCK_UN);
 fclose($handle);
+}
 if (!$written) {
     respond(503, 'Enregistrement impossible. Réessayez plus tard.');
 }

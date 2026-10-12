@@ -24,6 +24,9 @@ test('sauvegarde explicite, rechargement CSV et conflit de version', async () =>
   await mkdir(join(web, 'config'), { recursive: true });
   await mkdir(storage);
   await copyFile(source, join(web, 'tirage-equipes.php'));
+  for (const dependency of ['private-backup.php', 'bears-storage.php']) {
+    await copyFile(join(dirname(source), dependency), join(web, dependency));
+  }
   await writeFile(join(web, 'config', 'family-day-config.php'), "<?php return ['storage_dir' => __DIR__ . '/../../storage'];");
   await writeFile(join(web, 'login.php'), "<?php session_start(); $_SESSION['family_dashboard_until'] = time() + 3600; $_SESSION['family_dashboard_csrf'] = 'test-token'; echo 'ok';");
   const port = await freePort();

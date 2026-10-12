@@ -10,6 +10,12 @@ Dans WinSCP, choisir `C:\www\andenne-bears.be\dist\` à gauche et le dossier `ww
 
 La liste des pages est explicite dans `scripts/build-dist.ps1` ; ajouter toute nouvelle page à cette liste. Les ressources JS, images et polices sont collectées automatiquement. Git, sauvegardes, tests, notes et scripts de développement sont exclus. `dist/` est ignoré par Git et contient des configurations privées : ne pas le publier dans un dépôt ou comme archive publique.
 
+Pour MySQL, `bears-storage.php` est inclus dans le dossier public. La configuration
+`database-config.php` et le marqueur `.mysql-active` restent dans
+`bears-family-day-private/`, hors de `www/` et de `dist/`. Une publication ne doit
+ni les remplacer, ni réinitialiser la base. Les anciens CSV sont des archives
+après activation. Voir [la procédure MySQL](migration-mysql.md).
+
 ## Ancienne méthode : filtrer la racine du projet
 
 Le filtre prêt à copier est dans `winscp-site-mask.txt` (une seule ligne).

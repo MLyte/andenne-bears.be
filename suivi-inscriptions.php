@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/private-backup.php';
+require_once __DIR__ . '/bears-storage.php';
 
 ini_set('session.use_strict_mode', '1');
 $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
@@ -49,11 +50,17 @@ function privateCsvPath(array $config): string
     if (is_link($path)) {
         fail(503, 'Stockage privé indisponible.');
     }
+    bearsStorageWeb(static fn () => bearsStorageMode($private));
     return $path;
 }
 
 function openCsv(string $path)
 {
+    if (bearsStorageWeb(static fn () => bearsStorageMode(dirname($path)))) {
+        $handle = bearsStorageWeb(static fn () => bearsReadStream(dirname($path), 'family'));
+        $header = fgetcsv($handle, 0, ';', '"', '\\');
+        return [$handle, $header];
+    }
     $handle = @fopen($path, 'rb');
     if ($handle === false || !flock($handle, LOCK_SH)) {
         fail(503, 'Lecture des inscriptions indisponible.');
@@ -80,6 +87,10 @@ function rowVersion(array $row): string
 
 function saveRegistration(string $path, string $reference, string $version, ?array $changes): void
 {
+    if (bearsStorageWeb(static fn () => bearsStorageMode(dirname($path)))) {
+        bearsStorageWeb(static fn () => bearsUpdateRow(dirname($path), 'family', $reference, $version, $changes));
+        return;
+    }
     $handle = @fopen($path, 'r+b');
     if ($handle === false || !flock($handle, LOCK_EX)) {
         fail(503, 'Modification temporairement indisponible.');
@@ -199,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } elseif ($action === 'download' && $authenticated) {
         $path = privateCsvPath($config);
-        if (!is_file($path)) fail(404, 'Aucune inscription enregistrée.');
+        if (!bearsStorageWeb(static fn () => bearsStorageMode(dirname($path))) && !is_file($path)) fail(404, 'Aucune inscription enregistrée.');
         [$handle] = openCsv($path);
         rewind($handle);
         header('Content-Type: text/csv; charset=utf-8');
@@ -294,7 +305,7 @@ $potentialFreeTotal = 0;
 $dayHelpTotal = 0;
 if ($authenticated) {
     $path = privateCsvPath($config);
-    if (is_file($path)) {
+    if (bearsStorageWeb(static fn () => bearsStorageMode(dirname($path))) || is_file($path)) {
         [$handle, $header] = openCsv($path);
         while (($row = fgetcsv($handle, 4096, ';')) !== false) {
             if (count($row) !== count($header) || !in_array($row[6], ['oui', 'non'], true)) {
@@ -453,7 +464,7 @@ function statusMark(string $value, string $yesLabel = 'Oui', string $yesNote = '
                   <td data-label="Joue aux Bears"><span class="family-dashboard-read"><?= statusMark($row[9]) ?></span><span class="family-dashboard-field"><?= editSelect('bears_player', $row[9], ['' => 'Sans flag', 'oui' => 'Oui', 'non' => 'Non'], $formId, 'Joue aux Bears') ?></span></td>
                   <td data-label="Femme"><span class="family-dashboard-read"><?= statusMark($row[10]) ?></span><span class="family-dashboard-field"><?= editSelect('woman', $row[10], ['' => 'Sans flag', 'oui' => 'Oui', 'non' => 'Non'], $formId, 'Femme') ?></span></td>
                   <td data-label="Référence"><?= escape($row[0]) ?></td>
-                  <td data-label="Correction"><details class="family-dashboard-edit"><summary>Modifier</summary><form id="<?= escape($formId) ?>" action="suivi-inscriptions.php" method="post"><input type="hidden" name="action" value="update" /><input type="hidden" name="csrf_token" value="<?= escape($csrf) ?>" /><input type="hidden" name="reference" value="<?= escape($row[0]) ?>" /><input type="hidden" name="version" value="<?= rowVersion($row) ?>" /><button class="button button-primary" type="submit">Enregistrer</button></form><form class="family-dashboard-delete" action="suivi-inscriptions.php" method="post"><input type="hidden" name="action" value="delete" /><input type="hidden" name="csrf_token" value="<?= escape($csrf) ?>" /><input type="hidden" name="reference" value="<?= escape($row[0]) ?>" /><input type="hidden" name="version" value="<?= rowVersion($row) ?>" /><label for="delete-<?= escape($row[0]) ?>">Supprimer cette ligne du CSV : saisis <strong><?= escape($row[0]) ?></strong> pour confirmer.</label><input class="family-dashboard-control" id="delete-<?= escape($row[0]) ?>" name="confirm_reference" autocomplete="off" maxlength="10" pattern="[A-F0-9]{10}" required /><button class="button family-dashboard-delete-button" type="submit">Supprimer l’inscription</button></form></details></td>
+                  <td data-label="Correction"><details class="family-dashboard-edit"><summary>Modifier</summary><form id="<?= escape($formId) ?>" action="suivi-inscriptions.php" method="post"><input type="hidden" name="action" value="update" /><input type="hidden" name="csrf_token" value="<?= escape($csrf) ?>" /><input type="hidden" name="reference" value="<?= escape($row[0]) ?>" /><input type="hidden" name="version" value="<?= rowVersion($row) ?>" /><button class="button button-primary" type="submit">Enregistrer</button></form><form class="family-dashboard-delete" action="suivi-inscriptions.php" method="post"><input type="hidden" name="action" value="delete" /><input type="hidden" name="csrf_token" value="<?= escape($csrf) ?>" /><input type="hidden" name="reference" value="<?= escape($row[0]) ?>" /><input type="hidden" name="version" value="<?= rowVersion($row) ?>" /><label for="delete-<?= escape($row[0]) ?>">Supprimer cette inscription : saisis <strong><?= escape($row[0]) ?></strong> pour confirmer.</label><input class="family-dashboard-control" id="delete-<?= escape($row[0]) ?>" name="confirm_reference" autocomplete="off" maxlength="10" pattern="[A-F0-9]{10}" required /><button class="button family-dashboard-delete-button" type="submit">Supprimer l’inscription</button></form></details></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

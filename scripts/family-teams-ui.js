@@ -35,7 +35,7 @@ function markDirty() {
   dirty = true;
   changeToken++;
   saveButton.disabled = !draw;
-  saveStatus.textContent = 'Modifications non sauvées. Clique sur « Sauver » pour les conserver dans le CSV du tirage.';
+  saveStatus.textContent = 'Modifications non sauvées. Clique sur « Sauver » pour les conserver.';
 }
 
 function snapshot() {
@@ -452,7 +452,7 @@ async function loadCurrentRoster() {
       } else {
         dirty = false;
         saveButton.disabled = true;
-        saveStatus.textContent = 'Dernier tirage sauvegardé chargé depuis le CSV.';
+        saveStatus.textContent = 'Dernier tirage sauvegardé chargé.';
       }
     } else {
       renderRoster();
@@ -513,7 +513,7 @@ saveButton.addEventListener('click', async () => {
     saveVersion = result.version;
     if (changeToken === submittedToken) {
       dirty = false;
-      saveStatus.textContent = 'Tirage sauvé dans le CSV privé. Il sera rechargé à la prochaine ouverture.';
+      saveStatus.textContent = 'Tirage enregistré. Il sera rechargé à la prochaine ouverture.';
     } else {
       saveStatus.textContent = 'Le tirage a changé pendant l’enregistrement. Clique à nouveau sur « Sauver ».';
     }

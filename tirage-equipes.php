@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/private-backup.php';
+require_once __DIR__ . '/bears-storage.php';
 
 ini_set('session.use_strict_mode', '1');
 $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
@@ -40,9 +41,15 @@ $_SESSION['family_dashboard_csrf'] ??= bin2hex(random_bytes(32));
 $path = $private . DIRECTORY_SEPARATOR . 'family-teams-2026.csv';
 $lockPath = $private . DIRECTORY_SEPARATOR . 'family-teams-2026.lock';
 if (is_link($path) || is_link($lockPath)) drawFail(503, 'Stockage privé indisponible.');
+$sql = bearsStorageWeb(static fn () => bearsStorageMode($private));
 $lock = @fopen($lockPath, 'c+');
 if ($lock === false || !flock($lock, LOCK_EX)) drawFail(503, 'Stockage privé temporairement indisponible.');
-$current = is_file($path) ? @file_get_contents($path) : null;
+if ($sql) {
+    $savedRows = bearsStorageWeb(static fn () => bearsReadRows($private, 'teams'));
+    $current = $savedRows === null ? null : bearsRowsCsv('teams', $savedRows);
+} else {
+    $current = is_file($path) ? @file_get_contents($path) : null;
+}
 if ($current === false) drawFail(503, 'Lecture du tirage impossible.');
 $version = $current === null ? '' : hash('sha256', $current);
 $header = ['type', 'equipe', 'ordre', 'reference', 'nom', 'bears', 'femme', 'mineur', 'present', 'proche_reference', 'tirage', 'nombre_equipes', 'revision'];
@@ -157,12 +164,16 @@ rewind($buffer);
 $csv = stream_get_contents($buffer);
 fclose($buffer);
 if ($csv === false) drawFail(503, 'Enregistrement impossible.');
+if ($sql) {
+    bearsStorageWeb(static fn () => bearsSaveTeams($private, $csv));
+} else {
 $temporary = @tempnam($private, 'family-teams-');
 if ($temporary === false || @file_put_contents($temporary, $csv, LOCK_EX) !== strlen($csv)) drawFail(503, 'Enregistrement impossible.');
 @chmod($temporary, 0600);
 if (!@rename($temporary, $path)) {
     @unlink($temporary);
     drawFail(503, 'Enregistrement impossible.');
+}
 }
 flock($lock, LOCK_UN);
 fclose($lock);

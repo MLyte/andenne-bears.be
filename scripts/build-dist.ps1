@@ -11,6 +11,7 @@ $PublicFiles = @(
   'contact.php', 'family-day.php', 'camp-registration.php',
   'suivi-inscriptions.php', 'suivi-camp-blegny.php', 'tirage-equipes.php', 'changethis.php',
   'membres.php', 'membres-staff.php', 'membres-photo.php', 'membres-data.php', 'membres-image.php', 'membres-compositions-pdf.php', 'private-backup.php',
+  'bears-storage.php',
   'config/family-day-config.php'
 )
 $ResourceTypes = @{
@@ -26,7 +27,7 @@ foreach ($Folder in $ResourceTypes.Keys) {
   } | ForEach-Object { $_.FullName.Substring($ProjectRoot.Length + 1) })
 }
 # Include runtime configuration so dist is a complete www folder.
-# Registration CSVs live outside www and are never copied into dist.
+# Private storage, database credentials and migration markers are never copied.
 foreach ($OptionalFile in @('.htaccess', 'config/contact-config.php', 'config/changethis-config.php', 'config/members-config.php')) {
   if (Test-Path -LiteralPath (Join-Path $ProjectRoot $OptionalFile) -PathType Leaf) {
     $SelectedFiles += $OptionalFile
@@ -61,4 +62,4 @@ foreach ($RelativeFile in $SelectedFiles) {
   Copy-Item -LiteralPath (Join-Path $ProjectRoot $RelativeFile) -Destination $DestinationPath
 }
 Write-Host "Ready: $($SelectedFiles.Count) files in $DistPath"
-Write-Host 'Upload the CONTENTS of dist to www/. Registration CSVs remain outside www.'
+Write-Host 'Upload the CONTENTS of dist to www/. Database credentials and private data remain outside www.'

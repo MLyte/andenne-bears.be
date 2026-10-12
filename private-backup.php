@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/bears-storage.php';
+
 /** Create one private snapshot on the first successful write of each local day. */
 function bearsBackupAfterWrite(string $private): void
 {
@@ -8,12 +10,13 @@ function bearsBackupAfterWrite(string $private): void
         bearsCreateDailyBackup($private);
     } catch (Throwable $error) {
         // A completed registration must not be reported as failed because its backup failed.
-        error_log('Andenne Bears private backup failed: ' . $error->getMessage());
+        error_log('Andenne Bears private backup failed: ' . get_class($error));
     }
 }
 
 function bearsCreateDailyBackup(string $private): void
 {
+    $mysql = bearsStorageMode($private);
     $root = realpath($private);
     $web = realpath(__DIR__);
     if ($root === false || $web === false || !is_writable($root)
@@ -33,13 +36,35 @@ function bearsCreateDailyBackup(string $private): void
         if (!flock($lock, LOCK_EX)) throw new RuntimeException('Backup lock unavailable.');
         $today = (new DateTimeImmutable('now', new DateTimeZone('Europe/Brussels')))->format('Y-m-d');
         $target = $backupRoot . DIRECTORY_SEPARATOR . $today;
+        // A CSV snapshot taken earlier on cutover day cannot cover the SQL database.
+        if ($mysql) $target .= '-mysql';
         if (is_dir($target) && is_file($target . DIRECTORY_SEPARATOR . 'manifest.json')) return;
         if (file_exists($target) || is_link($target)) throw new RuntimeException('Incomplete backup exists.');
         $pending = $backupRoot . DIRECTORY_SEPARATOR . '.pending-' . bin2hex(random_bytes(8));
         if (!mkdir($pending, 0700)) throw new RuntimeException('Backup staging unavailable.');
         try {
             $manifest = ['created_at' => gmdate('c'), 'files' => []];
-            foreach (['family-day-2026.csv', 'camp-blegny-2026.csv', 'family-teams-2026.csv', 'members-depth-chart.json'] as $name) {
+            if ($mysql) {
+                $pdo = bearsDatabase($root);
+                $pdo->exec('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ');
+                $pdo->beginTransaction();
+                try {
+                    $snapshot = ['schema' => 'bears-mysql-v1', 'created_at' => gmdate('c'), 'datasets' => []];
+                    foreach (['family', 'camp', 'teams'] as $dataset) {
+                        $snapshot['datasets'][$dataset] = bearsReadRows($root, $dataset);
+                    }
+                    $pdo->commit();
+                } catch (Throwable $error) {
+                    if ($pdo->inTransaction()) $pdo->rollBack();
+                    throw $error;
+                }
+                $json = json_encode($snapshot, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+                $snapshotPath = $pending . DIRECTORY_SEPARATOR . 'mysql-data.json';
+                if (file_put_contents($snapshotPath, $json, LOCK_EX) !== strlen($json)) throw new RuntimeException('SQL backup write failed.');
+                chmod($snapshotPath, 0600);
+                $manifest['files']['mysql-data.json'] = hash_file('sha256', $snapshotPath);
+            }
+            foreach ($mysql ? ['members-depth-chart.json'] : ['family-day-2026.csv', 'camp-blegny-2026.csv', 'family-teams-2026.csv', 'members-depth-chart.json'] as $name) {
                 $source = $root . DIRECTORY_SEPARATOR . $name;
                 if (!file_exists($source) && !is_link($source)) continue;
                 bearsBackupCopy($source, $pending . DIRECTORY_SEPARATOR . $name);
@@ -105,7 +130,7 @@ function bearsBackupPrune(string $backupRoot, string $today): void
     foreach (new DirectoryIterator($backupRoot) as $entry) {
         if ($entry->isDot() || $entry->isLink() || !$entry->isDir()) continue;
         $name = $entry->getFilename();
-        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $name) && $name < $cutoff) {
+        if (preg_match('/^\d{4}-\d{2}-\d{2}(?:-mysql)?$/', $name) && substr($name, 0, 10) < $cutoff) {
             bearsBackupRemoveDirectory($entry->getPathname());
         }
     }

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/private-backup.php';
+require_once __DIR__ . '/bears-storage.php';
 
 ini_set('session.use_strict_mode', '1');
 $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
@@ -53,11 +54,17 @@ function campCsvPath(array $config): string
     }
     $path = $private . DIRECTORY_SEPARATOR . 'camp-blegny-2026.csv';
     if (is_link($path)) fail(503, 'Stockage privé indisponible.');
+    bearsStorageWeb(static fn () => bearsStorageMode($private));
     return $path;
 }
 
 function openCampCsv(string $path)
 {
+    if (bearsStorageWeb(static fn () => bearsStorageMode(dirname($path)))) {
+        $handle = bearsStorageWeb(static fn () => bearsReadStream(dirname($path), 'camp'));
+        $header = fgetcsv($handle, 0, ';', '"', '\\');
+        return $handle;
+    }
     $handle = @fopen($path, 'rb');
     if ($handle === false || !flock($handle, LOCK_SH)) fail(503, 'Lecture des inscriptions indisponible.');
     if (!in_array(fgetcsv($handle, 0, ';'), [CAMP_HEADER, CAMP_HEADER_LEGACY], true)) {
@@ -75,6 +82,10 @@ function campRowVersion(array $row): string
 
 function saveCampRegistration(string $path, string $reference, string $version, array $changes): void
 {
+    if (bearsStorageWeb(static fn () => bearsStorageMode(dirname($path)))) {
+        bearsStorageWeb(static fn () => bearsUpdateRow(dirname($path), 'camp', $reference, $version, $changes));
+        return;
+    }
     $handle = @fopen($path, 'r+b');
     if ($handle === false || !flock($handle, LOCK_EX)) fail(503, 'Modification temporairement indisponible.');
     $original = stream_get_contents($handle);
@@ -205,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } elseif ($action === 'download' && $authenticated) {
         $path = campCsvPath($config);
-        if (!is_file($path)) fail(404, 'Aucune inscription enregistrée.');
+        if (!bearsStorageWeb(static fn () => bearsStorageMode(dirname($path))) && !is_file($path)) fail(404, 'Aucune inscription enregistrée.');
         $handle = openCampCsv($path);
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename="inscriptions-camp-blegny-2026.csv"');
@@ -263,7 +274,7 @@ $allergyCount = 0;
 $lodgingCount = 0;
 if ($authenticated) {
     $path = campCsvPath($config);
-    if (is_file($path)) {
+    if (bearsStorageWeb(static fn () => bearsStorageMode(dirname($path))) || is_file($path)) {
         $handle = openCampCsv($path);
         while (($row = fgetcsv($handle, 0, ';')) !== false) {
             $row = campRow($row);
