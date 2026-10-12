@@ -644,6 +644,8 @@ a {
 .family-draw-player-text strong, .family-draw-player-text small { display: block; }
 .family-draw-player-text small { margin-top: 0.15rem; color: #4b4b48; font-size: 0.72rem; }
 .family-draw-empty { display: block; margin-top: 0.5rem; color: #6a6a66; font-style: italic; }
+.family-draw-empty-button { width: 100%; padding: 0.35rem 0; border: 0; background: transparent; text-align: left; font: inherit; cursor: pointer; }
+.family-draw-empty-button:hover, .family-draw-empty-button:focus-visible { color: #111; text-decoration: underline; }
 .family-draw-team > p { margin: 0; padding: 0.8rem 1rem 1rem; font-size: 0.85rem; }
 .family-draw-team-ok { color: #176b37; font-weight: 800; }
 .family-draw-warning { color: #a2222b; font-weight: 800; }

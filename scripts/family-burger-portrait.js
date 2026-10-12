@@ -3,9 +3,9 @@
     { milestone: 0, file: 'family-burgers-president-2026.png', width: 1312, height: 1199 },
     { milestone: 30, file: 'family-burgers-president-30-2026.png', width: 1312, height: 1199 },
     { milestone: 60, file: 'family-burgers-portrait-60-v3.png', width: 1312, height: 1199 },
-    { milestone: 100, file: 'family-burgers-portrait-100-v3.png', width: 1043, height: 1508 },
-    { milestone: 150, file: 'family-burgers-portrait-150-v3.png', width: 1024, height: 1536 },
-    { milestone: 200, file: 'family-burgers-portrait-200-v3.png', width: 971, height: 1619 },
+    { milestone: 90, file: 'family-burgers-portrait-100-v3.png', width: 1043, height: 1508 },
+    { milestone: 120, file: 'family-burgers-portrait-150-v3.png', width: 1024, height: 1536 },
+    { milestone: 150, file: 'family-burgers-portrait-200-v3.png', width: 971, height: 1619 },
   ];
 
   window.setFamilyBurgerPortrait = (scene, count, assetBase = 'images/') => {

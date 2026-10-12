@@ -29,7 +29,7 @@ Le staff se connecte avec l'identifiant `coach` et le mot de passe organisateur
 défini dans `config/family-day-config.php`. L'identifiant organisateur reste réservé
 aux autres pages d'administration. Les réponses commencent dans l'état
 « À vérifier ». Une fois validées, elles apparaissent dans la sideline des
-différentes unités. Chaque poste dispose d'une place starter et backup. Un
+différentes unités. Chaque poste dispose d'une place starter, backup et potentiel. Un
 profil peut être corrigé depuis « Modifier » : nom, numéro, souhaits de postes,
 préférence et message aux coachs. Le consentement de publication reste inchangé.
 « Écarter la réponse » retire l'inscription et sa photo du stockage actif.

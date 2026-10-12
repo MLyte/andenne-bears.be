@@ -93,7 +93,7 @@ largePhoto.addEventListener('error', () => {
   photoStatus.textContent = 'Cette photo est indisponible. Ferme cette fenêtre et réessaie.';
 });
 
-function responsePhoto(player) {
+function expandablePhoto(player) {
   if (!player.photo) return playerPhoto(player);
   const trigger = el('button', 'members-photo-open');
   trigger.type = 'button';
@@ -163,21 +163,22 @@ function positionLabel(position) {
 }
 
 function playerCard(player, role, position) {
-  const card = el('button', `members-player-card${selected === player.id ? ' is-selected' : ''}`);
-  card.type = 'button';
+  const card = el('div', `members-player-card${selected === player.id ? ' is-selected' : ''}`);
+  const selectButton = el('button', 'members-player-select');
+  selectButton.type = 'button';
   card.dataset.player = player.id;
   card.dataset.role = role;
   card.dataset.position = position || '';
   card.draggable = true;
-  card.setAttribute('aria-pressed', String(selected === player.id));
+  selectButton.setAttribute('aria-pressed', String(selected === player.id));
   const wishGroups = player.preference === 'defense'
     ? [['Défense', player.defense], ['Attaque', player.offense]]
     : [['Attaque', player.offense], ['Défense', player.defense]];
   wishGroups.push(['ST', player.special_teams]);
   const wishSummary = wishGroups.map(([label, choices]) => `${label} : ${Array.isArray(choices) && choices.length ? choices.join(', ') : 'aucun choix'}`).join('. ');
-  card.setAttribute('aria-label', `${playerLabel(player)} · ${role === 'sideline' ? `sideline. ${wishSummary}` : `${positionLabel(position)}, ${role === 'starter' ? 'starter' : 'backup'}`}. Sélectionner pour échanger.`);
-  card.append(playerPhoto(player), el('span', 'members-player-name', player.name));
-  if (player.number) card.append(el('span', 'members-player-number', `#${player.number}`));
+  selectButton.setAttribute('aria-label', `${playerLabel(player)} · ${role === 'sideline' ? `sideline. ${wishSummary}` : `${positionLabel(position)}, ${{ starter: 'starter', backup: 'backup', potential: 'potentiel' }[role]}`}. Sélectionner pour échanger.`);
+  selectButton.append(el('span', 'members-player-name', player.name));
+  if (player.number) selectButton.append(el('span', 'members-player-number', `#${player.number}`));
   if (role === 'sideline') {
     const wishes = el('span', 'members-sideline-wishes');
     for (const [label, choices] of wishGroups) {
@@ -185,11 +186,12 @@ function playerCard(player, role, position) {
       row.append(el('strong', '', label), el('span', '', Array.isArray(choices) && choices.length ? choices.join(' · ') : '—'));
       wishes.append(row);
     }
-    card.append(wishes);
+    selectButton.append(wishes);
   }
-  card.addEventListener('click', () => {
+  card.append(expandablePhoto(player), selectButton);
+  selectButton.addEventListener('click', () => {
     if (selected && selected !== player.id) {
-      const sourceOnField = Object.values(data.boards[activeUnit]).some(slot => slot.starter === selected || slot.backup === selected);
+      const sourceOnField = Object.values(data.boards[activeUnit]).some(slot => ['starter', 'backup', 'potential'].some(slotRole => slot[slotRole] === selected));
       if (role === 'sideline' && !sourceOnField) { selected = player.id; renderBoard(); }
       else move(selected, position, role, player.id);
     }
@@ -223,7 +225,7 @@ function renderResponses() {
     if (!`${player.name} ${player.number}`.toLocaleLowerCase('fr').includes(query)) continue;
     const card = el('article', 'members-response-card');
     const head = el('div', 'members-response-head');
-    head.append(responsePhoto(player));
+    head.append(expandablePhoto(player));
     const heading = el('div');
     heading.append(el('h3', '', playerLabel(player)), el('span', `members-badge${player.approved ? ' is-approved' : ''}`, player.approved ? 'Validé' : 'À vérifier'));
     heading.append(el('span', 'members-badge is-public', player.public_profile ? 'Liste joueurs : oui' : 'Liste joueurs : non'));
@@ -231,7 +233,13 @@ function renderResponses() {
     head.append(heading);
     card.append(head);
     const wishes = el('dl', 'members-wishes');
-    for (const [label, value] of [['Attaque', player.offense.join(' · ') || '—'], ['Défense', player.defense.join(' · ') || '—'], ['Special Teams', (player.special_teams || []).join(' · ') || '—'], ['Préférence', ({ attaque: 'Attaque', defense: 'Défense', deux: 'Les deux', aucune: 'Aucune' })[player.preference] || '—']]) {
+    const preferredWishes = player.preference === 'defense'
+      ? [['Défense', player.defense], ['Attaque', player.offense]]
+      : [['Attaque', player.offense], ['Défense', player.defense]];
+    const wishRows = preferredWishes.map(([label, choices]) => [label, choices.join(' · ') || '—']);
+    wishRows.push(['Special Teams', (player.special_teams || []).join(' · ') || '—']);
+    wishRows.push(['Préférence', ({ attaque: 'Attaque', defense: 'Défense', deux: 'Les deux', aucune: 'Aucune' })[player.preference] || '—']);
+    for (const [label, value] of wishRows) {
       wishes.append(el('dt', '', label), el('dd', '', value));
     }
     card.append(wishes);
@@ -285,15 +293,15 @@ function renderBoard() {
     const slot = el('div', 'members-position');
     slot.dataset.position = position;
     slot.append(el('strong', 'members-position-label', positionLabel(position)));
-    for (const role of ['starter', 'backup']) {
+    for (const role of ['starter', 'backup', 'potential']) {
       const assigned = players.get(board[position]?.[role]);
       if (assigned) {
         occupied.add(assigned.id);
-        const wrapper = el('div', `members-position-person${role === 'backup' ? ' is-secondary' : ''}`);
-        wrapper.append(el('small', '', role === 'starter' ? 'Starter' : 'Backup'), playerCard(assigned, role, position));
+        const wrapper = el('div', `members-position-person${role !== 'starter' ? ' is-secondary' : ''}`);
+        wrapper.append(el('small', '', { starter: 'Starter', backup: 'Backup', potential: 'Potentiel' }[role]), playerCard(assigned, role, position));
         slot.append(wrapper);
       } else {
-        slot.append(dropTarget(position, role, role === 'starter' ? 'Ajouter un starter' : 'Ajouter un backup'));
+        slot.append(dropTarget(position, role, `Ajouter un ${role === 'potential' ? 'joueur potentiel' : role}`));
       }
     }
     field.append(slot);

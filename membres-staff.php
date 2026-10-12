@@ -113,8 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             unset($data['players'][$index]);
                             $data['players'] = array_values($data['players']);
                             foreach ($data['boards'] as &$board) {
-                                foreach ($board as &$slot) foreach (['starter', 'backup'] as $role) {
-                                    if ($slot[$role] === $id) $slot[$role] = null;
+                                foreach ($board as &$slot) foreach (['starter', 'backup', 'potential'] as $role) {
+                                    if (($slot[$role] ?? null) === $id) $slot[$role] = null;
                                 }
                                 unset($slot);
                             }
@@ -133,14 +133,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $targetId = $_POST['target_player_id'] ?? '';
                     if (!is_string($unit) || !array_key_exists($unit, MEMBER_UNITS) || !is_string($position)
                         || !is_string($role) || !is_string($targetId)
-                        || !in_array($role, ['starter', 'backup', 'sideline'], true)
+                        || !in_array($role, ['starter', 'backup', 'potential', 'sideline'], true)
                         || ($role !== 'sideline' && !in_array($position, MEMBER_UNITS[$unit], true))) {
                         staffFail(422, 'Destination invalide.');
                     }
                     $before = $data['boards'][$unit];
                     $source = null;
                     foreach ($data['boards'][$unit] as $slotPosition => &$slot) {
-                        foreach (['starter', 'backup'] as $slotRole) {
+                        foreach (['starter', 'backup', 'potential'] as $slotRole) {
                             if (($slot[$slotRole] ?? null) === $id) {
                                 $source = [$slotPosition, $slotRole];
                                 $slot[$slotRole] = null;
@@ -160,7 +160,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             staffFail(422, 'Échange impossible.');
                         }
                         foreach ($data['boards'][$unit] as $slot) {
-                            if ($slot['starter'] === $targetId || $slot['backup'] === $targetId) staffFail(422, 'Échange impossible.');
+                            if (($slot['starter'] ?? null) === $targetId || ($slot['backup'] ?? null) === $targetId
+                                || ($slot['potential'] ?? null) === $targetId) staffFail(422, 'Échange impossible.');
                         }
                         $data['boards'][$unit][$source[0]][$source[1]] = $targetId;
                     }
@@ -201,6 +202,7 @@ header('Content-Type: text/html; charset=utf-8');
 ?>
 <!doctype html><html lang="fr"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex,nofollow" /><title>Staff · Espace membres · Andenne Bears</title>
+<link rel="icon" href="images/favicon.png" />
 <link rel="stylesheet" href="bears.css?v=cursor-2026-10-10" /><link rel="stylesheet" href="membres.css?v=<?= substr(hash_file('sha256', __DIR__ . '/membres.css'), 0, 16) ?>" />
 <?php if (memberStaff()): ?><script>window.membersConfig = <?= json_encode(['csrf' => $csrf, 'units' => MEMBER_UNITS, 'choices' => ['offense' => MEMBER_OFFENSE_CHOICES, 'defense' => MEMBER_DEFENSE_CHOICES, 'special_teams' => MEMBER_SPECIAL_TEAMS_CHOICES]], JSON_UNESCAPED_UNICODE) ?>;</script><script src="scripts/membres-staff.js?v=<?= substr(hash_file('sha256', __DIR__ . '/scripts/membres-staff.js'), 0, 16) ?>" defer></script><?php endif; ?></head>
 <body class="family-page members-page"><header class="family-header"><a class="brand" href="index.html" aria-label="Andenne Bears, accueil"><img src="images/logoBears.png" alt="" /><span>ANDENNE BEARS</span></a><nav class="family-header-actions" aria-label="Navigation"><a href="membres.php">Espace joueurs</a></nav></header>
@@ -209,5 +211,5 @@ header('Content-Type: text/html; charset=utf-8');
 <?php else: ?><div class="members-staff-toolbar"><p>Réponses et compositions de travail</p><form method="post" action="membres-staff.php"><input type="hidden" name="action" value="logout" /><input type="hidden" name="csrf_token" value="<?= memberEscape($csrf) ?>" /><button class="button" type="submit">Se déconnecter</button></form></div><p id="staff-message" class="members-status" role="status" aria-live="polite"></p>
 <div id="members-staff-app" class="members-staff-app" aria-busy="true"><div class="members-tabs" role="group" aria-label="Vue"><button type="button" data-view="responses" aria-pressed="true">Réponses <span id="response-count"></span></button><button type="button" data-view="board" aria-pressed="false">Compositions</button></div>
 <section id="members-responses" aria-label="Réponses des joueurs"><div class="members-list-heading"><h2>Souhaits reçus</h2><label>Rechercher un joueur<input id="members-search" type="search" placeholder="Nom ou numéro" /></label></div><p>Les souhaits couvrent l’attaque, la défense et les Special Teams. Valide une réponse avant de placer le joueur sur le terrain. Seuls les profils qui ont accepté la publication apparaissent dans la liste des joueurs.</p><div id="members-response-list" class="members-response-list"></div></section>
-<section id="members-board-view" aria-label="Compositions" hidden><div class="members-board-controls"><div id="members-units" class="members-unit-buttons" role="group" aria-label="Unité"></div><button id="members-undo" class="button" type="button" disabled>Annuler le dernier échange</button></div><p id="members-selection-hint">Sélectionne un joueur, puis sa destination. Tu peux aussi le déplacer à la souris.</p><div class="members-board-layout"><div class="members-field-scroll" tabindex="0" role="region" aria-label="Terrain · défilement horizontal sur petit écran"><div id="members-field" class="members-field" aria-label="Terrain"></div></div><aside class="members-sideline"><h2>Sideline</h2><p>Joueurs disponibles pour cette unité.</p><div id="members-sideline-list"></div><button id="members-send-sideline" type="button" class="button" disabled>Envoyer le joueur sélectionné en sideline</button></aside></div></section></div>
+<section id="members-board-view" aria-label="Compositions" hidden><div class="members-board-controls"><div id="members-units" class="members-unit-buttons" role="group" aria-label="Unité"></div><div class="members-board-actions"><a class="button" href="membres-compositions-pdf.php" download="compositions-andenne-bears.pdf">Exporter les 7 compositions (PDF)</a><button id="members-undo" class="button" type="button" disabled>Annuler le dernier échange</button></div></div><p id="members-selection-hint">Sélectionne un joueur, puis sa destination. Tu peux aussi le déplacer à la souris.</p><div class="members-board-layout"><div class="members-field-scroll" tabindex="0" role="region" aria-label="Terrain · défilement horizontal sur petit écran"><div id="members-field" class="members-field" aria-label="Terrain"></div></div><aside class="members-sideline"><h2>Sideline</h2><p>Joueurs disponibles pour cette unité.</p><div id="members-sideline-list"></div><button id="members-send-sideline" type="button" class="button" disabled>Envoyer le joueur sélectionné en sideline</button></aside></div></section></div>
 <dialog id="members-edit-dialog" class="members-dialog members-edit-dialog" aria-labelledby="members-edit-title"><div class="members-dialog-head"><div><p class="section-kicker">Espace membres · Staff</p><h2 id="members-edit-title">Modifier une inscription</h2></div><button id="members-edit-close" class="members-dialog-close" type="button" aria-label="Fermer sans enregistrer">×</button></div><form id="members-edit-form" class="contact-form family-form members-form"><input type="hidden" name="player_id" /><div class="members-fields members-identity-fields"><label class="field members-identity-field"><span class="members-field-label">Prénom *</span><input name="first_name" maxlength="60" autocomplete="given-name" required /></label><label class="field members-identity-field"><span class="members-field-label">Nom *</span><input name="last_name" maxlength="60" autocomplete="family-name" required /></label><label class="field members-identity-field"><span class="members-field-label">Numéro de maillot</span><input name="number" inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" /></label></div><div class="members-position-grid"><?php foreach (['offense' => 'Attaque', 'defense' => 'Défense', 'special_teams' => 'Special Teams'] as $key => $label): ?><fieldset class="members-position-group"><legend><?= $label ?></legend><?php for ($rank = 0; $rank < 3; $rank++): $required = $rank === 0 && $key !== 'special_teams'; ?><label class="field"><span class="members-field-label"><?= ['Premier choix', 'Deuxième choix', 'Troisième choix'][$rank] ?><?= $required ? ' *' : '' ?></span><select name="<?= $key ?>[]" data-edit-side="<?= $key ?>" data-edit-rank="<?= $rank ?>"<?= $required ? ' required' : '' ?>></select></label><?php endfor; ?></fieldset><?php endforeach; ?></div><label class="field">Préférence<select name="preference" required><option value="attaque">Attaque</option><option value="defense">Défense</option><option value="deux">Les deux</option><option value="aucune">Pas de préférence</option></select></label><label class="field">Message aux coachs<textarea name="comment" maxlength="600" rows="4"></textarea></label><p class="members-edit-consent-note">Le choix de publication du profil appartient au joueur et reste inchangé.</p><p id="members-edit-message" class="members-status" role="status" aria-live="polite"></p><div class="members-edit-actions"><button class="button button-primary" type="submit">Enregistrer les modifications</button><button id="members-edit-cancel" class="button" type="button">Annuler</button></div></form></dialog><?php endif; ?></main></body></html>

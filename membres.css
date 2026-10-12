@@ -103,7 +103,7 @@
 .members-tabs { margin: 1.25rem; }
 .members-tabs button, .members-unit-buttons button { border: 0; background: transparent; color: #303030; font: inherit; font-weight: 800; border-radius: 9px; padding: .7rem 1rem; cursor: pointer; }
 .members-tabs button[aria-pressed=true], .members-unit-buttons button[aria-pressed=true] { background: var(--black); color: #fff; }
-.members-tabs button:focus-visible, .members-unit-buttons button:focus-visible, .members-player-card:focus-visible, .members-drop-target:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.members-tabs button:focus-visible, .members-unit-buttons button:focus-visible, .members-player-select:focus-visible, .members-drop-target:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 #members-responses, #members-board-view { padding: 0 clamp(1rem, 2.5vw, 2rem) 2rem; }
 .members-list-heading, .members-board-controls { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
 .members-list-heading h2 { margin: 0; font-size: 1.65rem; }
@@ -130,6 +130,7 @@
 .members-edit-consent-note { margin: 0 0 1rem; color: #494949; font-size: .88rem; }
 .members-edit-actions { display: flex; flex-wrap: wrap; gap: .7rem; }
 .members-board-controls { align-items: center; }
+.members-board-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
 .members-unit-buttons { flex-wrap: wrap; max-width: 100%; min-width: 0; }
 .members-unit-buttons button { min-height: 44px; }
 .members-board-layout { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 1rem; align-items: start; }
@@ -228,6 +229,7 @@
 .members-field[data-unit="punt_return"] [data-position="R5"] { grid-area: 2 / 6; }
 .members-field[data-unit="punt_return"] [data-position="PR"] { grid-area: 5 / 5; }
 .members-player-card { display: flex; align-items: center; gap: .35rem; width: 100%; min-height: 56px; padding: .25rem; border: 2px solid transparent; border-radius: 10px; background: #fff; color: var(--black); font: inherit; text-align: left; cursor: grab; }
+.members-player-select { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: .35rem; min-width: 0; min-height: 44px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: inherit; }
 .members-player-card.is-selected { border-color: var(--gold); box-shadow: 0 0 0 2px #050505; }
 .members-player-card:active { cursor: grabbing; }
 .members-player-name { font-size: .78rem; font-weight: 800; line-height: 1.15; overflow-wrap: anywhere; }
@@ -249,8 +251,8 @@
 @media (max-width: 420px) { .members-field { grid-template-columns: 1fr 1fr; gap: .35rem; } .members-position { padding: .35rem; } .members-player-card { flex-wrap: wrap; } .members-player-name { font-size: .72rem; } .members-position .members-avatar, .members-position .members-avatar-placeholder { width: 38px; height: 38px; } .members-radio-group label { margin-right: .25rem; } }
 @media (prefers-reduced-motion: reduce) { .members-page *, .members-page *::before, .members-page *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
 
-/* Staff response photos: show the complete stored portrait at its native size. */
-.members-photo-open { flex: none; padding: 0; border: 0; border-radius: 11px; background: transparent; cursor: zoom-in; }
+/* Staff player photos: show the complete stored portrait at its native size. */
+.members-photo-open { display: block; flex: none; padding: 0; border: 0; border-radius: 11px; background: transparent; cursor: zoom-in; }
 .members-photo-open:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .members-photo-dialog { width: fit-content; min-width: min(22rem, calc(100vw - 2rem)); max-width: calc(100vw - 2rem); max-height: calc(100dvh - 2rem); padding: 0; margin: auto; border: 0; border-radius: 16px; background: #f4f2ed; color: var(--ink); overflow: auto; box-shadow: 0 30px 90px rgba(0,0,0,.3); }
 .members-photo-dialog::backdrop { background: rgba(0,0,0,.78); }

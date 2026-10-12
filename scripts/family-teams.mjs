@@ -454,3 +454,31 @@ export function swapPlayers(draw, firstId, secondId) {
   }
   return { ...draw, teams, waiting, assessment, revision: (draw.revision || 0) + 1 };
 }
+
+export function placeWaitingPlayer(draw, playerId, teamIndex, slotIndex) {
+  const teams = draw.teams.map(team => [...team]);
+  const waiting = [...(draw.waiting || [])];
+  const playerIndex = waiting.findIndex(player => player.id === playerId);
+  const team = teams[teamIndex];
+  if (playerIndex < 0 || !team || team.length >= 5 || !Number.isInteger(slotIndex) || slotIndex < 0 || slotIndex >= 5) {
+    throw new Error('Choisis un joueur en attente et une case libre dans une équipe non complète.');
+  }
+  if (teamSlots(team)[slotIndex].player) throw new Error('Cette case est déjà occupée.');
+  const player = waiting[playerIndex];
+  team.push(player);
+  if (teamSlots(team)[slotIndex].player?.id !== playerId) {
+    throw new Error('Ce joueur ne peut pas occuper cette case selon les critères de l’équipe.');
+  }
+  waiting.splice(playerIndex, 1);
+  const groups = [...teams, waiting];
+  for (const link of draw.links || []) {
+    if (!groups.some(group => group.some(item => item.id === link.childId) && group.some(item => item.id === link.relativeId))) {
+      throw new Error('Placement refusé : il séparerait un enfant du proche choisi.');
+    }
+  }
+  const assessment = assessTeams(teams);
+  if (assessment[teamIndex].distinctCriteria < draw.assessment[teamIndex].distinctCriteria) {
+    throw new Error('Placement refusé : l’équipe perdrait une règle déjà couverte.');
+  }
+  return { ...draw, teams, waiting, assessment, revision: (draw.revision || 0) + 1 };
+}

@@ -134,6 +134,7 @@ header('Content-Type: text/html; charset=utf-8');
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex,nofollow" /><title>Le fil des Bears · Espace membres</title>
+<link rel="icon" href="images/favicon.png" />
 <meta name="description" content="Retrouve les actus des Andenne Bears, les prochains rendez-vous et indique tes postes préférés en Seniors tackle." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_BE" />
@@ -151,7 +152,7 @@ header('Content-Type: text/html; charset=utf-8');
 <meta name="twitter:title" content="Le fil des Bears · Espace membres" />
 <meta name="twitter:description" content="Tes postes, tes actus, ton équipe." />
 <meta name="twitter:image" content="https://www.andenne-bears.be/images/members-share-2026.jpg" />
-<link rel="stylesheet" href="bears.css?v=secondary-2026-10-10" /><link rel="stylesheet" href="membres.css?v=identity-fields-1" />
+<link rel="stylesheet" href="bears.css?v=secondary-2026-10-10" /><link rel="stylesheet" href="membres.css?v=<?= substr(hash_file('sha256', __DIR__ . '/membres.css'), 0, 16) ?>" />
 <?php if ($ready): ?><script id="members-turnstile-script" src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script><?php endif; ?>
 <script src="scripts/membres-player.js?v=<?= substr(hash_file('sha256', __DIR__ . '/scripts/membres-player.js'), 0, 16) ?>" defer></script></head>
 <body class="family-page members-page">
@@ -164,7 +165,7 @@ header('Content-Type: text/html; charset=utf-8');
 <dialog id="members-roster-dialog" class="members-dialog members-roster-dialog" aria-labelledby="members-roster-title" aria-describedby="members-roster-intro"><div class="members-dialog-head"><div><p class="section-kicker">Espace membres · Seniors tackle</p><h2 id="members-roster-title">Les joueurs inscrits</h2><p id="members-roster-intro">Les joueurs Seniors tackle qui ont choisi d’apparaître ici et dont le profil a été validé par le staff.</p></div><button class="members-dialog-close" type="button" data-close-members-roster aria-label="Fermer la liste des joueurs">×</button></div><div class="members-roster-content"><p class="members-roster-count"><?= $publicProfiles === null ? 'Liste indisponible' : count($publicProfiles) . ' profil' . (count($publicProfiles) > 1 ? 's' : '') ?></p>
 <?php if ($publicProfiles === null): ?><p class="members-empty">La liste est temporairement indisponible.</p>
 <?php elseif (!$publicProfiles): ?><p class="members-empty">Aucun profil publié pour le moment.</p>
-<?php else: ?><div class="members-public-list"><?php foreach ($publicProfiles as $player): ?><article class="members-public-player"><div class="members-public-portrait"><?php if (!empty($player['photo']) && preg_match('/^[a-f0-9]{24}\.(jpg|png|webp)$/', $player['photo'])): ?><img src="membres-photo.php?id=<?= memberEscape($player['id']) ?>" alt="Portrait de <?= memberEscape($player['name']) ?>" loading="lazy" /><?php else: ?><img src="images/bears-player-placeholder.svg" alt="Illustration d’un ours en casque et épaulières" loading="lazy" /><?php endif; ?></div><div class="members-public-details"><h3><?= memberEscape($player['name']) ?></h3><dl><?php
+<?php else: ?><div class="members-public-list"><?php foreach ($publicProfiles as $player): ?><article class="members-public-player"><div class="members-public-portrait"><?php if (!empty($player['photo']) && preg_match('/^[a-f0-9]{24}\.(jpg|png|webp)$/', $player['photo'])): ?><button class="members-photo-open" type="button" data-open-public-photo aria-label="Agrandir la photo de <?= memberEscape($player['name']) ?>" aria-haspopup="dialog"><img src="membres-photo.php?id=<?= memberEscape($player['id']) ?>" alt="" loading="lazy" /></button><?php else: ?><img src="images/bears-player-placeholder.svg" alt="Illustration d’un ours en casque et épaulières" loading="lazy" /><?php endif; ?></div><div class="members-public-details"><h3><?= memberEscape($player['name']) ?></h3><dl><?php
 $wishOrder = ($player['preference'] ?? '') === 'defense'
     ? ['Défense' => 'defense', 'Attaque' => 'offense']
     : ['Attaque' => 'offense', 'Défense' => 'defense'];
@@ -172,6 +173,7 @@ $wishOrder['Special Teams'] = 'special_teams';
 foreach ($wishOrder as $label => $field):
     $choices = $player[$field] ?? [];
 ?><div><dt><?= $label ?></dt><dd><?= $choices ? memberEscape(implode(' · ', $choices)) : '—' ?></dd></div><?php endforeach; ?></dl></div></article><?php endforeach; ?></div><?php endif; ?></div></dialog>
+<dialog id="members-public-photo-dialog" class="members-photo-dialog" aria-labelledby="members-public-photo-title"><div class="members-dialog-head"><h2 id="members-public-photo-title">Photo du joueur</h2><button class="members-dialog-close" type="button" data-close-public-photo aria-label="Fermer la photo" autofocus>×</button></div><img class="members-photo-full" alt="" /><p class="members-photo-status" role="status" hidden></p></dialog>
 <?php if ($ready): ?><dialog id="members-depth-dialog" class="members-dialog" aria-labelledby="members-dialog-title" aria-describedby="members-dialog-intro"><div class="members-dialog-head"><div><p class="section-kicker">Seniors tackle · Tes souhaits</p><h2 id="members-dialog-title">Où veux-tu jouer ?</h2><p id="members-dialog-intro">Ce formulaire concerne l’équipe Seniors tackle. Choisis tes postes préférés pour aider le staff à préparer les compositions.</p></div><button class="members-dialog-close" type="button" data-close-members-dialog aria-label="Fermer le formulaire">×</button></div>
 <form id="members-form" class="contact-form family-form members-form" action="membres.php" method="post" enctype="multipart/form-data">
 <input type="hidden" name="csrf_token" value="<?= memberEscape($csrf) ?>" /><div class="members-honeypot" aria-hidden="true"><label>Site web<input name="website" tabindex="-1" autocomplete="off" /></label></div>

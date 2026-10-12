@@ -10,7 +10,7 @@ $PublicFiles = @(
   'bears.css', 'camp-dashboard.css', 'tirage-equipes.css', 'membres.css',
   'contact.php', 'family-day.php', 'camp-registration.php',
   'suivi-inscriptions.php', 'suivi-camp-blegny.php', 'tirage-equipes.php', 'changethis.php',
-  'membres.php', 'membres-staff.php', 'membres-photo.php', 'membres-data.php', 'membres-image.php', 'private-backup.php',
+  'membres.php', 'membres-staff.php', 'membres-photo.php', 'membres-data.php', 'membres-image.php', 'membres-compositions-pdf.php', 'private-backup.php',
   'config/family-day-config.php'
 )
 $ResourceTypes = @{

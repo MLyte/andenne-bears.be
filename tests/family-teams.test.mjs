@@ -1,8 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeCapacity, parseRegistrationCsv, assessTeams, makeReadyTeams, makeSuggestedTeams, makeTeams, swapPlayers, teamSlots } from '../scripts/family-teams.mjs';
+import { analyzeCapacity, parseRegistrationCsv, assessTeams, makeReadyTeams, makeSuggestedTeams, makeTeams, placeWaitingPlayer, swapPlayers, teamSlots } from '../scripts/family-teams.mjs';
 
 const person = (id, woman, minor, bears) => ({ id: String(id), name: `Personne ${id}`, woman, minor, bears });
+
+test('place une femme en attente dans la case femme vide sans retirer un joueur', () => {
+  const team = [person(1, false, true, true), person(2, false, false, true), person(3, false, false, true)];
+  const fiona = person(4, true, false, false);
+  const draw = { teams: [team], waiting: [fiona], assessment: assessTeams([team]), links: [], revision: 0 };
+  const placed = placeWaitingPlayer(draw, '4', 0, 0);
+  assert.equal(teamSlots(placed.teams[0])[0].player.id, '4');
+  assert.equal(placed.teams[0].length, 4);
+  assert.equal(placed.waiting.length, 0);
+  assert.equal(placed.assessment[0].distinctCriteria, 2);
+  assert.equal(draw.teams[0].length, 3);
+});
+
+test('refuse un placement dans la mauvaise case ou qui sépare un proche', () => {
+  const team = [person(1, false, true, true), person(2, false, false, true)];
+  const fiona = person(3, true, false, false);
+  const draw = { teams: [team], waiting: [fiona], assessment: assessTeams([team]), links: [], revision: 0 };
+  assert.throws(() => placeWaitingPlayer(draw, '3', 0, 2), /ne peut pas occuper/);
+  const child = person(4, false, true, true);
+  assert.throws(() => placeWaitingPlayer({ ...draw, waiting: [fiona, child], links: [{ childId: '4', relativeId: '3' }] }, '3', 0, 0), /proche/);
+});
 
 test('importe les critères indépendants, même quand ils se recoupent', () => {
   const csv = '\uFEFFreference;nom;flag;mineur;joueur_bears;femme;email_contact\r\nA1;"Nom; Test";oui;oui;oui;oui;secret@example.invalid\r\nA2;Spectateur;non;non;non;non;autre@example.invalid\r\n';

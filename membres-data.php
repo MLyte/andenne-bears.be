@@ -44,7 +44,7 @@ function memberEmptyData(): array
     $boards = [];
     foreach (MEMBER_UNITS as $unit => $positions) {
         $boards[$unit] = [];
-        foreach ($positions as $position) $boards[$unit][$position] = ['starter' => null, 'backup' => null];
+        foreach ($positions as $position) $boards[$unit][$position] = ['starter' => null, 'backup' => null, 'potential' => null];
     }
     return ['version' => 1, 'players' => [], 'boards' => $boards];
 }

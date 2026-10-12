@@ -12,6 +12,45 @@ if (rosterDialog && rosterButton) {
   rosterDialog.addEventListener('close', () => rosterButton.focus());
 }
 
+const publicPhotoDialog = document.getElementById('members-public-photo-dialog');
+if (rosterDialog && publicPhotoDialog) {
+  const largePhoto = publicPhotoDialog.querySelector('.members-photo-full');
+  const photoStatus = publicPhotoDialog.querySelector('.members-photo-status');
+  const photoTitle = document.getElementById('members-public-photo-title');
+  let photoTrigger = null;
+
+  rosterDialog.querySelectorAll('[data-open-public-photo]').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      photoTrigger = trigger;
+      const name = trigger.closest('.members-public-player').querySelector('h3').textContent;
+      photoTitle.textContent = name;
+      largePhoto.alt = `Portrait de ${name}`;
+      largePhoto.hidden = false;
+      photoStatus.hidden = false;
+      photoStatus.textContent = 'Chargement de la photo…';
+      publicPhotoDialog.showModal();
+      largePhoto.src = trigger.querySelector('img').src;
+    });
+  });
+  largePhoto.addEventListener('load', () => { photoStatus.hidden = true; });
+  largePhoto.addEventListener('error', () => {
+    if (!publicPhotoDialog.open || !largePhoto.hasAttribute('src')) return;
+    largePhoto.hidden = true;
+    photoStatus.hidden = false;
+    photoStatus.textContent = 'Cette photo est indisponible. Ferme cette fenêtre et réessaie.';
+  });
+  publicPhotoDialog.querySelector('[data-close-public-photo]').addEventListener('click', () => publicPhotoDialog.close());
+  publicPhotoDialog.addEventListener('close', () => {
+    largePhoto.removeAttribute('src');
+    photoTrigger?.focus();
+  });
+  publicPhotoDialog.addEventListener('click', event => {
+    const bounds = publicPhotoDialog.getBoundingClientRect();
+    if (event.target === publicPhotoDialog && (event.clientX < bounds.left || event.clientX > bounds.right
+        || event.clientY < bounds.top || event.clientY > bounds.bottom)) publicPhotoDialog.close();
+  });
+}
+
 if (dialog && form) {
   const openButton = document.getElementById('members-open-form');
   const closeButtons = dialog.querySelectorAll('[data-close-members-dialog]');
