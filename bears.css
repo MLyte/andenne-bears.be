@@ -2347,6 +2347,12 @@ h3 {
   text-transform: uppercase;
 }
 
+.member-unit-title {
+  margin-top: 0.5rem;
+  color: var(--red);
+  font-size: 0.78rem;
+}
+
 .member-group-intro {
   max-width: 680px;
   margin: 0;

@@ -1,0 +1,297 @@
+. 2026-10-19 21:37:11.714 --------------------------------------------------------------------------
+. 2026-10-19 21:37:11.719 WinSCP Version 6.5.6 (Compilation 16502 2026-03-25) (OS 10.0.26300 – Windows 11 Professionnel)
+. 2026-10-19 21:37:11.719 Configuration: HKCU\Software\Martin Prikryl\WinSCP 2\
+. 2026-10-19 21:37:11.720 Log level: Normal
+. 2026-10-19 21:37:11.720 Local account: DESKTOP-LUYTEN\mathi
+. 2026-10-19 21:37:11.720 Working directory: C:\www\andenne-bears.be
+. 2026-10-19 21:37:11.720 Process ID: 52312
+. 2026-10-19 21:37:11.911 Ancestor processes: WinSCP, pwsh, codex, codex, pwsh, WindowsTerminal, ...
+. 2026-10-19 21:37:11.912 Command-line: "C:\Program Files (x86)\WinSCP\WinSCP.exe" /console=6.5.6 /consoleinstance=_52772_832 "/script=C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\publish.txt" "/log=C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\publish.log" 
+. 2026-10-19 21:37:11.912 Time zone: Current: GMT+2, Standard: GMT+1 (Paris, Madrid), DST: GMT+2 (Paris, Madrid (heure d’été)), DST Start: 29-03-26, DST End: 25-10-26
+. 2026-10-19 21:37:11.912 Login time: lundi 19 octobre 2026 21:37:11
+. 2026-10-19 21:37:11.912 --------------------------------------------------------------------------
+. 2026-10-19 21:37:11.912 Script: Retrospectively logging previous script records:
+> 2026-10-19 21:37:11.912 Script: option batch abort
+< 2026-10-19 21:37:11.912 Script: batch           abort     
+> 2026-10-19 21:37:11.912 Script: option confirm off
+< 2026-10-19 21:37:11.912 Script: confirm         off       
+> 2026-10-19 21:37:11.912 Script: open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+< 2026-10-19 21:37:11.912 Script: Dans les scripts, vous ne devriez pas compter sur des sites enregistrés, utilisez cette commande:
+< 2026-10-19 21:37:11.912 Script: open sftp://andennebh:***@ftp.cluster115.hosting.ovh.net/ -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 Utf=1 ProxyPort=0
+. 2026-10-19 21:37:11.912 --------------------------------------------------------------------------
+. 2026-10-19 21:37:11.912 Session name: andenne-bears.be (Modified site)
+. 2026-10-19 21:37:11.912 Host name: ftp.cluster115.hosting.ovh.net (Port: 22)
+. 2026-10-19 21:37:11.914 User name: andennebh (Password: Yes, Key file: No, Passphrase: No)
+. 2026-10-19 21:37:11.914 Tunnel: No
+. 2026-10-19 21:37:11.914 Transfer Protocol: SFTP
+. 2026-10-19 21:37:11.914 Ping type: Off, Ping interval: 30 sec; Timeout: 15 sec
+. 2026-10-19 21:37:11.914 Disable Nagle: No
+. 2026-10-19 21:37:11.914 Proxy: None
+. 2026-10-19 21:37:11.914 Send buffer: 262144
+. 2026-10-19 21:37:11.914 Compression: No
+. 2026-10-19 21:37:11.914 Bypass authentication: No
+. 2026-10-19 21:37:11.914 Try agent: Yes; Agent forwarding: No; KI: Yes; GSSAPI: Yes
+. 2026-10-19 21:37:11.914 GSSAPI: KEX: No; Forwarding: No; Libs: gssapi32,sspi,custom; Custom: 
+. 2026-10-19 21:37:11.914 Ciphers: aes,chacha20,aesgcm,3des,WARN,des,blowfish,arcfour; Ssh2DES: No
+. 2026-10-19 21:37:11.914 KEX: ntru-curve25519,mlkem-curve25519,mlkem-nist,ecdh,dh-gex-sha1,dh-group18-sha512,dh-group17-sha512,dh-group16-sha512,dh-group15-sha512,dh-group14-sha1,rsa,WARN,dh-group1-sha1
+. 2026-10-19 21:37:11.914 SSH Bugs: Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto
+. 2026-10-19 21:37:11.914 Simple channel: Yes
+. 2026-10-19 21:37:11.914 Return code variable: Autodetect; Lookup user groups: Auto
+. 2026-10-19 21:37:11.914 Shell: default
+. 2026-10-19 21:37:11.914 EOL: LF, UTF: On
+. 2026-10-19 21:37:11.914 Clear aliases: Yes, Unset nat.vars: Yes, Resolve symlinks: Yes; Follow directory symlinks: No
+. 2026-10-19 21:37:11.914 LS: ls -la, Ign LS warn: Yes, Scp1 Comp: No; Exit code 1 is error: No
+. 2026-10-19 21:37:11.914 SFTP Bugs: Auto,Auto
+. 2026-10-19 21:37:11.914 SFTP Server: default
+. 2026-10-19 21:37:11.914 Local directory: C:\www\andenne-bears.be\config, Remote directory: /home/andennebh/www/images, Update: Yes, Cache: Yes
+. 2026-10-19 21:37:11.914 Cache directory changes: Yes, Permanent: Yes
+. 2026-10-19 21:37:11.914 Recycle bin: Delete to: No, Overwritten to: No, Bin path: 
+. 2026-10-19 21:37:11.914 DST mode: Unix
+. 2026-10-19 21:37:11.914 --------------------------------------------------------------------------
+< 2026-10-19 21:37:11.914 Script: Recherche de l'hôte...
+. 2026-10-19 21:37:11.915 Looking up host "ftp.cluster115.hosting.ovh.net" for SSH connection
+. 2026-10-19 21:37:11.958 Connecting to 5.135.41.164 port 22
+. 2026-10-19 21:37:11.982 Connected to 5.135.41.164 (from 192.168.0.19:62488)
+< 2026-10-19 21:37:11.984 Script: Connexion à l'hôte...
+. 2026-10-19 21:37:11.984 We claim version: SSH-2.0-WinSCP_release_6.5.6
+. 2026-10-19 21:37:11.984 Connected to 5.135.41.164 (from 192.168.0.19:62488)
+. 2026-10-19 21:37:12.007 Remote version: SSH-2.0-OpenSSH_9.2p1
+. 2026-10-19 21:37:12.007 Using SSH protocol version 2
+. 2026-10-19 21:37:12.008 Have a known host key of type ssh-ed25519
+. 2026-10-19 21:37:12.028 Enabling strict key exchange semantics
+. 2026-10-19 21:37:12.028 Doing NTRU Prime / Curve25519 hybrid key exchange, using hash SHA-512 (unaccelerated)
+. 2026-10-19 21:37:12.219 Server also has rsa-sha2-512/rsa-sha2-256 host keys, but we don't know any of them
+. 2026-10-19 21:37:12.219 Host key fingerprint is:
+. 2026-10-19 21:37:12.219 ssh-ed25519 255 SHA256:j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0
+< 2026-10-19 21:37:12.219 Script: Authentification...
+. 2026-10-19 21:37:12.220 Host key matches configured key fingerprint
+. 2026-10-19 21:37:12.221 Initialised AES-256 SDCTR (AES-NI accelerated) [aes256-ctr] outbound encryption
+. 2026-10-19 21:37:12.221 Initialised HMAC-SHA-256 outbound MAC algorithm
+. 2026-10-19 21:37:12.221 Initialised AES-256 SDCTR (AES-NI accelerated) [aes256-ctr] inbound encryption
+. 2026-10-19 21:37:12.221 Initialised HMAC-SHA-256 inbound MAC algorithm
+! 2026-10-19 21:37:12.239 Using username "andennebh".
+< 2026-10-19 21:37:12.239 Script: Utilisation du nom d'utilisateur "andennebh".
+. 2026-10-19 21:37:12.267 Server offered these authentication methods: publickey,password
+. 2026-10-19 21:37:12.267 Prompt (password, "SSH password", <no instructions>, "Mot de passe :")
+. 2026-10-19 21:37:12.267 Using stored password.
+< 2026-10-19 21:37:12.267 Script: Authentification avec le mot de passe préentré.
+. 2026-10-19 21:37:12.267 Sent password
+. 2026-10-19 21:37:12.315 Access granted
+. 2026-10-19 21:37:12.316 Opening main session channel
+. 2026-10-19 21:37:12.430 Opened main channel
+. 2026-10-19 21:37:12.450 Started a shell/command
+< 2026-10-19 21:37:12.450 Script: Authentifié.
+. 2026-10-19 21:37:12.451 --------------------------------------------------------------------------
+. 2026-10-19 21:37:12.451 Using SFTP protocol.
+. 2026-10-19 21:37:12.451 Doing startup conversation with host.
+< 2026-10-19 21:37:12.451 Script: Démarrage de la session...
+. 2026-10-19 21:37:12.451 Well known server, allowing SFTP version 6.
+> 2026-10-19 21:37:12.451 Type: SSH_FXP_INIT, Size: 5, Number: -1
+< 2026-10-19 21:37:12.472 Type: SSH_FXP_VERSION, Size: 150, Number: -1
+. 2026-10-19 21:37:12.472 SFTP version 3 negotiated.
+. 2026-10-19 21:37:12.472 Supports extension posix-rename@openssh.com="1"
+. 2026-10-19 21:37:12.472 Supports statvfs@openssh.com extension version 2
+. 2026-10-19 21:37:12.472 Unknown server extension fstatvfs@openssh.com="2"
+. 2026-10-19 21:37:12.472 Supports hardlink@openssh.com extension version 1
+. 2026-10-19 21:37:12.472 Unknown server extension fsync@openssh.com="1"
+. 2026-10-19 21:37:12.472 We believe the server has signed timestamps bug
+. 2026-10-19 21:37:12.472 We will use UTF-8 strings as configured
+. 2026-10-19 21:37:12.472 Limiting packet size to OpenSSH sftp-server limit of 262148 bytes
+. 2026-10-19 21:37:12.472 Changing directory to "/home/andennebh/www/images".
+. 2026-10-19 21:37:12.472 Getting real path for '/home/andennebh/www/images'
+> 2026-10-19 21:37:12.472 Type: SSH_FXP_REALPATH, Size: 35, Number: 16
+< 2026-10-19 21:37:12.506 Type: SSH_FXP_NAME, Size: 73, Number: 16
+. 2026-10-19 21:37:12.506 Real path is '/home/andennebh/www/images'
+. 2026-10-19 21:37:12.506 Trying to open directory "/home/andennebh/www/images".
+> 2026-10-19 21:37:12.506 Type: SSH_FXP_LSTAT, Size: 35, Number: 263
+< 2026-10-19 21:37:12.528 Type: SSH_FXP_ATTRS, Size: 37, Number: 263
+. 2026-10-19 21:37:12.528 Getting current directory name.
+. 2026-10-19 21:37:12.528 Startup conversation with host finished.
+< 2026-10-19 21:37:12.528 Script: Session démarrée.
+< 2026-10-19 21:37:12.529 Script: Session active : [1] andenne-bears.be
+> 2026-10-19 21:37:12.529 Script: cd /home/andennebh/www/images
+. 2026-10-19 21:37:12.529 Cached directory change via "/home/andennebh/www/images" to "/home/andennebh/www/images".
+. 2026-10-19 21:37:12.529 Getting current directory name.
+< 2026-10-19 21:37:12.529 Script: /home/andennebh/www/images
+> 2026-10-19 21:37:12.530 Script: put "C:\www\andenne-bears.be\images\helmet.jpg" helmet.jpg
+. 2026-10-19 21:37:12.530 Copying 1 files/directories to remote directory "/home/andennebh/www/images" - total size: 206.609
+. 2026-10-19 21:37:12.530   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: helmet.jpg
+. 2026-10-19 21:37:12.530   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-19 21:37:12.530   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-19 21:37:12.531 File: 'C:\www\andenne-bears.be\images\helmet.jpg' [2026-10-19T19:29:03.678Z] [206609]
+. 2026-10-19 21:37:12.531 Copying "C:\www\andenne-bears.be\images\helmet.jpg" to remote directory started.
+. 2026-10-19 21:37:12.531 Binary transfer mode selected.
+. 2026-10-19 21:37:12.531 Checking existence of file.
+> 2026-10-19 21:37:12.531 Type: SSH_FXP_LSTAT, Size: 46, Number: 519
+< 2026-10-19 21:37:12.550 Type: SSH_FXP_STATUS, Size: 29, Number: 519
+< 2026-10-19 21:37:12.551 Status code: 2
+. 2026-10-19 21:37:12.551 Checking existence of partially transferred file.
+> 2026-10-19 21:37:12.551 Type: SSH_FXP_LSTAT, Size: 55, Number: 775
+< 2026-10-19 21:37:12.568 Type: SSH_FXP_STATUS, Size: 29, Number: 775
+< 2026-10-19 21:37:12.568 Status code: 2
+. 2026-10-19 21:37:12.568 Opening remote file.
+> 2026-10-19 21:37:12.568 Type: SSH_FXP_OPEN, Size: 71, Number: 1027
+< 2026-10-19 21:37:12.585 Type: SSH_FXP_HANDLE, Size: 13, Number: 1027
+> 2026-10-19 21:37:12.585 Type: SSH_FXP_WRITE, Size: 32761, Number: 1542
+. 2026-10-19 21:37:12.587 Skipped 6 SSH_FXP_WRITE packets
+> 2026-10-19 21:37:12.587 Type: SSH_FXP_CLOSE, Size: 13, Number: 3332
+< 2026-10-19 21:37:12.636 Type: SSH_FXP_STATUS, Size: 24, Number: 1542
+< 2026-10-19 21:37:12.636 Status code: 0
+. 2026-10-19 21:37:12.765 Skipped 6 SSH_FXP_STATUS packets
+< 2026-10-19 21:37:12.765 Type: SSH_FXP_STATUS, Size: 24, Number: 3332
+< 2026-10-19 21:37:12.765 Status code: 0
+> 2026-10-19 21:37:12.765 Type: SSH_FXP_RENAME, Size: 96, Number: 3602
+< 2026-10-19 21:37:12.786 Type: SSH_FXP_STATUS, Size: 24, Number: 3602
+< 2026-10-19 21:37:12.786 Status code: 0
+. 2026-10-19 21:37:12.786 Preserving timestamp [2026-10-19T19:29:03.000Z]
+> 2026-10-19 21:37:12.786 Type: SSH_FXP_SETSTAT, Size: 58, Number: 1289
+< 2026-10-19 21:37:12.806 Type: SSH_FXP_STATUS, Size: 24, Number: 1289
+< 2026-10-19 21:37:12.806 Status code: 0
+. 2026-10-19 21:37:12.806 Transfer done: 'C:\www\andenne-bears.be\images\helmet.jpg' => '/home/andennebh/www/images/helmet.jpg' [206609]
+. 2026-10-19 21:37:12.806 Copying finished: Transferred: 206.609, Elapsed: 0:00:00, CPS: 748.583/s
+> 2026-10-19 21:37:12.807 Script: cd /home/andennebh/www
+. 2026-10-19 21:37:12.807 Cached directory change via "/home/andennebh/www" to "/home/andennebh/www".
+. 2026-10-19 21:37:12.807 Getting current directory name.
+< 2026-10-19 21:37:12.807 Script: /home/andennebh/www
+> 2026-10-19 21:37:12.807 Script: put "C:\www\andenne-bears.be\membres.css" membres.css
+. 2026-10-19 21:37:12.808 Copying 1 files/directories to remote directory "/home/andennebh/www" - total size: 31.736
+. 2026-10-19 21:37:12.808   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: membres.css
+. 2026-10-19 21:37:12.808   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-19 21:37:12.808   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-19 21:37:12.808 File: 'C:\www\andenne-bears.be\membres.css' [2026-10-19T19:33:39.782Z] [31736]
+. 2026-10-19 21:37:12.808 Copying "C:\www\andenne-bears.be\membres.css" to remote directory started.
+. 2026-10-19 21:37:12.808 Binary transfer mode selected.
+. 2026-10-19 21:37:12.808 Opening remote file.
+> 2026-10-19 21:37:12.808 Type: SSH_FXP_OPEN, Size: 56, Number: 3843
+< 2026-10-19 21:37:12.827 Type: SSH_FXP_HANDLE, Size: 13, Number: 3843
+> 2026-10-19 21:37:12.827 Type: SSH_FXP_WRITE, Size: 31761, Number: 4358
+> 2026-10-19 21:37:12.827 Type: SSH_FXP_CLOSE, Size: 13, Number: 4612
+> 2026-10-19 21:37:12.827 Type: SSH_FXP_SETSTAT, Size: 52, Number: 4105
+< 2026-10-19 21:37:12.869 Type: SSH_FXP_STATUS, Size: 24, Number: 4358
+< 2026-10-19 21:37:12.869 Status code: 0
+< 2026-10-19 21:37:12.869 Type: SSH_FXP_STATUS, Size: 24, Number: 4612
+< 2026-10-19 21:37:12.869 Status code: 0
+. 2026-10-19 21:37:12.869 Preserving timestamp [2026-10-19T19:33:39.000Z]
+< 2026-10-19 21:37:12.869 Type: SSH_FXP_STATUS, Size: 24, Number: 4105
+< 2026-10-19 21:37:12.869 Status code: 0
+. 2026-10-19 21:37:12.869 Transfer done: 'C:\www\andenne-bears.be\membres.css' => '/home/andennebh/www/membres.css' [31736]
+. 2026-10-19 21:37:12.869 Copying finished: Transferred: 31.736, Elapsed: 0:00:00, CPS: 520.262/s
+> 2026-10-19 21:37:12.870 Script: put "C:\www\andenne-bears.be\membres.php" membres.php
+. 2026-10-19 21:37:12.870 Copying 1 files/directories to remote directory "/home/andennebh/www" - total size: 22.980
+. 2026-10-19 21:37:12.870   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: membres.php
+. 2026-10-19 21:37:12.871   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-19 21:37:12.871   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-19 21:37:12.871 File: 'C:\www\andenne-bears.be\membres.php' [2026-10-19T19:33:32.065Z] [22980]
+. 2026-10-19 21:37:12.871 Copying "C:\www\andenne-bears.be\membres.php" to remote directory started.
+. 2026-10-19 21:37:12.871 Binary transfer mode selected.
+. 2026-10-19 21:37:12.871 Opening remote file.
+> 2026-10-19 21:37:12.871 Type: SSH_FXP_OPEN, Size: 56, Number: 4867
+< 2026-10-19 21:37:12.894 Type: SSH_FXP_HANDLE, Size: 13, Number: 4867
+> 2026-10-19 21:37:12.894 Type: SSH_FXP_WRITE, Size: 23005, Number: 5382
+> 2026-10-19 21:37:12.894 Type: SSH_FXP_CLOSE, Size: 13, Number: 5636
+> 2026-10-19 21:37:12.894 Type: SSH_FXP_SETSTAT, Size: 52, Number: 5129
+< 2026-10-19 21:37:12.927 Type: SSH_FXP_STATUS, Size: 24, Number: 5382
+< 2026-10-19 21:37:12.928 Status code: 0
+< 2026-10-19 21:37:12.928 Type: SSH_FXP_STATUS, Size: 24, Number: 5636
+< 2026-10-19 21:37:12.928 Status code: 0
+. 2026-10-19 21:37:12.928 Preserving timestamp [2026-10-19T19:33:32.000Z]
+< 2026-10-19 21:37:12.935 Type: SSH_FXP_STATUS, Size: 24, Number: 5129
+< 2026-10-19 21:37:12.935 Status code: 0
+. 2026-10-19 21:37:12.935 Transfer done: 'C:\www\andenne-bears.be\membres.php' => '/home/andennebh/www/membres.php' [22980]
+. 2026-10-19 21:37:12.935 Copying finished: Transferred: 22.980, Elapsed: 0:00:00, CPS: 353.538/s
+> 2026-10-19 21:37:12.936 Script: lcd "C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified"
+< 2026-10-19 21:37:12.936 Script: C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified
+> 2026-10-19 21:37:12.936 Script: get membres.php
+. 2026-10-19 21:37:12.936 Listing file "membres.php".
+> 2026-10-19 21:37:12.936 Type: SSH_FXP_LSTAT, Size: 40, Number: 5895
+< 2026-10-19 21:37:12.959 Type: SSH_FXP_ATTRS, Size: 37, Number: 5895
+. 2026-10-19 21:37:12.959 membres.php;-;22980;2026-10-19T19:33:32.000Z;4;"" [227236];"" [100];rw----r--;0
+. 2026-10-19 21:37:12.959 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified" - total size: 22.980
+. 2026-10-19 21:37:12.959   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: 
+. 2026-10-19 21:37:12.959   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-19 21:37:12.959   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-19 21:37:12.959 File: '/home/andennebh/www/membres.php' [2026-10-19T19:33:32.000Z] [22980]
+. 2026-10-19 21:37:12.959 Copying "/home/andennebh/www/membres.php" to local directory started.
+. 2026-10-19 21:37:12.959 Binary transfer mode selected.
+. 2026-10-19 21:37:12.960 Opening remote file.
+> 2026-10-19 21:37:12.960 Type: SSH_FXP_OPEN, Size: 48, Number: 6147
+< 2026-10-19 21:37:12.975 Type: SSH_FXP_HANDLE, Size: 13, Number: 6147
+> 2026-10-19 21:37:12.975 Type: SSH_FXP_FSTAT, Size: 13, Number: 6408
+< 2026-10-19 21:37:12.992 Type: SSH_FXP_ATTRS, Size: 37, Number: 6408
+> 2026-10-19 21:37:12.992 Type: SSH_FXP_READ, Size: 25, Number: 6661
+< 2026-10-19 21:37:13.032 Type: SSH_FXP_DATA, Size: 22989, Number: 6661
+< 2026-10-19 21:37:13.052 Status code: 1
+. 2026-10-19 21:37:13.052 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-19 21:37:13.052 Type: SSH_FXP_CLOSE, Size: 13, Number: 7172
+. 2026-10-19 21:37:13.052 Preserving timestamp [2026-10-19T19:33:32.000Z]
+. 2026-10-19 21:37:13.052 Transfer done: '/home/andennebh/www/membres.php' => 'C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified\membres.php' [22980]
+. 2026-10-19 21:37:13.052 Copying finished: Transferred: 22.980, Elapsed: 0:00:00, CPS: 247.096/s
+> 2026-10-19 21:37:13.055 Script: get membres.css
+. 2026-10-19 21:37:13.055 Listing file "membres.css".
+> 2026-10-19 21:37:13.055 Type: SSH_FXP_LSTAT, Size: 40, Number: 7431
+< 2026-10-19 21:37:13.072 Type: SSH_FXP_STATUS, Size: 24, Number: 7172
+. 2026-10-19 21:37:13.072 Discarding reserved response
+< 2026-10-19 21:37:13.090 Type: SSH_FXP_ATTRS, Size: 37, Number: 7431
+. 2026-10-19 21:37:13.090 membres.css;-;31736;2026-10-19T19:33:39.000Z;4;"" [227236];"" [100];rw----r--;0
+. 2026-10-19 21:37:13.090 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified" - total size: 31.736
+. 2026-10-19 21:37:13.090   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: 
+. 2026-10-19 21:37:13.091   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-19 21:37:13.091   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-19 21:37:13.091 File: '/home/andennebh/www/membres.css' [2026-10-19T19:33:39.000Z] [31736]
+. 2026-10-19 21:37:13.091 Copying "/home/andennebh/www/membres.css" to local directory started.
+. 2026-10-19 21:37:13.091 Binary transfer mode selected.
+. 2026-10-19 21:37:13.091 Opening remote file.
+> 2026-10-19 21:37:13.091 Type: SSH_FXP_OPEN, Size: 48, Number: 7683
+< 2026-10-19 21:37:13.111 Type: SSH_FXP_HANDLE, Size: 13, Number: 7683
+> 2026-10-19 21:37:13.112 Type: SSH_FXP_FSTAT, Size: 13, Number: 7944
+< 2026-10-19 21:37:13.133 Type: SSH_FXP_ATTRS, Size: 37, Number: 7944
+> 2026-10-19 21:37:13.133 Type: SSH_FXP_READ, Size: 25, Number: 8197
+< 2026-10-19 21:37:13.175 Type: SSH_FXP_DATA, Size: 31745, Number: 8197
+< 2026-10-19 21:37:13.201 Status code: 1
+. 2026-10-19 21:37:13.201 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-19 21:37:13.201 Type: SSH_FXP_CLOSE, Size: 13, Number: 8708
+. 2026-10-19 21:37:13.201 Preserving timestamp [2026-10-19T19:33:39.000Z]
+. 2026-10-19 21:37:13.201 Transfer done: '/home/andennebh/www/membres.css' => 'C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified\membres.css' [31736]
+. 2026-10-19 21:37:13.201 Copying finished: Transferred: 31.736, Elapsed: 0:00:00, CPS: 285.909/s
+> 2026-10-19 21:37:13.202 Script: cd images
+. 2026-10-19 21:37:13.202 Cached directory change via "images" to "/home/andennebh/www/images".
+. 2026-10-19 21:37:13.202 Getting current directory name.
+< 2026-10-19 21:37:13.202 Script: /home/andennebh/www/images
+> 2026-10-19 21:37:13.203 Script: lcd "C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified\images"
+< 2026-10-19 21:37:13.203 Script: C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified\images
+> 2026-10-19 21:37:13.204 Script: get helmet.jpg
+. 2026-10-19 21:37:13.204 Listing file "helmet.jpg".
+> 2026-10-19 21:37:13.204 Type: SSH_FXP_LSTAT, Size: 46, Number: 8967
+< 2026-10-19 21:37:13.219 Type: SSH_FXP_STATUS, Size: 24, Number: 8708
+. 2026-10-19 21:37:13.219 Discarding reserved response
+< 2026-10-19 21:37:13.238 Type: SSH_FXP_ATTRS, Size: 37, Number: 8967
+. 2026-10-19 21:37:13.238 helmet.jpg;-;206609;2026-10-19T19:29:03.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-19 21:37:13.238 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified\images" - total size: 206.609
+. 2026-10-19 21:37:13.238   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: 
+. 2026-10-19 21:37:13.238   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-19 21:37:13.238   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-19 21:37:13.238 File: '/home/andennebh/www/images/helmet.jpg' [2026-10-19T19:29:03.000Z] [206609]
+. 2026-10-19 21:37:13.238 Copying "/home/andennebh/www/images/helmet.jpg" to local directory started.
+. 2026-10-19 21:37:13.238 Binary transfer mode selected.
+. 2026-10-19 21:37:13.240 Checking existence of partially transferred file.
+. 2026-10-19 21:37:13.240 Opening remote file.
+> 2026-10-19 21:37:13.240 Type: SSH_FXP_OPEN, Size: 54, Number: 9219
+< 2026-10-19 21:37:13.262 Type: SSH_FXP_HANDLE, Size: 13, Number: 9219
+> 2026-10-19 21:37:13.262 Type: SSH_FXP_FSTAT, Size: 13, Number: 9480
+< 2026-10-19 21:37:13.278 Type: SSH_FXP_ATTRS, Size: 37, Number: 9480
+> 2026-10-19 21:37:13.279 Type: SSH_FXP_READ, Size: 25, Number: 9733
+. 2026-10-19 21:37:13.299 Skipped 6 SSH_FXP_READ packets
+< 2026-10-19 21:37:13.299 Type: SSH_FXP_DATA, Size: 32761, Number: 9733
+< 2026-10-19 21:37:13.411 Status code: 1
+. 2026-10-19 21:37:13.411 Skipped 7 SSH_FXP_READ, 6 SSH_FXP_DATA and 1 SSH_FXP_STATUS packets
+> 2026-10-19 21:37:13.411 Type: SSH_FXP_CLOSE, Size: 13, Number: 13316
+. 2026-10-19 21:37:13.446 Preserving timestamp [2026-10-19T19:29:03.000Z]
+. 2026-10-19 21:37:13.448 Transfer done: '/home/andennebh/www/images/helmet.jpg' => 'C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019\verified\images\helmet.jpg' [206609]
+. 2026-10-19 21:37:13.448 Copying finished: Transferred: 206.609, Elapsed: 0:00:00, CPS: 983.852/s
+> 2026-10-19 21:37:13.448 Script: exit
+. 2026-10-19 21:37:13.448 Script: Exit code: 0
+. 2026-10-19 21:37:13.449 Closing connection.
+. 2026-10-19 21:37:13.449 Sending special code: 1
+. 2026-10-19 21:37:13.470 Session sent command exit status 0
+. 2026-10-19 21:37:13.470 Main session channel closed
+. 2026-10-19 21:37:13.470 All channels closed

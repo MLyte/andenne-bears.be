@@ -1,4 +1,4 @@
-import { analyzeCapacity, makeSuggestedTeams, placeWaitingPlayer, swapPlayers, teamSlots } from './family-teams.mjs?v=7';
+import { analyzeCapacity, assessTeams, placeWaitingPlayer, swapPlayers, teamSlots, teamExceptions } from './family-teams.js?v=10';
 
 const workspace = document.querySelector('#draw-workspace');
 const dataStatus = document.querySelector('#draw-data-status');
@@ -7,6 +7,8 @@ const addForm = document.querySelector('#draw-add');
 const teamCount = document.querySelector('#draw-count');
 const generateButton = document.querySelector('#draw-generate');
 const downloadButton = document.querySelector('#draw-download');
+const saveButton = document.querySelector('#draw-save');
+const saveStatus = document.querySelector('#draw-save-status');
 const message = document.querySelector('#draw-message');
 const results = document.querySelector('#draw-results');
 const waitingSection = document.querySelector('#draw-waiting');
@@ -24,6 +26,29 @@ let selectedId = null;
 let draggedId = null;
 let walkInNumber = 0;
 let incompleteCount = 0;
+let saveCsrf = '';
+let saveVersion = '';
+let dirty = false;
+let changeToken = 0;
+let simulationWorker = null;
+let previousDraw = null;
+const undoButton = document.querySelector('#draw-undo');
+const teamSize = 6;
+
+function markDirty() {
+  dirty = true;
+  changeToken++;
+  saveButton.disabled = !draw;
+  saveStatus.textContent = 'Modifications non sauvées. Clique sur « Sauver » pour les conserver.';
+}
+
+function snapshot() {
+  return {
+    roster, teams: draw.teams.map(team => team.map(player => player.id)),
+    waiting: (draw.waiting || []).map(player => player.id), links: familyLinks,
+    seed: draw.seed, teamCount: Number(teamCount.value), revision: draw.revision || 0,
+  };
+}
 
 function presentPlayers() { return roster.filter(player => player.present); }
 
@@ -41,7 +66,7 @@ function fillSelect(select, people, placeholder) {
 
 function renderFamilyLinks() {
   const present = presentPlayers();
-  fillSelect(childSelect, present.filter(player => player.minor && !familyLinks.some(link => link.childId === player.id)), 'Choisir un enfant');
+  fillSelect(childSelect, present.filter(player => (player.minor || player.woman) && !familyLinks.some(link => link.childId === player.id)), 'Choisir un enfant ou une femme');
   fillSelect(relativeSelect, present, 'Choisir un proche');
   familyList.replaceChildren();
   for (const link of familyLinks) {
@@ -67,10 +92,10 @@ function renderFamilyLinks() {
 
 function refreshCount(reset = false) {
   const count = presentPlayers().length;
-  const possible = Math.max(1, Math.ceil(count / 5));
-  teamCount.max = String(possible);
+  const possible = Math.max(1, Math.ceil(count / teamSize));
+  teamCount.max = String(Math.max(possible, Math.ceil(count / 5), draw?.teams.length || 0));
   if (reset || !teamCount.dataset.manual) teamCount.value = String(possible);
-  else if (Number(teamCount.value) > possible) teamCount.value = String(possible);
+  else if (Number(teamCount.value) > Number(teamCount.max)) teamCount.value = teamCount.max;
 }
 
 function setProgress(id, labelId, current, target) {
@@ -82,15 +107,15 @@ function setProgress(id, labelId, current, target) {
 }
 
 function renderOverview() {
-  const analysis = analyzeCapacity(presentPlayers());
+  const analysis = analyzeCapacity(presentPlayers(), teamSize);
   document.querySelector('#draw-total').textContent = String(analysis.total);
   document.querySelector('#draw-by-size').textContent = String(analysis.teamsBySize);
   document.querySelector('#draw-by-profiles').textContent = String(analysis.teamsByProfiles);
-  document.querySelector('#draw-next-title').textContent = `Pour viser ${analysis.nextTeams} équipes de cinq`;
+  document.querySelector('#draw-next-title').textContent = `Pour viser ${analysis.nextTeams} équipes de six`;
   const places = `${analysis.placesNeeded} ${analysis.placesNeeded > 1 ? 'places manquent' : 'place manque'}`;
   const recruits = `${analysis.minimumNewPeople} ${analysis.minimumNewPeople > 1 ? 'nouvelles personnes' : 'nouvelle personne'}`;
-  document.querySelector('#draw-next-summary').textContent = `${places} au seuil de ${5 * analysis.nextTeams} joueurs. Avec les profils actuels, il faut au moins ${recruits} aux profils adaptés pour couvrir les critères de ${analysis.nextTeams} équipes avec des représentants distincts.`;
-  setProgress('#draw-progress-places', '#draw-places-label', analysis.total, 5 * analysis.nextTeams);
+  document.querySelector('#draw-next-summary').textContent = `${places} au seuil de ${teamSize * analysis.nextTeams} joueurs. Avec les profils actuels, il faut au moins ${recruits} aux profils adaptés pour couvrir les critères de ${analysis.nextTeams} équipes avec des représentants distincts.`;
+  setProgress('#draw-progress-places', '#draw-places-label', analysis.total, teamSize * analysis.nextTeams);
   setProgress('#draw-progress-women', '#draw-women-label', analysis.counts.women, analysis.nextTeams);
   setProgress('#draw-progress-minors', '#draw-minors-label', analysis.counts.minors, analysis.nextTeams);
   setProgress('#draw-progress-nonbears', '#draw-nonbears-label', analysis.counts.nonBears, analysis.nextTeams);
@@ -99,7 +124,7 @@ function renderOverview() {
     analysis.minorsNeeded && `${analysis.minorsNeeded} ${analysis.minorsNeeded > 1 ? 'personnes' : 'personne'} de moins de 18 ans`,
     analysis.nonBearsNeeded && `${analysis.nonBearsNeeded} ${analysis.nonBearsNeeded > 1 ? 'personnes' : 'personne'} hors Bears`,
   ].filter(Boolean);
-  document.querySelector('#draw-overview-note').textContent = `${needs.length ? `Besoins par profil : ${needs.join(' · ')}. ` : 'Les profils requis sont présents en nombre suffisant. '}Une nouvelle personne peut avoir plusieurs de ces profils, mais chaque équipe doit attribuer ses trois règles à trois joueurs différents. Ce minimum ne garantit pas que tous les inscrits tiendront dans ${analysis.nextTeams} équipes de cinq ; la répartition finale reste à vérifier${incompleteCount ? ` ; ${incompleteCount} inscription(s) au flag ont des réponses incomplètes dans le suivi` : ''}.`;
+  document.querySelector('#draw-overview-note').textContent = `${needs.length ? `Besoins par profil : ${needs.join(' · ')}. ` : ''}Chaque critère doit être représenté par une personne différente. Les joueurs sont placés même si des critères manquent ; les dérogations restent visibles. Les liens avec un proche peuvent limiter les répartitions possibles${incompleteCount ? ` ; ${incompleteCount} inscription(s) au flag ont des réponses incomplètes dans le suivi` : ''}.`;
 }
 
 function renderRoster() {
@@ -129,7 +154,7 @@ function renderRoster() {
       input.setAttribute('aria-label', `${label} : ${player.name}`);
       input.addEventListener('change', () => {
         player[key] = input.checked;
-        if (key === 'minor' && !player.minor) familyLinks = familyLinks.filter(link => link.childId !== player.id);
+        if (!player.minor && !player.woman) familyLinks = familyLinks.filter(link => link.childId !== player.id);
         renderFamilyLinks(); renderOverview(); simulate();
       });
       cell.append(input);
@@ -154,31 +179,38 @@ function updateSelection() {
   });
 }
 
-function exchange(firstId, secondId) {
+function applyManualChange(operation, successMessage) {
   try {
-    draw = swapPlayers(draw, firstId, secondId);
+    let changed;
+    try { changed = operation(false); }
+    catch (error) {
+      if (error.code !== 'CONFIRM_PLACEMENT') throw error;
+      if (!window.confirm(`${error.message}\n\nConfirmer ce placement avec dérogation ?`)) {
+        swapStatus.textContent = 'Placement annulé.';
+        return;
+      }
+      changed = operation(true);
+    }
+    previousDraw = draw;
+    draw = changed;
+    undoButton.disabled = false;
     selectedId = null;
     renderDraw();
-    swapStatus.textContent = 'Échange effectué. Les règles couvertes et les liens familiaux sont préservés.';
-  } catch (error) {
-    selectedId = null;
-    updateSelection();
-    swapStatus.textContent = error.message || 'Échange impossible.';
-  }
-}
-
-function placePlayer(playerId, teamIndex, slotIndex) {
-  try {
-    draw = placeWaitingPlayer(draw, playerId, teamIndex, slotIndex);
-    selectedId = null;
-    renderDraw();
-
-    swapStatus.textContent = 'Joueur placé dans l’équipe. Les règles couvertes et les liens familiaux sont préservés.';
+    markDirty();
+    swapStatus.textContent = successMessage;
   } catch (error) {
     selectedId = null;
     updateSelection();
     swapStatus.textContent = error.message || 'Placement impossible.';
   }
+}
+
+function exchange(firstId, secondId) {
+  applyManualChange(force => swapPlayers(draw, firstId, secondId, { force }), 'Échange effectué. Les dérogations éventuelles sont indiquées dans les équipes.');
+}
+
+function placePlayer(playerId, teamIndex, slotIndex) {
+  applyManualChange(force => placeWaitingPlayer(draw, playerId, teamIndex, slotIndex, { force }), 'Joueur placé. Les cases sont réorganisées selon les profils et les dérogations restent visibles.');
 }
 
 function clearDragTargets() {
@@ -208,8 +240,8 @@ function enablePlayerInteraction(button, target, id) {
           swapPlayers(draw, id, other.dataset.playerId);
         }
         other.classList.add('can-swap');
-      } catch {
-        other.classList.add('cannot-swap');
+      } catch (error) {
+        other.classList.add(error.code === 'CONFIRM_PLACEMENT' ? 'can-swap' : 'cannot-swap');
       }
     });
   });
@@ -297,25 +329,29 @@ function renderDraw() {
     enablePlayerInteraction(card, card, player.id);
     waitingPlayers.append(card);
   }
-  const complete = assessment.filter(item => item.size === 5 && item.distinctCriteria === 3).length;
-  message.textContent = `${teams.length} équipe(s) suggérée(s), dont ${complete} conforme(s) · ${teams.flat().length} joueur(s) placé(s) · ${waiting.length} en attente · tirage n° ${seed}${draw.revision ? ` · ${draw.revision} échange(s)` : ''}.`;
+  const complete = assessment.filter(item => item.size === teamSize && item.distinctCriteria === 3).length;
+  const missing = assessment.reduce((sum, item) => sum + 3 - item.distinctCriteria, 0);
+  const quality = draw.optimization ? (draw.optimization.minimumReached
+    ? 'Minimum de critères manquants atteint pour ce nombre d’équipes.'
+    : 'Meilleure répartition trouvée ; le minimum absolu n’est pas établi.') : '';
+  message.textContent = `${teams.length} équipe(s), dont ${complete} complète(s) et conforme(s) · ${teams.flat().length} joueur(s) placé(s) · ${waiting.length} en attente · ${missing} critère(s) manquant(s). ${quality} Tirage n° ${seed}${draw.revision ? ` · ${draw.revision} modification(s)` : ''}.`;
   downloadButton.disabled = false;
   teams.forEach((team, teamIndex) => {
     const assessmentItem = assessment[teamIndex];
     const card = document.createElement('article');
-    card.className = `family-draw-team${assessmentItem.size === 5 && assessmentItem.distinctCriteria === 3 ? ' is-complete' : ' is-provisional'}`;
+    card.className = `family-draw-team${assessmentItem.size === teamSize && assessmentItem.distinctCriteria === 3 ? ' is-complete' : ' is-provisional'}`;
     const heading = document.createElement('div');
     heading.className = 'family-draw-team-heading';
     heading.append(textNode('h3', `Équipe ${teamIndex + 1}`));
-    heading.append(textNode('span', `${team.length}/5 joueurs`, 'family-draw-team-size'));
+    heading.append(textNode('span', `${team.length}/${teamSize} joueurs`, 'family-draw-team-size'));
     card.append(heading);
     const slots = document.createElement('ol');
     slots.className = 'family-draw-slots';
-    teamSlots(team).forEach((slot, slotIndex) => {
+    teamSlots(team, teamSize, true).forEach((slot, slotIndex) => {
       const row = document.createElement('li');
       row.className = `family-draw-slot${slotIndex < 3 ? ' is-rule' : ''}${slotIndex < 3 && !slot.valid ? ' is-missing' : ''}${!slot.player ? ' is-empty' : ''}`;
       row.append(textNode('span', `${String(slotIndex + 1).padStart(2, '0')} · ${roleLabels[slot.role]}`, 'family-draw-slot-label'));
-      if (slotIndex < 3 && !slot.valid) row.append(textNode('span', 'À compléter', 'family-draw-slot-alert'));
+      if (slotIndex < 3 && !slot.valid) row.append(textNode('span', slot.player ? 'Dérogation' : 'Critère manquant', 'family-draw-slot-alert'));
       if (slot.player) {
         row.dataset.playerId = slot.player.id;
         const button = document.createElement('button');
@@ -347,12 +383,18 @@ function renderDraw() {
     });
     card.append(slots);
     card.append(textNode('p', `${assessmentItem.distinctCriteria}/3 règles couvertes par des joueurs différents`, assessmentItem.distinctCriteria === 3 ? 'family-draw-team-ok' : 'family-draw-warning'));
+    card.append(textNode('p', `${assessmentItem.size - assessmentItem.nonBears} Bears · ${assessmentItem.minors} moins de 18 ans · ${assessmentItem.women} femme(s) · ${assessmentItem.nonBears} hors Bears`));
+    for (const exception of teamExceptions(team)) card.append(textNode('p', exception, 'family-draw-warning'));
     results.append(card);
   });
   updateSelection();
 }
 
 function simulate() {
+  simulationWorker?.terminate();
+  simulationWorker = null;
+  previousDraw = null;
+  undoButton.disabled = true;
   selectedId = null;
   swapStatus.textContent = '';
   results.replaceChildren();
@@ -362,38 +404,103 @@ function simulate() {
   downloadButton.disabled = true;
   const players = presentPlayers();
   if (!players.length) {
-    draw = null;
-    message.textContent = 'Aucun joueur présent pour simuler des équipes.';
+    draw = { teams: [], waiting: [], assessment: [], seed: 0, links: [], revision: 0, teamSize };
+    renderDraw();
+    message.textContent = 'Aucun joueur présent. Les choix de présence peuvent être sauvés.';
+    markDirty();
     return;
   }
   try {
-    draw = makeSuggestedTeams(players, Number(teamCount.value), crypto.getRandomValues(new Uint32Array(1))[0], familyLinks);
-    renderDraw();
+    draw = null;
+    markDirty();
+    message.textContent = 'Recherche d’une répartition : participation, dérogations, puis équilibre des profils…';
+    const worker = new Worker('./scripts/family-teams-worker.js?v=1', { type: 'module' });
+    simulationWorker = worker;
+    worker.onmessage = ({ data }) => {
+      if (worker !== simulationWorker) return;
+      if (data.progress) {
+        message.textContent = `Recherche de la répartition : ${data.progress.done}/${data.progress.total} recherches terminées.`;
+        return;
+      }
+      worker.terminate();
+      simulationWorker = null;
+      if (data.error) { message.textContent = data.error; return; }
+      draw = data.draw;
+      renderDraw();
+      markDirty();
+    };
+    worker.onerror = () => {
+      worker.terminate(); simulationWorker = null;
+      message.textContent = 'Le calcul n’a pas pu aboutir. Relance la simulation.';
+    };
+    worker.postMessage({ players, count: Number(teamCount.value), seed: crypto.getRandomValues(new Uint32Array(1))[0], links: familyLinks });
   } catch (error) {
     draw = null;
     message.textContent = error.message || 'Simulation impossible.';
+    markDirty();
   }
 }
 
 async function loadCurrentRoster() {
   try {
-    const response = await fetch('suivi-inscriptions.php?team_roster=1', { credentials: 'same-origin', cache: 'no-store' });
+    const [response, savedResponse] = await Promise.all([
+      fetch('suivi-inscriptions.php?team_roster=1', { credentials: 'same-origin', cache: 'no-store' }),
+      fetch('tirage-equipes.php', { credentials: 'same-origin', cache: 'no-store' }),
+    ]);
     if (response.status === 401) throw new Error('Connecte-toi d’abord dans le suivi des inscriptions, puis reviens ici pour voir la simulation.');
     if (!response.ok) throw new Error('Impossible de lire les inscriptions actuelles. Réessaie après avoir ouvert le suivi.');
+    if (!savedResponse.ok) throw new Error('Impossible de lire le tirage sauvegardé. Réessaie après avoir ouvert le suivi.');
     const data = await response.json();
+    const saved = await savedResponse.json();
     if (!data.success || !Array.isArray(data.players) || !Number.isInteger(data.incomplete)
       || data.players.some(player => !player.id || !player.name || ['minor', 'bears', 'woman', 'present'].some(key => typeof player[key] !== 'boolean'))) {
       throw new Error('Les inscriptions reçues sont incomplètes ou invalides.');
     }
     roster = data.players;
+    saveCsrf = saved.csrf;
+    saveVersion = saved.version;
     incompleteCount = data.incomplete;
     const updated = new Date(data.generatedAt);
     dataStatus.textContent = `${roster.length} inscription(s) au flag chargée(s) depuis le suivi${Number.isNaN(updated.getTime()) ? '' : ` · état du ${updated.toLocaleString('fr-BE', { dateStyle: 'short', timeStyle: 'short' })}`}${incompleteCount ? ` · ${incompleteCount} fiche(s) à compléter dans le suivi` : ''}.`;
     workspace.hidden = false;
-    renderRoster();
-    refreshCount(true);
-    renderOverview();
-    simulate();
+    if (saved.state) {
+      const state = saved.state;
+      const current = new Map(data.players.map(player => [player.id, player]));
+      const retained = state.roster.filter(player => player.id.startsWith('sur-place-') || current.has(player.id));
+      const renamed = retained.filter(player => !player.id.startsWith('sur-place-') && player.name !== current.get(player.id).name).length;
+      const known = new Set(retained.map(player => player.id));
+      const added = data.players.filter(player => !known.has(player.id));
+      roster = [...retained.map(player => player.id.startsWith('sur-place-') ? player : { ...player, name: current.get(player.id).name }), ...added];
+      const byId = new Map(roster.map(player => [player.id, player]));
+      familyLinks = state.links.filter(link => byId.has(link.childId) && byId.has(link.relativeId));
+      const teams = state.teams.map(team => team.map(id => byId.get(id)).filter(Boolean)).filter(team => team.length);
+      const placed = new Set(teams.flat().map(player => player.id));
+      const waiting = state.waiting.map(id => byId.get(id)).filter(player => player && !placed.has(player.id));
+      const accounted = new Set([...placed, ...waiting.map(player => player.id)]);
+      waiting.push(...roster.filter(player => player.present && !accounted.has(player.id)));
+      draw = { teams, waiting, assessment: assessTeams(teams), links: familyLinks.map(link => ({ ...link })), seed: state.seed, revision: state.revision, teamSize };
+      walkInNumber = Math.max(0, ...roster.filter(player => player.id.startsWith('sur-place-')).map(player => Number(player.id.slice(10)) || 0));
+      teamCount.value = String(state.teamCount);
+      teamCount.dataset.manual = 'true';
+      refreshCount();
+      renderRoster();
+      renderOverview();
+      renderDraw();
+      if (added.length || retained.length !== state.roster.length || renamed) {
+        markDirty();
+        saveStatus.textContent = `Inscriptions modifiées depuis la sauvegarde (${added.length} ajoutée(s), ${state.roster.length - retained.length} retirée(s), ${renamed} nom(s) corrigé(s)). Vérifie puis sauve le tirage actualisé.`;
+      } else {
+        dirty = false;
+        saveButton.disabled = true;
+        saveStatus.textContent = 'Dernier tirage sauvegardé chargé.';
+      }
+    } else {
+      renderRoster();
+      refreshCount(true);
+      renderOverview();
+      simulate();
+      saveStatus.textContent = 'Aucun tirage sauvegardé. Clique sur « Sauver » pour conserver cette simulation.';
+    }
   } catch (error) {
     workspace.hidden = true;
     dataStatus.textContent = error.message || 'Chargement des inscriptions impossible.';
@@ -407,9 +514,19 @@ addForm.addEventListener('submit', event => {
     message.textContent = 'Indique un nom valide. La simulation est limitée à 200 personnes.';
     return;
   }
-  roster.push({ id: `sur-place-${++walkInNumber}`, name, bears: document.querySelector('#draw-add-bears').checked, woman: document.querySelector('#draw-add-woman').checked, minor: document.querySelector('#draw-add-minor').checked, present: true });
+  const player = { id: `sur-place-${++walkInNumber}`, name, bears: document.querySelector('#draw-add-bears').checked, woman: document.querySelector('#draw-add-woman').checked, minor: document.querySelector('#draw-add-minor').checked, present: true };
+  roster.push(player);
   addForm.reset();
-  renderRoster(); refreshCount(); renderOverview(); simulate();
+  if (draw) {
+    draw = { ...draw, waiting: [...(draw.waiting || []), player], optimization: undefined };
+    previousDraw = null;
+    undoButton.disabled = true;
+    teamCount.dataset.manual = 'true';
+    renderRoster(); refreshCount(); renderOverview(); renderDraw(); markDirty();
+    swapStatus.textContent = `${name} ajouté en attente. Sélectionne cette personne puis une case ou un joueur dans une équipe.`;
+  } else {
+    renderRoster(); refreshCount(); renderOverview(); simulate();
+  }
 });
 
 familyForm.addEventListener('submit', event => {
@@ -417,7 +534,7 @@ familyForm.addEventListener('submit', event => {
   const childId = childSelect.value;
   const relativeId = relativeSelect.value;
   if (!childId || !relativeId || childId === relativeId) {
-    familyStatus.textContent = 'Choisis un enfant et un autre joueur présent de sa famille.';
+    familyStatus.textContent = 'Choisis un enfant ou une femme et un autre joueur présent comme proche.';
     return;
   }
   familyLinks.push({ childId, relativeId });
@@ -428,6 +545,49 @@ familyForm.addEventListener('submit', event => {
 
 teamCount.addEventListener('change', () => { teamCount.dataset.manual = 'true'; simulate(); });
 generateButton.addEventListener('click', simulate);
+undoButton.addEventListener('click', () => {
+  if (!previousDraw) return;
+  draw = { ...previousDraw, revision: (draw.revision || 0) + 1 };
+  previousDraw = null;
+  selectedId = null;
+  undoButton.disabled = true;
+  renderDraw(); markDirty();
+  swapStatus.textContent = 'Dernier déplacement annulé.';
+});
+
+saveButton.addEventListener('click', async () => {
+  if (!draw || !dirty) return;
+  const state = snapshot();
+  const submittedToken = changeToken;
+  saveButton.disabled = true;
+  saveStatus.textContent = 'Enregistrement du tirage…';
+  try {
+    const response = await fetch('tirage-equipes.php', {
+      method: 'POST', credentials: 'same-origin', cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ csrf: saveCsrf, version: saveVersion, state }),
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) throw new Error(result.error || 'Enregistrement impossible.');
+    saveVersion = result.version;
+    if (changeToken === submittedToken) {
+      dirty = false;
+      saveStatus.textContent = 'Tirage enregistré. Il sera rechargé à la prochaine ouverture.';
+    } else {
+      saveStatus.textContent = 'Le tirage a changé pendant l’enregistrement. Clique à nouveau sur « Sauver ».';
+    }
+  } catch (error) {
+    saveStatus.textContent = error.message || 'Enregistrement impossible. Les changements restent dans cette page.';
+  } finally {
+    saveButton.disabled = !dirty || !draw;
+  }
+});
+
+window.addEventListener('beforeunload', event => {
+  if (!dirty) return;
+  event.preventDefault();
+  event.returnValue = '';
+});
 
 function csvCell(value) {
   const safe = /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
@@ -436,20 +596,20 @@ function csvCell(value) {
 
 downloadButton.addEventListener('click', () => {
   if (!draw) return;
-  const lines = [['tirage', 'equipe', 'reference', 'nom', 'femme', 'moins_18', 'hors_bears', 'proche_avec', 'statut_equipe'].join(';')];
+  const lines = [['tirage', 'equipe', 'reference', 'nom', 'femme', 'moins_18', 'hors_bears', 'proche_avec', 'statut_equipe', 'derogations'].join(';')];
   draw.teams.forEach((team, index) => team.forEach(player => {
     const link = draw.links?.find(entry => entry.childId === player.id);
-    const valid = draw.assessment[index].size === 5 && draw.assessment[index].distinctCriteria === 3;
-    lines.push([draw.seed, index + 1, player.id, player.name, player.woman ? 'oui' : 'non', player.minor ? 'oui' : 'non', player.bears ? 'non' : 'oui', link?.relativeId || '', valid ? 'conforme' : 'provisoire'].map(value => csvCell(String(value))).join(';'));
+    const valid = draw.assessment[index].size === teamSize && draw.assessment[index].distinctCriteria === 3;
+    lines.push([draw.seed, index + 1, player.id, player.name, player.woman ? 'oui' : 'non', player.minor ? 'oui' : 'non', player.bears ? 'non' : 'oui', link?.relativeId || '', valid ? 'conforme' : 'provisoire', teamExceptions(team).join(' | ')].map(value => csvCell(String(value))).join(';'));
   }));
   draw.waiting.forEach(player => {
     const link = draw.links?.find(entry => entry.childId === player.id);
-    lines.push([draw.seed, '', player.id, player.name, player.woman ? 'oui' : 'non', player.minor ? 'oui' : 'non', player.bears ? 'non' : 'oui', link?.relativeId || '', 'en_attente'].map(value => csvCell(String(value))).join(';'));
+    lines.push([draw.seed, '', player.id, player.name, player.woman ? 'oui' : 'non', player.minor ? 'oui' : 'non', player.bears ? 'non' : 'oui', link?.relativeId || '', 'en_attente', ''].map(value => csvCell(String(value))).join(';'));
   });
   const url = URL.createObjectURL(new Blob(['\uFEFF', lines.join('\r\n'), '\r\n'], { type: 'text/csv;charset=utf-8' }));
   const link = document.createElement('a');
   link.href = url;
-  link.download = `${draw.waiting.length || draw.assessment.some(item => item.size !== 5 || item.distinctCriteria !== 3) ? 'simulation-equipes' : 'equipes'}-25-octobre-2026-${draw.seed}${draw.revision ? `-modifie-${draw.revision}` : ''}.csv`;
+  link.download = `${draw.waiting.length || draw.assessment.some(item => item.size !== teamSize || item.distinctCriteria !== 3) ? 'simulation-equipes' : 'equipes'}-25-octobre-2026-${draw.seed}${draw.revision ? `-modifie-${draw.revision}` : ''}.csv`;
   link.click();
   setTimeout(() => URL.revokeObjectURL(url), 60_000);
 });

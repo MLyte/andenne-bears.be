@@ -1,0 +1,10 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+cd /home/andennebh/www
+put "C:\www\andenne-bears.be\membres.css" membres.css
+put "C:\www\andenne-bears.be\membres-compositions-pdf.php" membres-compositions-pdf.php
+lcd "C:\www\andenne-bears.be\deploy\backup-members-kickreturn-spacing-20261018\verified"
+get membres.css
+get membres-compositions-pdf.php
+exit

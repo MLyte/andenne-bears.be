@@ -7,3 +7,4 @@ config/members-config.php
 .ovh-ftp.netrc
 ux-guerilla-test/
 dist/
+.private-portraits/

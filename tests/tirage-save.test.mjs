@@ -70,6 +70,27 @@ test('sauvegarde explicite, rechargement CSV et conflit de version', async () =>
     const rejected = await request('POST', invalid, loaded.version);
     assert.equal(rejected.status, 422);
     assert.equal((await (await request('GET')).json()).version, loaded.version);
+    const six = structuredClone(state);
+    six.roster[2].present = true;
+    six.roster.push(...[2, 3, 4].map(index => ({ id: `sur-place-${index}`, name: `Joueur Test ${index}`, bears: true, woman: false, minor: false, present: true })));
+    six.teams = [six.roster.map(player => player.id)];
+    six.links.push({ childId: 'ABCDEF1234', relativeId: 'sur-place-1' });
+    const savedSix = await request('POST', six, loaded.version);
+    assert.equal(savedSix.status, 200, await savedSix.text());
+    const loadedSix = await (await request('GET')).json();
+    const sortedLinks = state => ({ ...state, links: [...state.links].sort((a, b) => a.childId.localeCompare(b.childId)) });
+    assert.deepEqual(sortedLinks(loadedSix.state), sortedLinks(six), 'Six joueurs, les dérogations de profil et le lien femme-proche sont conservés');
+    const seven = structuredClone(six);
+    seven.roster.push({ id: 'sur-place-5', name: 'Septieme Joueur', bears: true, woman: false, minor: false, present: true });
+    seven.teams[0].push('sur-place-5');
+    assert.equal((await request('POST', seven, loadedSix.version)).status, 422);
+    const separated = structuredClone(six);
+    separated.teams[0] = separated.teams[0].filter(id => id !== 'sur-place-1');
+    separated.waiting = ['sur-place-1'];
+    assert.equal((await request('POST', separated, loadedSix.version)).status, 422);
+    const invalidLink = structuredClone(six);
+    invalidLink.links.push({ childId: 'sur-place-2', relativeId: 'sur-place-3' });
+    assert.equal((await request('POST', invalidLink, loadedSix.version)).status, 422);
   } finally {
     server.kill();
     assert.ok((await realpath(root)).startsWith((await realpath(tmpdir())) + sep));

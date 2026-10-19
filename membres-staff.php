@@ -72,9 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (($data['version'] ?? 0) !== $expected) staffFail(409, 'Le tableau a changé. Recharge la page.');
                 $id = $_POST['player_id'] ?? '';
                 if (!is_string($id) || !preg_match('/^[a-f0-9]{24}$/', $id)) {
-                    if ($action !== 'undo') staffFail(422, 'Joueur invalide.');
+                    if (!in_array($action, ['undo', 'copy'], true)) staffFail(422, 'Joueur invalide.');
                 }
                 $removedPhoto = null;
+                $copySkipped = 0;
                 if (in_array($action, ['approve', 'remove', 'edit'], true)) {
                     unset($_SESSION['members_undo']);
                     $found = false;
@@ -166,6 +167,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $data['boards'][$unit][$source[0]][$source[1]] = $targetId;
                     }
                     $_SESSION['members_undo'] = ['unit' => $unit, 'board' => $before, 'version' => $expected + 1];
+                } elseif ($action === 'copy') {
+                    $unit = $_POST['unit'] ?? null;
+                    if (!is_string($unit) || !isset(MEMBER_COPY_MAP[$unit])) staffFail(422, 'Composition invalide.');
+                    $sourceUnit = MEMBER_COPY_MAP[$unit]['source'];
+                    $mapping = MEMBER_COPY_MAP[$unit]['positions'];
+                    $before = $data['boards'][$unit];
+                    $copied = [];
+                    $protectedIds = [];
+                    foreach ($before as $position => $slot) {
+                        if (isset($mapping[$position])) continue;
+                        foreach (['starter', 'backup', 'potential'] as $slotRole) {
+                            $playerId = $slot[$slotRole] ?? null;
+                            if ($playerId !== null) $protectedIds[$playerId] = true;
+                        }
+                    }
+                    foreach ($mapping as $targetPosition => $sourcePosition) {
+                        foreach (['starter', 'backup', 'potential'] as $slotRole) {
+                            $playerId = $data['boards'][$sourceUnit][$sourcePosition][$slotRole] ?? null;
+                            if ($playerId !== null && isset($protectedIds[$playerId])) {
+                                $playerId = null;
+                                $copySkipped++;
+                            }
+                            $copied[$targetPosition][$slotRole] = $playerId;
+                        }
+                    }
+                    foreach ($copied as $targetPosition => $roles) {
+                        $data['boards'][$unit][$targetPosition] = $roles;
+                    }
+                    $_SESSION['members_undo'] = ['unit' => $unit, 'board' => $before, 'version' => $expected + 1];
                 } elseif ($action === 'undo') {
                     $undo = $_SESSION['members_undo'] ?? null;
                     if (!is_array($undo) || ($undo['version'] ?? null) !== $expected
@@ -174,13 +204,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     unset($_SESSION['members_undo']);
                 } else staffFail(422, 'Action inconnue.');
                 $data['version']++;
-                return ['data' => $data, 'removed_photo' => $removedPhoto];
+                return ['data' => $data, 'removed_photo' => $removedPhoto, 'copy_skipped' => $copySkipped];
             });
             if (is_string($result['removed_photo']) && preg_match('/^[a-f0-9]{24}\.(jpg|png|webp)$/', $result['removed_photo'])) {
                 @unlink(memberPrivateDir($config) . '/member-photos/' . $result['removed_photo']);
             }
             bearsBackupAfterWrite(memberPrivateDir($config));
-            memberJson(200, ['success' => true, 'data' => $result['data'],
+            memberJson(200, ['success' => true, 'data' => $result['data'], 'copy_skipped' => $result['copy_skipped'],
                 'undo' => ($_SESSION['members_undo']['version'] ?? null) === $result['data']['version']]);
         } catch (Throwable $exception) {
             staffFail(503, 'Enregistrement indisponible. Réessaie plus tard.');
@@ -211,5 +241,5 @@ header('Content-Type: text/html; charset=utf-8');
 <?php else: ?><div class="members-staff-toolbar"><p>Réponses et compositions de travail</p><form method="post" action="membres-staff.php"><input type="hidden" name="action" value="logout" /><input type="hidden" name="csrf_token" value="<?= memberEscape($csrf) ?>" /><button class="button" type="submit">Se déconnecter</button></form></div><p id="staff-message" class="members-status" role="status" aria-live="polite"></p>
 <div id="members-staff-app" class="members-staff-app" aria-busy="true"><div class="members-tabs" role="group" aria-label="Vue"><button type="button" data-view="responses" aria-pressed="true">Réponses <span id="response-count"></span></button><button type="button" data-view="board" aria-pressed="false">Compositions</button></div>
 <section id="members-responses" aria-label="Réponses des joueurs"><div class="members-list-heading"><h2>Souhaits reçus</h2><label>Rechercher un joueur<input id="members-search" type="search" placeholder="Nom ou numéro" /></label></div><p>Les souhaits couvrent l’attaque, la défense et les Special Teams. Valide une réponse avant de placer le joueur sur le terrain. Seuls les profils qui ont accepté la publication apparaissent dans la liste des joueurs.</p><div id="members-response-list" class="members-response-list"></div></section>
-<section id="members-board-view" aria-label="Compositions" hidden><div class="members-board-controls"><div id="members-units" class="members-unit-buttons" role="group" aria-label="Unité"></div><div class="members-board-actions"><a class="button" href="membres-compositions-pdf.php" download="compositions-andenne-bears.pdf">Exporter les 7 compositions (PDF)</a><button id="members-undo" class="button" type="button" disabled>Annuler le dernier échange</button></div></div><p id="members-selection-hint">Sélectionne un joueur, puis sa destination. Tu peux aussi le déplacer à la souris.</p><div class="members-board-layout"><div class="members-field-scroll" tabindex="0" role="region" aria-label="Terrain · défilement horizontal sur petit écran"><div id="members-field" class="members-field" aria-label="Terrain"></div></div><aside class="members-sideline"><h2>Sideline</h2><p>Joueurs disponibles pour cette unité.</p><div id="members-sideline-list"></div><button id="members-send-sideline" type="button" class="button" disabled>Envoyer le joueur sélectionné en sideline</button></aside></div></section></div>
+<section id="members-board-view" aria-label="Compositions" hidden><div class="members-board-controls"><div id="members-units" class="members-unit-buttons" role="group" aria-label="Unité"></div><div class="members-board-actions"><button id="members-copy" class="button" type="button" hidden></button><a class="button" href="membres-compositions-pdf.php" download="compositions-andenne-bears.pdf">Exporter les 7 compositions (PDF)</a><button id="members-undo" class="button" type="button" disabled>Annuler la dernière modification</button></div></div><p id="members-selection-hint">Sélectionne un joueur, puis sa destination. Tu peux aussi le déplacer à la souris.</p><div class="members-board-layout"><div class="members-field-scroll" tabindex="0" role="region" aria-label="Terrain · défilement horizontal sur petit écran"><div id="members-field" class="members-field" aria-label="Terrain"></div></div><aside class="members-sideline"><h2>Sideline</h2><p>Joueurs disponibles pour cette unité.</p><div id="members-sideline-list"></div><button id="members-send-sideline" type="button" class="button" disabled>Envoyer le joueur sélectionné en sideline</button></aside></div></section></div>
 <dialog id="members-edit-dialog" class="members-dialog members-edit-dialog" aria-labelledby="members-edit-title"><div class="members-dialog-head"><div><p class="section-kicker">Espace membres · Staff</p><h2 id="members-edit-title">Modifier une inscription</h2></div><button id="members-edit-close" class="members-dialog-close" type="button" aria-label="Fermer sans enregistrer">×</button></div><form id="members-edit-form" class="contact-form family-form members-form"><input type="hidden" name="player_id" /><div class="members-fields members-identity-fields"><label class="field members-identity-field"><span class="members-field-label">Prénom *</span><input name="first_name" maxlength="60" autocomplete="given-name" required /></label><label class="field members-identity-field"><span class="members-field-label">Nom *</span><input name="last_name" maxlength="60" autocomplete="family-name" required /></label><label class="field members-identity-field"><span class="members-field-label">Numéro de maillot</span><input name="number" inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" /></label></div><div class="members-position-grid"><?php foreach (['offense' => 'Attaque', 'defense' => 'Défense', 'special_teams' => 'Special Teams'] as $key => $label): ?><fieldset class="members-position-group"><legend><?= $label ?></legend><?php for ($rank = 0; $rank < 3; $rank++): $required = $rank === 0 && $key !== 'special_teams'; ?><label class="field"><span class="members-field-label"><?= ['Premier choix', 'Deuxième choix', 'Troisième choix'][$rank] ?><?= $required ? ' *' : '' ?></span><select name="<?= $key ?>[]" data-edit-side="<?= $key ?>" data-edit-rank="<?= $rank ?>"<?= $required ? ' required' : '' ?>></select></label><?php endfor; ?></fieldset><?php endforeach; ?></div><label class="field">Préférence<select name="preference" required><option value="attaque">Attaque</option><option value="defense">Défense</option><option value="deux">Les deux</option><option value="aucune">Pas de préférence</option></select></label><label class="field">Message aux coachs<textarea name="comment" maxlength="600" rows="4"></textarea></label><p class="members-edit-consent-note">Le choix de publication du profil appartient au joueur et reste inchangé.</p><p id="members-edit-message" class="members-status" role="status" aria-live="polite"></p><div class="members-edit-actions"><button class="button button-primary" type="submit">Enregistrer les modifications</button><button id="members-edit-cancel" class="button" type="button">Annuler</button></div></form></dialog><?php endif; ?></main></body></html>

@@ -12,7 +12,7 @@ function checkStorage(bool $condition, string $message): void
 function testStorageFormats(): array
 {
     $family = ['ABCDEF1234', '2026-10-12T12:00:00+00:00', 'Élodie "Test"; O’Neil', 'test@example.invalid', 'non', '', 'oui', 'non', 'oui', 'non', 'oui', '', ''];
-    $camp = ['1234ABCDEF', '2026-10-12T12:00:00+00:00', 'Test', 'Élodie', 'Senior', "Ligne 1\nLigne 2; sans gluten", '', '', 'oui'];
+    $camp = ['1234ABCDEF', '2026-10-12T12:00:00+00:00', 'Test', 'Élodie', 'Senior', "Ligne 1\nLigne 2; sans gluten", '', '', 'oui', 'non', 'a_preciser', 'XL'];
     foreach (['family' => $family, 'camp' => $camp] as $dataset => $row) {
         checkStorage(bearsParseCsv($dataset, bearsRowsCsv($dataset, [$row])) === [$row], 'Round trip');
         foreach (bearsDataset($dataset)['legacy'] as $width) {
@@ -20,7 +20,8 @@ function testStorageFormats(): array
             fputcsv($stream, array_slice(bearsDataset($dataset)['header'], 0, $width), ';', '"', '\\');
             fputcsv($stream, array_slice($row, 0, $width), ';', '"', '\\');
             rewind($stream);
-            checkStorage(bearsParseCsv($dataset, stream_get_contents($stream)) === [$row], 'Legacy normalization');
+            $expected = $dataset === 'camp' ? [...array_slice($row, 0, 11), ''] : $row;
+            checkStorage(bearsParseCsv($dataset, stream_get_contents($stream)) === [$expected], 'Legacy normalization');
             fclose($stream);
         }
     }
@@ -29,6 +30,28 @@ function testStorageFormats(): array
         try { bearsParseCsv('family', $csv); } catch (RuntimeException) { $rejected++; }
     }
     checkStorage($rejected === 3, 'Reject malformed/duplicate import');
+    $paidCamp = $camp;
+    $paidCamp[8] = 'non';
+    $paidCamp[9] = 'oui';
+    $paidCamp[10] = 'aucune';
+    checkStorage(bearsParseCsv('camp', bearsRowsCsv('camp', [$paidCamp])) === [$paidCamp], 'Payment round trip');
+    $paidCamp[9] = 'maybe';
+    try {
+        bearsValidateRows('camp', [$paidCamp]);
+        throw new LogicException('Invalid payment accepted');
+    } catch (RuntimeException $error) { checkStorage($error->getCode() === 503, 'Invalid payment rejected'); }
+    foreach (['vendredi', 'samedi', 'deux', 'aucune'] as $nights) {
+        $nightRow = $camp;
+        $nightRow[8] = $nights === 'aucune' ? 'non' : 'oui';
+        $nightRow[10] = $nights;
+        checkStorage(bearsParseCsv('camp', bearsRowsCsv('camp', [$nightRow])) === [$nightRow], 'Night selection round trip');
+    }
+    $invalidNights = $camp;
+    $invalidNights[10] = 'aucune';
+    try {
+        bearsValidateRows('camp', [$invalidNights]);
+        throw new LogicException('Contradictory lodging accepted');
+    } catch (RuntimeException $error) { checkStorage($error->getCode() === 503, 'Invalid nights rejected'); }
     return [$family, $camp];
 }
 
@@ -37,6 +60,17 @@ function testStorageMysql(string $private): array
 {
     [$family, $camp] = testStorageFormats();
     $pdo = bearsDatabase($private);
+    // Exercise the upgrade with a real legacy row, using only a temporary table.
+    $legacyColumns = ['row_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY'];
+    foreach (array_slice(bearsDataset('camp')['header'], 0, 9) as $column) $legacyColumns[] = '`' . $column . '` TEXT NOT NULL';
+    $pdo->exec('CREATE TEMPORARY TABLE bears_camp_registrations (' . implode(',', $legacyColumns) . ') ENGINE=InnoDB');
+    $legacyNames = '`' . implode('`,`', array_slice(bearsDataset('camp')['header'], 0, 9)) . '`';
+    $pdo->prepare('INSERT INTO bears_camp_registrations (' . $legacyNames . ') VALUES (?,?,?,?,?,?,?,?,?)')->execute(array_slice($camp, 0, 9));
+    bearsEnsureCampPaymentColumn($pdo);
+    checkStorage($pdo->query('SELECT paye FROM bears_camp_registrations')->fetchColumn() === 'non', 'Legacy SQL payment defaults to non');
+    checkStorage($pdo->query('SELECT nuits FROM bears_camp_registrations')->fetchColumn() === 'a_preciser', 'Legacy SQL nights are not invented');
+    checkStorage($pdo->query('SELECT taille_tshirt FROM bears_camp_registrations')->fetchColumn() === '', 'Legacy SQL shirt size is not invented');
+    $pdo->exec('DROP TEMPORARY TABLE bears_camp_registrations');
     bearsCreateSchema($pdo, true);
     foreach (['family', 'camp', 'teams'] as $dataset) {
         $pdo->prepare('INSERT INTO bears_dataset_state VALUES (?, 0, ?)')->execute([$dataset, hash('sha256', '')]);
@@ -46,6 +80,18 @@ function testStorageMysql(string $private): array
     bearsAppendRow($private, 'camp', $camp);
     checkStorage(bearsReadRows($private, 'family') === [$family], 'Exact family insert');
     checkStorage(bearsReadRows($private, 'camp') === [$camp], 'Exact camp insert');
+    $campVersion = hash('sha256', json_encode($camp, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE));
+    bearsUpdateRow($private, 'camp', $camp[0], $campVersion, [9 => 'oui']);
+    $camp[9] = 'oui';
+    checkStorage(bearsReadRows($private, 'camp') === [$camp], 'Camp payment persisted');
+    try {
+        bearsUpdateRow($private, 'camp', $camp[0], $campVersion, [9 => 'non']);
+        throw new LogicException('Stale payment accepted');
+    } catch (RuntimeException $error) { checkStorage($error->getCode() === 409, 'Stale payment conflict'); }
+    $campVersion = hash('sha256', json_encode($camp, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE));
+    bearsUpdateRow($private, 'camp', $camp[0], $campVersion, [10 => 'samedi']);
+    $camp[10] = 'samedi';
+    checkStorage(bearsReadRows($private, 'camp') === [$camp], 'Night correction preserves paid status');
     $version = hash('sha256', json_encode($family, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE));
     bearsUpdateRow($private, 'family', $family[0], $version, [8 => '7']);
     try {
@@ -80,7 +126,7 @@ function testStorageMysql(string $private): array
     $manifest = json_decode(file_get_contents($path . '/manifest.json'), true, 512, JSON_THROW_ON_ERROR);
     checkStorage($manifest['files']['mysql-data.json'] === hash_file('sha256', $path . '/mysql-data.json'), 'SQL backup checksum');
     checkStorage(!file_exists($path . '/database-config.php'), 'No credential backup');
-    return ['passed' => ['legacy_11_12_13', 'camp_8_9', 'utf8_quotes_multiline', 'invalid_import', 'sql_insert', 'duplicate_rollback', 'stale_update', 'delete', 'team_save', 'team_rollback', 'sql_backup']];
+    return ['passed' => ['legacy_11_12_13', 'camp_8_9_10_11', 'camp_payment', 'camp_nights', 'utf8_quotes_multiline', 'invalid_import', 'sql_insert', 'duplicate_rollback', 'stale_update', 'delete', 'team_save', 'team_rollback', 'sql_backup']];
 }
 
 if (PHP_SAPI === 'cli' && realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/private-backup.php';
 
-const MEMBER_OFFENSE = ['QB', 'RB', 'WR1', 'WR2', 'WR3', 'TE', 'LT', 'LG', 'C', 'RG', 'RT'];
+const MEMBER_OFFENSE = ['QB', 'RB', 'FULLBACK', 'WR1', 'WR2', 'WR3', 'TE', 'LT', 'LG', 'C', 'RG', 'RT'];
 const MEMBER_DEFENSE = ['DE1', 'DT1', 'DT2', 'DE2', 'LB1', 'LB2', 'LB3', 'CB1', 'CB2', 'FS', 'SS'];
 const MEMBER_OFFENSE_CHOICES = ['QB', 'RB', 'WR', 'TE', 'Tackle/Guard', 'Center', 'Fullback'];
 const MEMBER_DEFENSE_CHOICES = ['DL', 'LB', 'CB', 'Safety'];
@@ -14,8 +14,16 @@ const MEMBER_UNITS = [
     'kickoff' => ['K', 'L1', 'L2', 'L3', 'L4', 'L5', 'R1', 'R2', 'R3', 'R4', 'R5'],
     'kick_return' => ['KR1', 'KR2', 'FB', 'L1', 'L2', 'L3', 'L4', 'R1', 'R2', 'R3', 'R4'],
     'punt' => ['P', 'LS', 'PP', 'L1', 'L2', 'L3', 'L4', 'R1', 'R2', 'R3', 'R4'],
-    'punt_return' => ['PR', 'L1', 'L2', 'L3', 'L4', 'L5', 'R1', 'R2', 'R3', 'R4', 'R5'],
+    'punt_return' => ['PR', 'PR2', 'L1', 'L2', 'L3', 'L4', 'L5', 'R1', 'R2', 'R3', 'R4', 'R5', 'FS'],
     'field_goal' => ['K', 'H', 'LS', 'LT', 'LG', 'C', 'RG', 'RT', 'L', 'R', 'B'],
+];
+
+const MEMBER_COPY_MAP = [
+    'kick_return' => ['source' => 'attaque', 'positions' => ['L1' => 'LT', 'L2' => 'LG', 'FB' => 'C', 'R2' => 'RG', 'R1' => 'RT']],
+    'punt' => ['source' => 'attaque', 'positions' => ['L2' => 'LT', 'L3' => 'LG', 'LS' => 'C', 'R3' => 'RG', 'R2' => 'RT']],
+    'field_goal' => ['source' => 'attaque', 'positions' => ['LT' => 'LT', 'LG' => 'LG', 'LS' => 'C', 'RG' => 'RG', 'RT' => 'RT']],
+    'punt_return' => ['source' => 'defense', 'positions' => ['L3' => 'DT1', 'L4' => 'DT2', 'R3' => 'DE2', 'L2' => 'DE1',
+        'L5' => 'LB1', 'R5' => 'LB2', 'R2' => 'LB3', 'L1' => 'CB1', 'R1' => 'CB2', 'R4' => 'SS', 'FS' => 'FS']],
 ];
 
 function memberConfig(): array

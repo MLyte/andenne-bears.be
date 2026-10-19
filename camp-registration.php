@@ -75,12 +75,19 @@ $lastName = input('last_name', 100);
 $firstName = input('first_name', 100);
 $role = input('role', 20);
 $noLodging = input('no_lodging', 3);
+$nights = input('nights', 12);
+$shirtSize = input('shirt_size', 3);
+// Old tabs only declared lodging: keep that information, not an invented night.
+if ($nights === '') $nights = $noLodging === 'oui' ? 'aucune' : 'a_preciser';
 $diet = input('diet', 1000);
 $allergies = input('allergies', 1000);
 $other = input('other', 1000);
 if (preg_match_all('/./us', $lastName) < 2 || preg_match_all('/./us', $firstName) < 2
     || !preg_match('/\p{L}/u', $lastName) || !preg_match('/\p{L}/u', $firstName)
-    || !in_array($role, ['Junior', 'Senior', 'Staff'], true) || !in_array($noLodging, ['', 'oui'], true)) {
+    || !in_array($role, ['Junior', 'Senior', 'Staff'], true) || !in_array($noLodging, ['', 'oui'], true)
+    || !in_array($nights, ['aucune', 'vendredi', 'samedi', 'deux', 'a_preciser'], true)
+    || (isset($_POST['nights']) && !in_array($_POST['nights'], ['aucune', 'vendredi', 'samedi', 'deux'], true))
+    || !in_array($shirtSize, ['3XL', '2XL', 'XL', 'L', 'M', 'S'], true)) {
     reply(422, 'Indique un nom, un prénom et une catégorie valides.');
 }
 
@@ -88,13 +95,16 @@ if (!$sql) {
 $handle = @fopen($csv, 'c+');
 if ($handle === false || !flock($handle, LOCK_EX)) reply(503, 'Enregistrement impossible. Réessaie plus tard.');
 $legacyHeader = ['reference', 'date_utc', 'nom', 'prenom', 'categorie', 'exigence_alimentaire', 'allergies', 'autres'];
-$header = [...$legacyHeader, 'logement'];
+$lodgingHeader = [...$legacyHeader, 'logement'];
+$paidHeader = [...$lodgingHeader, 'paye'];
+$nightsHeader = [...$paidHeader, 'nuits'];
+$header = [...$nightsHeader, 'taille_tshirt'];
 if (fstat($handle)['size'] === 0) {
     if (fputcsv($handle, $header, ';') === false) reply(503, 'Enregistrement impossible.');
 } else {
     rewind($handle);
     $existingHeader = fgetcsv($handle, 4096, ';');
-    if ($existingHeader === $legacyHeader) {
+    if (in_array($existingHeader, [$legacyHeader, $lodgingHeader, $paidHeader, $nightsHeader], true)) {
         rewind($handle);
         $original = stream_get_contents($handle);
         if ($original === false) reply(503, 'Lecture des inscriptions indisponible.');
@@ -102,8 +112,8 @@ if (fstat($handle)['size'] === 0) {
         fgetcsv($handle, 4096, ';');
         $legacyRows = [];
         while (($existingRow = fgetcsv($handle, 0, ';')) !== false) {
-            if (count($existingRow) !== count($legacyHeader)) reply(503, 'Format CSV inattendu.');
-            $legacyRows[] = [...$existingRow, 'oui'];
+            if (count($existingRow) !== count($existingHeader)) reply(503, 'Format CSV inattendu.');
+            $legacyRows[] = bearsCampRow($existingRow);
         }
         $buffer = fopen('php://temp', 'w+');
         if ($buffer === false || fputcsv($buffer, $header, ';') === false) reply(503, 'Enregistrement impossible.');
@@ -129,7 +139,7 @@ if (fstat($handle)['size'] === 0) {
 fseek($handle, 0, SEEK_END);
 }
 $reference = strtoupper(bin2hex(random_bytes(5)));
-$row = [$reference, gmdate('c'), safeCsv($lastName), safeCsv($firstName), $role, safeCsv($diet), safeCsv($allergies), safeCsv($other), $noLodging === 'oui' ? 'non' : 'oui'];
+$row = [$reference, gmdate('c'), safeCsv($lastName), safeCsv($firstName), $role, safeCsv($diet), safeCsv($allergies), safeCsv($other), $nights === 'aucune' ? 'non' : 'oui', 'non', $nights, $shirtSize];
 if ($sql) {
     bearsStorageWeb(static fn () => bearsAppendRow($private, 'camp', $row));
     $written = true;

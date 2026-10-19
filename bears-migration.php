@@ -11,11 +11,18 @@ function bearsCreateSchema(PDO $pdo, bool $temporary = false): void
         $definition = bearsDataset($dataset);
         $columns = ['row_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY'];
         foreach ($definition['header'] as $column) {
-            $columns[] = '`' . $column . '` ' . ($column === 'reference' ? 'VARCHAR(32) COLLATE utf8mb4_bin NOT NULL UNIQUE' : 'TEXT NOT NULL');
+            $columns[] = '`' . $column . '` ' . match ($column) {
+                'reference' => 'VARCHAR(32) COLLATE utf8mb4_bin NOT NULL UNIQUE',
+                'paye' => "VARCHAR(3) NOT NULL DEFAULT 'non'",
+                'nuits' => "VARCHAR(12) NOT NULL DEFAULT 'a_preciser'",
+                'taille_tshirt' => "VARCHAR(3) NOT NULL DEFAULT ''",
+                default => 'TEXT NOT NULL',
+            };
         }
         $pdo->exec($create . '`' . $definition['table'] . '` (' . implode(',', $columns) . ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin');
     }
     $pdo->exec($create . 'bears_dataset_state (dataset VARCHAR(16) PRIMARY KEY, present TINYINT NOT NULL, source_sha256 CHAR(64) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin');
+    bearsEnsureCampPaymentColumn($pdo);
     if ($temporary) return;
     foreach (['bears_family_registrations', 'bears_camp_registrations', 'bears_team_players', 'bears_dataset_state'] as $table) {
         $query = $pdo->prepare('SELECT ENGINE FROM information_schema.tables WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?');

@@ -1,0 +1,20 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+cd /home/andennebh/www
+put "C:\www\andenne-bears.be\membres-data.php" membres-data.php
+put "C:\www\andenne-bears.be\membres-compositions-pdf.php" membres-compositions-pdf.php
+put "C:\www\andenne-bears.be\membres.css" membres.css
+put "C:\www\andenne-bears.be\membres-staff.php" membres-staff.php
+cd scripts
+put "C:\www\andenne-bears.be\scripts\membres-staff.js" membres-staff.js
+cd /home/andennebh/www
+lcd "C:\www\andenne-bears.be\deploy\backup-members-20261018\verified"
+get membres-data.php
+get membres-staff.php
+get membres-compositions-pdf.php
+get membres.css
+cd scripts
+lcd "C:\www\andenne-bears.be\deploy\backup-members-20261018\verified\scripts"
+get membres-staff.js
+exit

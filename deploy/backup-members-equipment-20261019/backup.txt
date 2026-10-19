@@ -1,0 +1,10 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+cd /home/andennebh/www
+lcd "C:\www\andenne-bears.be\deploy\backup-members-equipment-20261019"
+get membres.php
+get membres.css
+cd images
+get helmet.jpg
+exit

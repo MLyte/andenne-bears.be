@@ -6,10 +6,20 @@ function bearsDataset(string $dataset): array
 {
     return match ($dataset) {
         'family' => ['file' => 'family-day-2026.csv', 'table' => 'bears_family_registrations', 'header' => ['reference', 'date_utc', 'nom', 'email_contact', 'mineur', 'responsable_legal', 'flag', 'match', 'repas', 'joueur_bears', 'femme', 'benevole_wallos_declare', 'aide_organisation_declaree'], 'legacy' => [11, 12]],
-        'camp' => ['file' => 'camp-blegny-2026.csv', 'table' => 'bears_camp_registrations', 'header' => ['reference', 'date_utc', 'nom', 'prenom', 'categorie', 'exigence_alimentaire', 'allergies', 'autres', 'logement'], 'legacy' => [8]],
+        'camp' => ['file' => 'camp-blegny-2026.csv', 'table' => 'bears_camp_registrations', 'header' => ['reference', 'date_utc', 'nom', 'prenom', 'categorie', 'exigence_alimentaire', 'allergies', 'autres', 'logement', 'paye', 'nuits', 'taille_tshirt'], 'legacy' => [8, 9, 10, 11]],
         'teams' => ['file' => 'family-teams-2026.csv', 'table' => 'bears_team_players', 'header' => ['type', 'equipe', 'ordre', 'reference', 'nom', 'bears', 'femme', 'mineur', 'present', 'proche_reference', 'tirage', 'nombre_equipes', 'revision'], 'legacy' => []],
         default => throw new InvalidArgumentException('Unknown dataset.'),
     };
+}
+
+/** Preserve old lodging declarations without inventing a per-night choice. */
+function bearsCampRow(array $row): array
+{
+    if (count($row) === 8) $row[] = 'oui';
+    if (count($row) === 9) $row[] = 'non';
+    if (count($row) === 10) $row[] = $row[8] === 'non' ? 'aucune' : 'a_preciser';
+    if (count($row) === 11) $row[] = '';
+    return $row;
 }
 
 function bearsStorageRoot(string $private): string
@@ -115,7 +125,11 @@ function bearsValidateRows(string $dataset, array $rows): void
                 if (!in_array($row[$index], ['', 'oui', 'non'], true)) throw new RuntimeException('Participation invalide.', 503);
             }
         } elseif ($dataset === 'camp') {
-            if (!in_array($row[4], ['Junior', 'Senior', 'Staff'], true) || !in_array($row[8], ['oui', 'non'], true)) throw new RuntimeException('Participation invalide.', 503);
+            if (!in_array($row[4], ['Junior', 'Senior', 'Staff'], true) || !in_array($row[8], ['oui', 'non'], true)
+                || !in_array($row[9], ['oui', 'non'], true)) throw new RuntimeException('Participation invalide.', 503);
+            if (!in_array($row[10], ['aucune', 'vendredi', 'samedi', 'deux', 'a_preciser'], true)
+                || ($row[10] === 'aucune') !== ($row[8] === 'non')) throw new RuntimeException('Nuits invalides.', 503);
+            if (!in_array($row[11], ['', '3XL', '2XL', 'XL', 'L', 'M', 'S'], true)) throw new RuntimeException('Taille de T-shirt invalide.', 503);
         } else {
             if ($row[0] !== 'joueur') throw new RuntimeException('Tirage invalide.', 503);
             foreach ([5, 6, 7, 8] as $index) if (!in_array($row[$index], ['oui', 'non'], true)) throw new RuntimeException('Tirage invalide.', 503);
@@ -141,7 +155,8 @@ function bearsParseCsv(string $dataset, string $csv): array
         $rows = [];
         while (($row = fgetcsv($stream, 0, ';', '"', '\\')) !== false) {
             if (count($row) !== $width) throw new RuntimeException('Ligne incomplète.', 503);
-            while (count($row) < count($definition['header'])) $row[] = $dataset === 'camp' ? 'oui' : '';
+            if ($dataset === 'camp') $row = bearsCampRow($row);
+            else while (count($row) < count($definition['header'])) $row[] = '';
             $rows[] = $row;
         }
         bearsValidateRows($dataset, $rows);
@@ -174,8 +189,29 @@ function bearsReadStream(string $private, string $dataset)
     return $stream;
 }
 
+/** Add camp fields before transactions; name retained for deployed callers. */
+function bearsEnsureCampPaymentColumn(PDO $pdo): void
+{
+    static $ready = null;
+    $ready ??= new WeakMap();
+    if (isset($ready[$pdo])) return;
+    foreach (['paye' => "VARCHAR(3) NOT NULL DEFAULT 'non'", 'nuits' => "VARCHAR(12) NOT NULL DEFAULT 'a_preciser'", 'taille_tshirt' => "VARCHAR(3) NOT NULL DEFAULT ''"] as $column => $definition) {
+        if ($pdo->query("SHOW COLUMNS FROM bears_camp_registrations LIKE '" . $column . "'")->fetch() !== false) continue;
+        if ($pdo->inTransaction()) throw new RuntimeException('Mise à jour du stockage requise avant la transaction.', 503);
+        try {
+            $pdo->exec('ALTER TABLE bears_camp_registrations ADD COLUMN `' . $column . '` ' . $definition);
+        } catch (PDOException $error) {
+            // A simultaneous first request may have already added the column.
+            if (($error->errorInfo[1] ?? null) !== 1060) throw $error;
+        }
+    }
+    $pdo->exec("UPDATE bears_camp_registrations SET nuits = 'aucune' WHERE logement = 'non' AND nuits = 'a_preciser'");
+    $ready[$pdo] = true;
+}
+
 function bearsSqlRows(PDO $pdo, string $dataset): array
 {
+    if ($dataset === 'camp') bearsEnsureCampPaymentColumn($pdo);
     $definition = bearsDataset($dataset);
     $columns = '`' . implode('`,`', $definition['header']) . '`';
     return $pdo->query('SELECT ' . $columns . ' FROM `' . $definition['table'] . '` ORDER BY row_id')->fetchAll(PDO::FETCH_NUM);
@@ -221,6 +257,7 @@ function bearsAppendRow(string $private, string $dataset, array $row): void
     bearsValidateRows($dataset, [$row]);
     if (!bearsStorageMode($private)) throw new LogicException('SQL storage is not active.');
     $pdo = bearsDatabase($private);
+    if ($dataset === 'camp') bearsEnsureCampPaymentColumn($pdo);
     $pdo->beginTransaction();
     try {
         bearsSqlInsert($pdo, $dataset, $row);
@@ -236,6 +273,7 @@ function bearsUpdateRow(string $private, string $dataset, string $reference, str
 {
     $definition = bearsDataset($dataset);
     $pdo = bearsDatabase($private);
+    if ($dataset === 'camp') bearsEnsureCampPaymentColumn($pdo);
     $pdo->beginTransaction();
     try {
         $columns = '`' . implode('`,`', $definition['header']) . '`';

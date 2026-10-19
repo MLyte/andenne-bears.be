@@ -6,6 +6,7 @@ const field = document.getElementById('members-field');
 const sideline = document.getElementById('members-sideline-list');
 const unitButtons = document.getElementById('members-units');
 const search = document.getElementById('members-search');
+const copyButton = document.getElementById('members-copy');
 const undoButton = document.getElementById('members-undo');
 const sidelineButton = document.getElementById('members-send-sideline');
 const editDialog = document.getElementById('members-edit-dialog');
@@ -58,57 +59,112 @@ function playerPhoto(player) {
   return img;
 }
 
-// Reuse the protected photo endpoint; no original photo is exposed publicly.
-const photoDialog = el('dialog', 'members-photo-dialog');
-photoDialog.setAttribute('aria-labelledby', 'members-photo-dialog-title');
-const photoHead = el('div', 'members-dialog-head');
-const photoTitle = el('h2', '', 'Photo du joueur');
-photoTitle.id = 'members-photo-dialog-title';
-const photoClose = el('button', 'members-dialog-close', '×');
-photoClose.type = 'button';
-photoClose.setAttribute('aria-label', 'Fermer la photo');
-photoClose.autofocus = true;
-photoHead.append(photoTitle, photoClose);
-const largePhoto = el('img', 'members-photo-full');
-const photoStatus = el('p', 'members-photo-status');
-photoStatus.setAttribute('role', 'status');
-photoDialog.append(photoHead, largePhoto, photoStatus);
-document.body.append(photoDialog);
-let photoReturnFocus = null;
-photoClose.addEventListener('click', () => photoDialog.close());
-photoDialog.addEventListener('click', event => {
-  const bounds = photoDialog.getBoundingClientRect();
-  if (event.target === photoDialog && (event.clientX < bounds.left || event.clientX > bounds.right
-      || event.clientY < bounds.top || event.clientY > bounds.bottom)) photoDialog.close();
+// Keep the staff-only photo endpoint and place the preview outside scrollable boards.
+const photoCard = el('aside', 'members-photo-card');
+photoCard.id = 'members-photo-card';
+photoCard.hidden = true;
+document.body.append(photoCard);
+let photoTrigger = null;
+let photoPinned = false;
+let photoHideTimer = null;
+
+function playerWishGroups(player) {
+  const main = player.preference === 'defense'
+    ? [['Défense', player.defense], ['Attaque', player.offense]]
+    : [['Attaque', player.offense], ['Défense', player.defense]];
+  return [...main, ['Special Teams', player.special_teams]];
+}
+
+function closePhotoCard() {
+  clearTimeout(photoHideTimer);
+  if (photoTrigger) photoTrigger.setAttribute('aria-expanded', 'false');
+  photoTrigger = null;
+  photoPinned = false;
+  photoCard.hidden = true;
+  photoCard.replaceChildren();
+}
+
+function placePhotoCard(trigger) {
+  const anchor = trigger.getBoundingClientRect();
+  const width = photoCard.offsetWidth;
+  const height = photoCard.offsetHeight;
+  const gap = 12;
+  const right = anchor.right + gap;
+  const left = anchor.left - width - gap;
+  const x = right + width + gap <= window.innerWidth ? right
+    : left >= gap ? left : Math.max(gap, Math.min(anchor.left, window.innerWidth - width - gap));
+  photoCard.style.left = `${x}px`;
+  photoCard.style.top = `${Math.max(gap, Math.min(anchor.top, window.innerHeight - height - gap))}px`;
+}
+
+function showPhotoCard(player, trigger) {
+  clearTimeout(photoHideTimer);
+  if (photoTrigger === trigger && !photoCard.hidden) return;
+  closePhotoCard();
+  photoTrigger = trigger;
+  trigger.setAttribute('aria-expanded', 'true');
+  photoCard.setAttribute('aria-label', `Fiche de ${player.name}`);
+
+  const portrait = el('img', 'members-photo-card-image');
+  portrait.src = player.photo ? `membres-photo.php?id=${encodeURIComponent(player.id)}` : 'images/bears-player-placeholder.svg';
+  portrait.alt = `Portrait de ${player.name}`;
+  portrait.addEventListener('error', () => { portrait.onerror = null; portrait.src = 'images/bears-player-placeholder.svg'; }, { once: true });
+  const details = el('div', 'members-photo-card-details');
+  details.append(el('h3', '', playerLabel(player)));
+  const preference = ({ attaque: 'Attaque', defense: 'Défense', deux: 'Attaque et défense', aucune: 'Sans préférence' })[player.preference] || 'Non indiquée';
+  details.append(el('p', 'members-photo-card-preference', `Préférence : ${preference}`));
+  for (const [label, choices] of playerWishGroups(player)) {
+    const group = el('section', 'members-photo-card-group');
+    group.append(el('h4', '', label));
+    const ranked = Array.isArray(choices) ? choices.filter(Boolean) : [];
+    if (ranked.length) {
+      const list = el('ol');
+      for (const choice of ranked) list.append(el('li', '', choice));
+      group.append(list);
+    } else group.append(el('p', '', 'Aucun choix indiqué'));
+    details.append(group);
+  }
+  if (player.comment) {
+    const comment = el('section', 'members-photo-card-comment');
+    comment.append(el('h4', '', 'Message aux coachs'), el('p', '', player.comment));
+    details.append(comment);
+  }
+  photoCard.replaceChildren(portrait, details);
+  photoCard.hidden = false;
+  placePhotoCard(trigger);
+}
+
+function schedulePhotoCardClose() {
+  clearTimeout(photoHideTimer);
+  if (!photoPinned) photoHideTimer = setTimeout(() => {
+    if (!photoCard.matches(':hover') && !photoTrigger?.matches(':hover, :focus')) closePhotoCard();
+  }, 120);
+}
+
+photoCard.addEventListener('pointerenter', () => clearTimeout(photoHideTimer));
+photoCard.addEventListener('pointerleave', schedulePhotoCardClose);
+document.addEventListener('pointerdown', event => {
+  if (photoPinned && !photoCard.contains(event.target) && !photoTrigger?.contains(event.target)) closePhotoCard();
 });
-photoDialog.addEventListener('close', () => {
-  largePhoto.removeAttribute('src');
-  (photoReturnFocus?.isConnected ? photoReturnFocus : search).focus();
-});
-largePhoto.addEventListener('load', () => { photoStatus.hidden = true; });
-largePhoto.addEventListener('error', () => {
-  if (!photoDialog.open || !largePhoto.hasAttribute('src')) return;
-  largePhoto.hidden = true;
-  photoStatus.hidden = false;
-  photoStatus.textContent = 'Cette photo est indisponible. Ferme cette fenêtre et réessaie.';
-});
+document.addEventListener('keydown', event => { if (event.key === 'Escape' && !photoCard.hidden) closePhotoCard(); });
+window.addEventListener('scroll', event => { if (!photoCard.hidden && !photoCard.contains(event.target)) closePhotoCard(); }, true);
 
 function expandablePhoto(player) {
-  if (!player.photo) return playerPhoto(player);
   const trigger = el('button', 'members-photo-open');
   trigger.type = 'button';
-  trigger.setAttribute('aria-label', `Agrandir la photo de ${player.name}`);
-  trigger.setAttribute('aria-haspopup', 'dialog');
+  trigger.setAttribute('aria-label', `Afficher la fiche de ${player.name}`);
+  trigger.setAttribute('aria-controls', photoCard.id);
+  trigger.setAttribute('aria-describedby', photoCard.id);
+  trigger.setAttribute('aria-expanded', 'false');
   trigger.append(playerPhoto(player));
+  trigger.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') showPhotoCard(player, trigger); });
+  trigger.addEventListener('pointerleave', schedulePhotoCardClose);
+  trigger.addEventListener('focus', () => showPhotoCard(player, trigger));
+  trigger.addEventListener('blur', schedulePhotoCardClose);
   trigger.addEventListener('click', () => {
-    photoReturnFocus = trigger;
-    photoTitle.textContent = player.name;
-    photoStatus.textContent = 'Chargement de la photo…';
-    photoStatus.hidden = false;
-    largePhoto.hidden = false;
-    largePhoto.alt = `Portrait de ${player.name}`;
-    photoDialog.showModal();
-    largePhoto.src = `membres-photo.php?id=${encodeURIComponent(player.id)}`;
+    if (photoTrigger !== trigger || photoCard.hidden) showPhotoCard(player, trigger);
+    photoPinned = !photoPinned;
+    if (!photoPinned && !trigger.matches(':hover, :focus')) closePhotoCard();
   });
   return trigger;
 }
@@ -149,11 +205,11 @@ function positionLabel(position) {
   const positionLabels = {
     punt_return: { L3: 'T - DL', L4: 'N - DL', R3: 'E - DL',
       L2: 'SAM - LB', L5: 'MIKE - LB', R5: 'WILL - LB', R2: 'BEAR - LB',
-      L1: 'C · CB1', R1: 'C · CB2', R4: 'SS', PR: 'PR - Returner' },
+      L1: 'C · CB1', R1: 'C · CB2', R4: 'SS', PR: 'PR - Returner 1', PR2: 'PR - Returner 2' },
     kick_return: { L1: 'LT', L2: 'LG', FB: 'C', R2: 'RG', R1: 'RT',
       L4: 'Wing gauche', R4: 'Wing droit', L3: 'Shield gauche', R3: 'Shield droit',
       KR1: 'Returner gauche', KR2: 'Returner droit' },
-    attaque: { WR1: 'X · WR1', WR2: 'Z · WR2', WR3: 'H · WR3', TE: 'Y · TE' },
+    attaque: { WR1: 'X · WR1', WR2: 'Z · WR2', WR3: 'H · WR3', TE: 'Y · TE', FULLBACK: 'FULL BACK' },
     punt: { L1: 'G - WR', R1: 'G - WR', L2: 'LT', L3: 'LG', R3: 'RG', R2: 'RT', L4: 'W', R4: 'W' },
     field_goal: { L: 'X - WR', R: 'Z - WR', C: 'F', B: 'Y' },
     defense: { DT1: 'T · DT1', DT2: 'N · DT2', DE2: 'E · DE2', DE1: 'SAM - LB',
@@ -171,10 +227,7 @@ function playerCard(player, role, position) {
   card.dataset.position = position || '';
   card.draggable = true;
   selectButton.setAttribute('aria-pressed', String(selected === player.id));
-  const wishGroups = player.preference === 'defense'
-    ? [['Défense', player.defense], ['Attaque', player.offense]]
-    : [['Attaque', player.offense], ['Défense', player.defense]];
-  wishGroups.push(['ST', player.special_teams]);
+  const wishGroups = playerWishGroups(player);
   const wishSummary = wishGroups.map(([label, choices]) => `${label} : ${Array.isArray(choices) && choices.length ? choices.join(', ') : 'aucun choix'}`).join('. ');
   selectButton.setAttribute('aria-label', `${playerLabel(player)} · ${role === 'sideline' ? `sideline. ${wishSummary}` : `${positionLabel(position)}, ${{ starter: 'starter', backup: 'backup', potential: 'potentiel' }[role]}`}. Sélectionner pour échanger.`);
   selectButton.append(el('span', 'members-player-name', player.name));
@@ -183,7 +236,7 @@ function playerCard(player, role, position) {
     const wishes = el('span', 'members-sideline-wishes');
     for (const [label, choices] of wishGroups) {
       const row = el('span', 'members-sideline-wish');
-      row.append(el('strong', '', label), el('span', '', Array.isArray(choices) && choices.length ? choices.join(' · ') : '—'));
+      row.append(el('strong', '', label === 'Special Teams' ? 'ST' : label), el('span', '', Array.isArray(choices) && choices.length ? choices.join(' · ') : '—'));
       wishes.append(row);
     }
     selectButton.append(wishes);
@@ -212,6 +265,7 @@ function playerCard(player, role, position) {
 }
 
 function renderResponses() {
+  closePhotoCard();
   const query = search.value.trim().toLocaleLowerCase('fr');
   const players = [...data.players].sort((a, b) => b.created_at.localeCompare(a.created_at));
   const nameCounts = new Map();
@@ -282,7 +336,13 @@ function dropTarget(position, role, label) {
 
 function renderBoard() {
   if (!data) return;
+  closePhotoCard();
   const unit = activeUnit;
+  copyButton.hidden = !['kick_return', 'punt', 'field_goal', 'punt_return'].includes(unit);
+  copyButton.textContent = unit === 'punt_return' ? 'Copier la défense' : 'Copier la OL depuis l’attaque';
+  copyButton.title = unit === 'punt_return'
+    ? 'Copie les postes de la défense et garde les returners déjà placés.'
+    : 'Copie LT, LG, C, RG et RT, pour les starters, backups et joueurs potentiels.';
   unitButtons.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.unit === unit)));
   const board = data.boards[unit];
   const players = new Map(data.players.filter(p => p.approved).map(p => [p.id, p]));
@@ -345,7 +405,9 @@ async function mutate(action, values = {}) {
     canUndo = result.undo;
     selected = null;
     render();
-    notify(action === 'move' ? 'Composition mise à jour.' : action === 'undo' ? 'Échange annulé.' : action === 'edit' ? 'Inscription modifiée.' : 'Réponse mise à jour.');
+    notify(action === 'move' ? 'Composition mise à jour.' : action === 'copy'
+      ? `Postes copiés dans la composition.${result.copy_skipped ? ` ${result.copy_skipped} place(s) laissée(s) vide(s) car le joueur est déjà placé ailleurs dans cette unité.` : ''} Tu peux annuler cette copie.`
+      : action === 'undo' ? 'Dernière modification annulée.' : action === 'edit' ? 'Inscription modifiée.' : 'Réponse mise à jour.');
     return true;
   } catch (error) {
     const message = error.message || 'Enregistrement impossible.';
@@ -393,6 +455,7 @@ editForm.addEventListener('submit', async event => {
   if (saved) editDialog.close();
 });
 undoButton.addEventListener('click', () => mutate('undo'));
+copyButton.addEventListener('click', () => mutate('copy', { unit: activeUnit }));
 sidelineButton.addEventListener('click', () => { if (selected) move(selected, '', 'sideline'); });
 sideline.addEventListener('dragover', event => event.preventDefault());
 sideline.addEventListener('drop', event => {

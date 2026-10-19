@@ -46,6 +46,7 @@ function bearsCreateDailyBackup(string $private): void
             $manifest = ['created_at' => gmdate('c'), 'files' => []];
             if ($mysql) {
                 $pdo = bearsDatabase($root);
+                bearsEnsureCampPaymentColumn($pdo);
                 $pdo->exec('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ');
                 $pdo->beginTransaction();
                 try {

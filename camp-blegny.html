@@ -4,15 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow, noarchive" />
-  <title>Camp Andenne Bears à Blégny · décembre 2026</title>
-  <meta name="description" content="Le camp des Andenne Bears à Blégny, du 11 au 13 décembre 2026. Programme et inscription pour Juniors, Seniors et staff." />
+  <title>Camp Seniors Andenne Bears à Blégny · décembre 2026</title>
+  <meta name="description" content="Le camp de préparation des Seniors des Andenne Bears à Blégny, du 11 au 13 décembre 2026. Les U20 sont conviés dès le samedi à 8h30. Programme et inscription." />
   <link rel="canonical" href="https://www.andenne-bears.be/camp-blegny.html" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="fr_BE" />
   <meta property="og:site_name" content="Andenne Bears" />
   <meta property="og:url" content="https://www.andenne-bears.be/camp-blegny.html" />
-  <meta property="og:title" content="Camp Bears à Blégny · 11 au 13 décembre 2026" />
-  <meta property="og:description" content="Trois jours de terrain, de théorie et de vie d’équipe pour les Juniors, Seniors et le staff des Andenne Bears. Programme et inscription." />
+  <meta property="og:title" content="Camp Seniors Bears à Blégny · 11 au 13 décembre 2026" />
+  <meta property="og:description" content="Trois jours de préparation et d’engagement pour l’équipe Seniors. Les U20 sont conviés à rejoindre le groupe dès le samedi à 8h30." />
   <meta property="og:image" content="https://www.andenne-bears.be/images/camp-blegny-share-2026.jpg" />
   <meta property="og:image:secure_url" content="https://www.andenne-bears.be/images/camp-blegny-share-2026.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -20,8 +20,8 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Camp Bears : les joueurs et le staff des Andenne Bears réunis sur le terrain" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Camp Bears à Blégny · 11 au 13 décembre 2026" />
-  <meta name="twitter:description" content="Programme et inscription au camp des Andenne Bears pour Juniors, Seniors et staff." />
+  <meta name="twitter:title" content="Camp Seniors Bears à Blégny · 11 au 13 décembre 2026" />
+  <meta name="twitter:description" content="Le camp de préparation de l’équipe Seniors des Andenne Bears. U20 conviés dès le samedi à 8h30. Programme et inscription." />
   <meta name="twitter:image" content="https://www.andenne-bears.be/images/camp-blegny-share-2026.jpg" />
   <link rel="icon" href="images/favicon.png" />
   <link rel="stylesheet" href="bears.css?v=cursor-2026-10-10" />
@@ -72,6 +72,21 @@
     .camp-essentials { max-width:780px; margin:0; padding-left:1.4rem; }
     .camp-essentials li { padding:.25rem 0; }
     .camp-essentials li::marker { color:var(--red); }
+    .camp-price { max-width:780px; margin-top:1.5rem; padding:clamp(1.2rem,3vw,2rem); border-top:5px solid var(--gold); background:#fff; }
+    .camp-price h3 { margin:.3rem 0 .7rem; font-size:clamp(1.6rem,3vw,2.2rem); line-height:1.2; }
+    .camp-price p { margin:.6rem 0; }
+    .camp-price .camp-price-alternative { margin-top:1.2rem; padding-top:1rem; border-top:1px solid #ddd; font-size:.95rem; }
+    .camp-included { margin-top:2.5rem; }
+    .camp-included h3 { margin:0 0 .4rem; font-size:clamp(1.6rem,3vw,2.2rem); line-height:1.2; }
+    .camp-included-intro { max-width:780px; margin:0 0 1.3rem; }
+    .camp-included-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+    .camp-included-card { padding:1.35rem; border-top:5px solid var(--gold); background:#fff; box-shadow:0 10px 26px rgba(0,0,0,.07); }
+    .camp-included-card h4 { margin:0 0 .2rem; font-size:1.25rem; line-height:1.25; }
+    .camp-included-price { display:block; margin:.3rem 0 .8rem; color:var(--red); font-size:1.8rem; font-weight:900; line-height:1.2; }
+    .camp-included-card ul { margin:0; padding-left:1.2rem; }
+    .camp-included-card li { padding:.2rem 0; }
+    .camp-included-card li::marker { color:var(--red); }
+    .camp-included-note { max-width:780px; margin:1rem 0 0; color:#444; font-size:.93rem; }
     .cta { display:inline-flex; justify-content:center; align-items:center; min-height:48px; padding:.7rem 1.1rem; border:2px solid var(--gold); background:var(--gold); color:#080808; font:inherit; font-weight:900; text-decoration:none; cursor:pointer; }
     .cta:hover { background:#fff1a0; }
     .cta { gap:.55rem; }
@@ -104,15 +119,16 @@
     @media(hover:hover) { .camp-photo:hover img { transform:scale(1.045); filter:saturate(1.12); } }
     .program { display:grid; gap:.65rem; }
     .program article { display:grid; grid-template-columns:110px 110px minmax(0,1fr); align-items:center; gap:1rem; min-height:82px; padding:1rem 1.35rem; border-left:5px solid #b9b9b4; background:#fff; box-shadow:0 5px 18px rgba(0,0,0,.06); }
-    .program article.day-start { margin-top:1rem; }
-    .program article.day-start:first-child { margin-top:0; }
+    .program > .program-day { display:block; margin:1.25rem 0 .25rem; font-size:1.5rem; line-height:1.2; }
+    .program > .program-day:first-child { margin-top:0; }
     .program article > strong { font-size:.78rem; font-weight:900; letter-spacing:.05em; text-transform:uppercase; }
-    .program time { font-weight:900; font-size:1.4rem; font-variant-numeric:tabular-nums; }
+    .program time,.program .program-time { font-weight:900; font-size:1.4rem; font-variant-numeric:tabular-nums; }
     .program h3,.program p { margin:0; }
     .program h3 { display:flex; align-items:center; gap:.55rem; font-size:1.2rem; line-height:1.25; }
     .program h3 .camp-icon { width:1.35rem; height:1.35rem; color:#806700; }
     .program :is(.arrival,.theory,.together,.field,.meal,.match) h3 .camp-icon { color:var(--gold); }
     .program p { margin-top:.15rem; line-height:1.4; }
+    .program-tag { display:inline-block; margin:0 0 .45rem; padding:.2rem .55rem; border:1px solid var(--gold); border-radius:3px; background:var(--gold); color:#080808; font-size:.72rem; font-weight:900; line-height:1.4; }
     .program .arrival,.program .theory,.program .together,.program .field,.program .meal,.program .match { color:#fff; background-color:#17221b; background-repeat:no-repeat; background-size:cover; background-position:center; }
     .program .arrival { border-left-color:#b9b9b4; background-image:linear-gradient(90deg,rgba(7,12,12,.97) 0%,rgba(7,12,12,.88) 42%,rgba(7,12,12,.28) 100%),url("https://www.blegnymine.be/sites/default/files/styles/echelle_800x600/public/galerie/blegny-mine_-_le_centre_dhebergement_pour_groupes_8.jpg?itok=5DgCyTi8"); background-position:center 52%; }
     .program .theory { border-left-color:#b9b9b4; background-image:linear-gradient(90deg,rgba(15,12,8,.97) 0%,rgba(15,12,8,.88) 42%,rgba(15,12,8,.28) 100%),url("images/camp-theory-room-2026.jpg"); background-position:center 42%; }
@@ -122,6 +138,8 @@
     .program .breakfast { background-image:linear-gradient(90deg,rgba(30,21,12,.97) 0%,rgba(30,21,12,.9) 42%,rgba(30,21,12,.18) 100%),url("images/camp-breakfast-2026.webp"); }
     .program .lunch { background-image:linear-gradient(90deg,rgba(30,21,12,.97) 0%,rgba(30,21,12,.9) 42%,rgba(30,21,12,.18) 100%),url("images/camp-lunch-2026.webp"); }
     .program .dinner { background-image:linear-gradient(90deg,rgba(30,21,12,.97) 0%,rgba(30,21,12,.9) 42%,rgba(30,21,12,.18) 100%),url("images/camp-dinner-2026.webp"); }
+    /* Photo d’ambiance : Sylwia Pietruszka / Unsplash, https://unsplash.com/photos/3vBQhbj1ysg */
+    .program .pizza { background-image:linear-gradient(90deg,rgba(30,21,12,.97) 0%,rgba(30,21,12,.84) 42%,rgba(30,21,12,.62) 100%),url("images/camp-pizza-2026.webp"); }
     .program .match { min-height:145px; border-left-color:var(--gold); background-image:linear-gradient(90deg,rgba(3,3,3,.98) 0%,rgba(3,3,3,.9) 55%,rgba(3,3,3,.62) 100%),url("images/camp-football-field-2026.webp"); }
     .program .match time { color:var(--gold); }
     .program-visual-note { margin:1rem 0 0; color:#555; font-size:.82rem; }
@@ -137,9 +155,20 @@
     .required { color:var(--red); }
     .form-status { margin:1rem 0 0; padding:.9rem 1rem; border-left:5px solid var(--red); background:#f9e9ee; font-weight:800; }
     .form-status.success { border-left-color:#176b36; background:#e3f3e9; }
+    .camp-payment { max-width:800px; margin-top:1.25rem; padding:clamp(1.2rem,3vw,2rem); border-left:7px solid var(--gold); background:#fff; color:#080808; }
+    .camp-payment h3 { margin:0 0 .7rem; font-size:clamp(1.4rem,2.5vw,1.8rem); }
+    .camp-payment p { margin:.55rem 0; }
+    .camp-payment strong { font-weight:900; }
+    .camp-payment-iban { font-size:clamp(1.2rem,3vw,1.6rem); font-weight:900; overflow-wrap:anywhere; }
+    .camp-payment-amount { color:#8b0020; font-size:1.25rem; font-weight:900; }
+    .camp-payment-dialog { width:min(92vw,520px); max-height:90vh; padding:0; border:0; border-top:7px solid var(--gold); background:#fff; color:#080808; box-shadow:0 24px 70px rgba(0,0,0,.35); }
+    .camp-payment-dialog::backdrop { background:rgba(0,0,0,.75); }
+    .camp-payment-dialog .camp-payment { margin:0; border:0; }
+    .camp-payment-dialog .cta { margin-top:1rem; }
     .privacy { max-width:800px; color:#d0d0d0; font-size:.88rem; }
     .footer { display:flex; justify-content:space-between; gap:1rem; padding:2rem clamp(1rem,4vw,3rem); background:#080808; color:#fff; }
-    @media(max-width:700px) { .header .brand span,.header-actions a:last-child { display:none; } .facts,.cards,.form-grid,.camp-photo-grid { grid-template-columns:1fr; } .camp-photo-grid { grid-template-rows:none; } .camp-photo,.camp-photo:first-child { grid-row:auto; min-height:260px; } .hero { min-height:650px; } .hero::before { background:linear-gradient(0deg,rgba(0,0,0,.96),rgba(0,0,0,.48)); } .program article { grid-template-columns:78px minmax(0,1fr); gap:.2rem .8rem; padding:.9rem 1rem; } .program article div { grid-column:1/-1; } .program time { font-size:1.2rem; } .program h3 { font-size:1.05rem; } .footer { display:block; } }
+    @media(max-width:700px) { .header .brand span,.header-actions a:last-child { display:none; } .facts,.cards,.form-grid,.camp-photo-grid { grid-template-columns:1fr; } .camp-photo-grid { grid-template-rows:none; } .camp-photo,.camp-photo:first-child { grid-row:auto; min-height:260px; } .hero { min-height:650px; } .hero::before { background:linear-gradient(0deg,rgba(0,0,0,.96),rgba(0,0,0,.48)); } .program article { grid-template-columns:78px minmax(0,1fr); gap:.2rem .8rem; padding:.9rem 1rem; } .program article div { grid-column:1/-1; } .program time,.program .program-time { font-size:1.2rem; } .program h3 { font-size:1.05rem; } .footer { display:block; } }
+    @media(max-width:850px) { .camp-included-grid { grid-template-columns:1fr; } }
     @media(prefers-reduced-motion:reduce) { .camp-photo img { transition:none; } }
   </style>
 </head>
@@ -162,27 +191,45 @@
   <main>
     <section class="hero" id="top">
       <img src="https://www.provincedeliege.be/sites/default/files/styles/plg_medias_800/public/media/233/CREF%206.jpg?itok=duGJj_6Y" alt="" />
-      <div class="wrap hero-inner"><span class="eyebrow">Seniors · Juniors · Staff</span><h1>Camp Bears<br /><span>Let's build.</span></h1>
-        <p class="lead">Trois jours de terrain, de théorie et de vie d’équipe.<span class="lead-context">Seniors, Juniors et staff réunis à Blégny-Mine.</span></p>
+      <div class="wrap hero-inner"><span class="eyebrow">Équipe Seniors · U20 invités</span><h1>Camp Seniors<br /><span>Let's build.</span></h1>
+        <p class="lead">Trois jours pour préparer la suite de la saison et s’engager pour l’équipe.<span class="lead-context">Le camp des Seniors. Les U20 sont conviés dès le samedi à 8h30.</span></p>
         <a class="cta" href="#inscription"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-user-plus"/></svg>Je m’inscris</a>
-        <div class="facts"><div><span><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-calendar"/></svg>Quand</span><strong>11 au 13 décembre 2026</strong></div><div><span><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-pin"/></svg>Où</span><strong>Blégny-Mine</strong></div><div><span><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-users"/></svg>Pour qui</span><strong>Seniors · Juniors · Staff</strong></div></div>
+        <div class="facts"><div><span><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-calendar"/></svg>Quand</span><strong>11 au 13 décembre 2026</strong></div><div><span><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-pin"/></svg>Où</span><strong>Blégny-Mine</strong></div><div><span><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-users"/></svg>Pour qui</span><strong>Seniors et staff · U20 invités</strong></div></div>
       </div>
     </section>
     <nav class="nav" aria-label="Navigation du camp"><div class="wrap"><a href="#camp"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-users"/></svg>Le camp</a><a href="#ambiance"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-image"/></svg>En images</a><a href="#programme"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-calendar"/></svg>Programme</a><a href="#repas"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Repas et informations</a><a href="#inscription"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-user-plus"/></svg>Inscription</a></div></nav>
     <section class="section soft" aria-labelledby="camp-essentials-title"><div class="wrap">
       <p class="kicker">En bref</p><h2 id="camp-essentials-title">L’essentiel du camp</h2>
       <ul class="camp-essentials">
-        <li>Les <strong>Juniors, les Seniors et le staff</strong> des Andenne Bears se retrouvent pour trois jours de camp.</li>
+        <li>Un <strong>camp de préparation de l’équipe Seniors</strong>, avec son staff, dès le vendredi soir. Les <strong>U20 sont conviés à rejoindre le groupe dès le samedi à 8h30</strong>.</li>
         <li>Au programme : entraînements, théorie, vie d’équipe et <strong>match amical le dimanche</strong>.</li>
         <li>Du <strong>11 au 13 décembre 2026</strong>, à <strong>Blégny-Mine</strong>.</li>
-        <li>Un moment pour <strong>progresser ensemble</strong> et préparer la suite de la saison.</li>
-        <li><strong>L’hébergement et les repas sont organisés sur place.</strong> Pour participer, remplis le formulaire d’inscription, <strong>un par personne</strong>.</li>
-        <li><strong>Le prix sera annoncé bientôt.</strong></li>
+        <li><strong>Chaque Senior est attendu pour s’investir pleinement dans le camp</strong> : sur le terrain, en théorie et dans la vie du groupe.</li>
+        <li><strong>L’hébergement est organisé à Blégny-Mine. Le repas du samedi soir à la Pizzeria Mia est offert par le club.</strong> Pour participer, remplis le formulaire d’inscription, <strong>un par personne</strong>.</li>
+        <li><strong>Seniors, U20 et staff : même tarif, de 40 € sans logement à 120 € avec deux nuits.</strong></li>
       </ul>
+      <div class="camp-price" id="tarifs" aria-labelledby="camp-price-title">
+        <p class="kicker">Le camp se vit ensemble · même tarif pour tous</p>
+        <h3 id="camp-price-title">120 € avec les deux nuits</h3>
+        <p><strong>Seniors, U20 et staff partagent le même programme et le même tarif.</strong> Le forfait comprend le terrain du week-end, le repas du samedi midi, les deux nuits et les deux petits-déjeuners. Le club offre les pizzas du samedi soir.</p>
+        <p><strong>On t’encourage à rester dormir avec l’équipe :</strong> les soirées, les petits-déjeuners et les moments entre les entraînements font aussi partie du camp.</p>
+        <p class="camp-price-alternative"><strong>Une seule nuit, vendredi ou samedi : 80 €.</strong> Le petit-déjeuner du lendemain est inclus. <strong>Sans logement : 40 €.</strong> Reste au moins le samedi soir pour partager la soirée avec l’équipe !</p>
+      </div>
+      <section class="camp-included" aria-labelledby="camp-included-title">
+        <p class="kicker">Les trois formules</p>
+        <h3 id="camp-included-title">Ce qui est compris dans ton inscription</h3>
+        <p class="camp-included-intro">Le terrain et les activités du camp, le repas du samedi midi et les pizzas du samedi soir offertes par le club sont prévus pour chaque formule. Le logement et les petits-déjeuners dépendent des nuits choisies.</p>
+        <div class="camp-included-grid">
+          <article class="camp-included-card"><h4>Sans logement</h4><strong class="camp-included-price">40 €</strong><ul><li>Terrain, entraînements et activités du camp.</li><li>Repas du samedi midi : menu sportif, détails à confirmer.</li><li>Pizzas du samedi soir offertes par le club à la Pizzeria Mia.</li><li>Aucune nuit ni petit-déjeuner.</li></ul></article>
+          <article class="camp-included-card"><h4>Une nuit au choix</h4><strong class="camp-included-price">80 €</strong><ul><li>Terrain, entraînements et activités du camp.</li><li>Repas du samedi midi : menu sportif, détails à confirmer.</li><li>Pizzas du samedi soir offertes par le club à la Pizzeria Mia.</li><li>Nuit du vendredi <strong>ou</strong> du samedi, avec petit-déjeuner le lendemain.</li></ul></article>
+          <article class="camp-included-card"><h4>Les deux nuits</h4><strong class="camp-included-price">120 €</strong><ul><li>Terrain, entraînements et activités du camp.</li><li>Repas du samedi midi : menu sportif, détails à confirmer.</li><li>Pizzas du samedi soir offertes par le club à la Pizzeria Mia.</li><li>Nuits du vendredi et du samedi, avec petits-déjeuners samedi et dimanche.</li></ul></article>
+        </div>
+        <p class="camp-included-note">Le menu définitif sera communiqué par le club. Le repas du dimanche midi n’est compris dans aucune formule.</p>
+      </section>
     </div></section>
-    <section class="section" id="camp"><div class="wrap"><p class="kicker">11–13 décembre · Blégny-Mine</p><h2>Un camp commun pour préparer la suite.</h2>
-      <p class="intro">Le week-end réunit <strong>les deux équipes et leurs staffs</strong> autour de séances sur le terrain, de théorie et d’un <strong>match amical le dimanche</strong>. L’hébergement et les repas s’organisent sur le site.</p>
-      <div class="cards"><article class="card"><span class="card-icon"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-activity"/></svg></span><h3>Football</h3><p><strong>Deux blocs d’entraînement le samedi</strong>, puis un match des Seniors auquel les Juniors sont les bienvenus pour jouer ou aider sideline.</p></article><article class="card"><span class="card-icon"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-users"/></svg></span><h3>Vie d’équipe</h3><p>Du temps pour échanger entre <strong>Juniors, Seniors et staff</strong>.</p></article><article class="card"><span class="card-icon"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-pin"/></svg></span><h3>Sur place</h3><p><strong>Terrains, vestiaires, chambres et salle de théorie</strong> regroupés à Blégny-Mine.</p></article></div>
+    <section class="section" id="camp"><div class="wrap"><p class="kicker">11–13 décembre · Blégny-Mine</p><h2>Le camp Seniors. Un engagement pour l’équipe.</h2>
+      <p class="intro">Ce week-end est un <strong>rendez-vous de préparation pour l’équipe Seniors</strong> : travail sur le terrain, séances théoriques et <strong>match amical le dimanche</strong>. On compte sur la présence et l’implication de chaque Senior tout au long du camp. Les <strong>U20 sont conviés dès le samedi à 8h30</strong> à partager le travail, les exigences et la vie du groupe Seniors. Rester dormir le samedi soir permet de vivre pleinement cette expérience avec l’équipe.</p>
+      <div class="cards"><article class="card"><span class="card-icon"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-activity"/></svg></span><h3>Football</h3><p><strong>Deux blocs d’entraînement le samedi</strong>, puis un match des Seniors auquel les U20 sont les bienvenus pour jouer ou aider sideline.</p></article><article class="card"><span class="card-icon"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-users"/></svg></span><h3>Vie d’équipe</h3><p><strong>Renforcer le groupe Seniors</strong> et accueillir les U20 dans son travail et sa vie d’équipe.</p></article><article class="card"><span class="card-icon"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-pin"/></svg></span><h3>Sur place</h3><p><strong>Terrains, vestiaires, chambres et salle de théorie</strong> regroupés à Blégny-Mine.</p></article></div>
     </div></section>
     <section class="section camp-gallery-section" id="ambiance"><div class="wrap">
       <p class="kicker">En images</p><h2>Le camp à Blégny-Mine.</h2>
@@ -197,40 +244,63 @@
     </div></section>
     <section class="section soft" id="programme"><div class="wrap"><p class="kicker">Programme prévisionnel</p><h2>Le déroulé du week-end</h2><p class="intro">Ces horaires servent à préparer le camp. Le club communiquera les derniers détails pratiques aux inscrits.</p>
       <div class="program">
-        <article class="arrival day-start"><strong>Vendredi</strong><time>18h30*</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-bed"/></svg>Arrivée et installation</h3><p>Accueil et répartition des chambres.</p></div></article>
-        <article class="meal breakfast day-start"><strong>Samedi</strong><time>07h45</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Petit-déjeuner</h3></div></article>
-        <article class="theory"><strong>Samedi</strong><time>08h30</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-book"/></svg>Séance théorique</h3></div></article>
-        <article class="field"><strong>Samedi</strong><time>09h30</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-activity"/></svg>Premier entraînement</h3><p>Jusqu’à 12h30.</p></div></article>
-        <article class="meal lunch"><strong>Samedi</strong><time>12h45</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Lunch</h3></div></article>
-        <article class="field"><strong>Samedi</strong><time>14h00</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-activity"/></svg>Deuxième entraînement</h3><p>Jusqu’à 17h00.</p></div></article>
-        <article class="meal dinner"><strong>Samedi</strong><time>18h30</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Souper</h3></div></article>
-        <article class="together"><strong>Samedi</strong><time>20h00</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-users"/></svg>Moment commun</h3></div></article>
-        <article class="meal breakfast day-start"><strong>Dimanche</strong><time>07h30</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Petit-déjeuner</h3></div></article>
-        <article class="field"><strong>Dimanche</strong><time>09h00</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-sun"/></svg>Échauffement</h3></div></article>
-        <article class="match"><strong>Dimanche</strong><time>10h00</time><div><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-trophy"/></svg>Match amical des Seniors · kickoff</h3><p>L’adversaire sera dévoilé plus tard aux joueurs. <strong>Les Juniors sont les bienvenus pour jouer ou aider sideline.</strong></p><p>Match terminé au plus tard à 13h00 ; repas prévu ensuite.</p></div></article>
+        <h3 class="program-day">Vendredi</h3>
+        <article class="arrival day-start"><strong>Vendredi</strong><time>18h30*</time><div><span class="program-tag">Seniors</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-bed"/></svg>Arrivée et installation des Seniors</h3><p>Accueil et répartition des chambres.</p></div></article>
+        <article class="together"><strong>Vendredi</strong><span class="program-time">Soir</span><div><span class="program-tag">Seniors</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-users"/></svg>Soirée Seniors</h3><p>Un premier moment ensemble avant l’arrivée des U20 le samedi à 8h30.</p></div></article>
+        <h3 class="program-day">Samedi</h3>
+        <article class="meal breakfast day-start"><strong>Samedi</strong><time>07h45</time><div><span class="program-tag">Avec la nuit du vendredi</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Petit-déjeuner</h3><p>Pour ceux qui dorment sur place le vendredi soir, y compris les U20 arrivés la veille.</p></div></article>
+        <article class="theory"><strong>Samedi</strong><time>08h30</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-book"/></svg>Séance théorique · accueil des U20</h3><p>Les U20 sont conviés à partir de cette séance. Ceux qui dorment sur place le vendredi prennent aussi le petit-déjeuner du samedi.</p></div></article>
+        <article class="field"><strong>Samedi</strong><time>09h30</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-activity"/></svg>Premier entraînement</h3><p>3 heures de terrain, jusqu’à 12h30.</p></div></article>
+        <article class="meal lunch"><strong>Samedi</strong><time>12h30</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Repas de midi</h3><p>Menu sportif à 13,20 € prévu dans chaque forfait pour les Seniors, les U20 et le staff.</p></div></article>
+        <article class="theory"><strong>Samedi</strong><time>14h00</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-book"/></svg>Entraînement théorique</h3><p>Jusqu’à 15h00.</p></div></article>
+        <article class="field"><strong>Samedi</strong><time>15h00</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-activity"/></svg>Deuxième entraînement</h3><p>Jusqu’à 18h00.</p></div></article>
+        <article class="meal pizza"><strong>Samedi</strong><time>18h30</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Souper pizza à la Pizzeria Mia · pizzas offertes par le club</h3><p>Pizzas offertes pour partager la soirée entre Seniors et U20.</p></div></article>
+        <article class="together"><strong>Samedi</strong><time>20h00</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-users"/></svg>Moment commun</h3></div></article>
+        <h3 class="program-day">Dimanche</h3>
+        <article class="meal breakfast day-start"><strong>Dimanche</strong><time>07h30</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-utensils"/></svg>Petit-déjeuner</h3><p>Pour les Seniors, les U20 et le staff qui dorment sur place le samedi soir.</p></div></article>
+        <article class="field"><strong>Dimanche</strong><time>09h00</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-sun"/></svg>Échauffement</h3></div></article>
+        <article class="match"><strong>Dimanche</strong><time>10h00</time><div><span class="program-tag">U20 welcomed</span><h3><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-trophy"/></svg>Match amical des Seniors · kickoff</h3><p>L’adversaire sera dévoilé plus tard aux joueurs. <strong>Les Juniors sont les bienvenus pour jouer ou aider sideline.</strong></p><p>Match terminé au plus tard à 13h00.</p></div></article>
       </div>
       <p>* À confirmer</p>
       <p class="program-visual-note">Visuels d’ambiance pour la théorie, le terrain et les repas ; le menu sera communiqué séparément. Photo du logement : <a href="https://www.blegnymine.be/fr/multimedia/le-centre-d-hebergement-pour-groupes" target="_blank" rel="noopener noreferrer">Blegny-Mine</a>. Photo de la salle : <a href="https://unsplash.com/photos/an-empty-conference-room-with-a-projector-screen-g1YKUSb11KY" target="_blank" rel="noopener noreferrer">Aditya Sethia / Unsplash</a>.</p>
     </div></section>
     <section class="section" id="repas"><div class="wrap"><p class="kicker">Préparer ta venue</p><h2>Repas et besoins particuliers</h2>
-      <p class="intro"><strong>Des petits-déjeuners, des lunchs et un souper</strong> sont prévus dans l’organisation du camp. Le repas du vendredi soir, le menu définitif et la participation financière seront communiqués par le club dès qu’ils seront fixés.</p>
+      <p class="intro"><strong>Le samedi soir, rendez-vous à la Pizzeria Mia avec les Seniors et les U20 :</strong> le club offre les pizzas. Le vendredi soir est réservé aux Seniors. Les autres repas s’organisent autour des activités et des nuits choisies ; le menu définitif sera communiqué par le club.</p>
       <div class="notice"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-alert"/></svg><strong>Régime alimentaire ou allergie ?</strong> <strong>Signale-le dans le formulaire</strong>, même si tu en as déjà parlé à un coach, afin d’aider le staff à organiser les repas.</div>
     </div></section>
-    <section class="section dark" id="inscription"><div class="wrap"><p class="kicker">Inscription</p><h2>Confirme ta présence</h2><p class="intro"><strong>Un formulaire par personne.</strong> Les champs marqués * sont obligatoires.</p>
+    <section class="section dark" id="inscription"><div class="wrap"><p class="kicker">Inscription</p><h2>Confirme ta présence</h2><p class="intro"><strong>Même tarif pour les Seniors, les U20 et le staff : 120 € avec deux nuits, 80 € avec une nuit, 40 € sans logement.</strong> Reste avec l’équipe pour profiter de la soirée ! Un formulaire par personne. Les champs marqués * sont obligatoires.</p>
       <form class="form" id="camp-form" action="camp-registration.php" method="post">
         <div class="form-grid"><label class="field" for="camp-last-name">Nom <span class="required">*</span><input id="camp-last-name" name="last_name" autocomplete="family-name" maxlength="100" required /></label><label class="field" for="camp-first-name">Prénom <span class="required">*</span><input id="camp-first-name" name="first_name" autocomplete="given-name" maxlength="100" required /></label></div>
-        <label class="field" for="camp-role">Tu participes comme <span class="required">*</span><select id="camp-role" name="role" required><option value="">Choisir</option><option value="Junior">Junior</option><option value="Senior">Senior</option><option value="Staff">Staff</option></select></label>
-        <label class="field" for="camp-no-lodging"><input id="camp-no-lodging" name="no_lodging" type="checkbox" value="oui" />Je ne dormirai pas sur place, mais je prendrai les repas<small>Ton inscription reste comptée pour les repas, sans réserver de lit.</small></label>
+        <label class="field" for="camp-role">Tu participes comme <span class="required">*</span><select id="camp-role" name="role" required><option value="">Choisir</option><option value="Junior">Junior (U20)</option><option value="Senior">Senior</option><option value="Staff">Staff</option></select></label>
+        <label class="field" for="camp-nights">Quelles nuits restes-tu dormir ? <span class="required">*</span><select id="camp-nights" name="nights" required aria-describedby="camp-nights-help"><option value="">Choisir mes nuits</option><option value="deux">Vendredi et samedi · 2 nuits · 120 €</option><option value="vendredi">Vendredi uniquement · 80 €</option><option value="samedi">Samedi uniquement · 80 €</option><option value="aucune">Sans logement · 40 €</option></select><small id="camp-nights-help">Les prix sont identiques pour toutes les catégories. Juniors et Seniors peuvent choisir chacune des deux nuits. Les U20 sont conviés dès le samedi à 8h30, mais peuvent dormir sur place dès le vendredi. Chaque nuit inclut le petit-déjeuner du lendemain. Rester le samedi soir permet de profiter de la soirée avec l’équipe et inclut le petit-déjeuner du dimanche. Le repas du dimanche midi est hors forfait.</small></label>
+        <label class="field" for="camp-shirt-size">Quelle est ta taille de T-shirt ? <span class="required">*</span><select id="camp-shirt-size" name="shirt_size" required><option value="">Choisir ma taille</option><option value="3XL">3XL</option><option value="2XL">2XL</option><option value="XL">XL</option><option value="L">L</option><option value="M">M</option><option value="S">S</option></select></label>
         <label class="field" for="camp-diet">Exigence alimentaire<textarea id="camp-diet" name="diet" maxlength="1000" placeholder="Par exemple : végétarien, sans porc…"></textarea><small>Laisse vide si tu n’as pas d’exigence particulière.</small></label>
         <label class="field" for="camp-allergies">Allergies<textarea id="camp-allergies" name="allergies" maxlength="1000" placeholder="Précise les aliments ou ingrédients concernés."></textarea><small>Laisse vide si tu n’as pas d’allergie à signaler.</small></label>
         <label class="field" for="camp-other">Autres informations<textarea id="camp-other" name="other" maxlength="1000" placeholder="Une information utile pour organiser ta venue ?"></textarea></label>
         <div hidden aria-hidden="true"><label>Site web<input name="website" tabindex="-1" autocomplete="off" /></label></div>
         <button class="cta" type="submit"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-user-plus"/></svg>Confirmer mon inscription</button><p class="form-status" id="camp-form-status" role="status" aria-live="polite" hidden></p>
       </form>
-      <p class="privacy">Ces informations servent uniquement à organiser le camp, notamment les repas et les besoins particuliers. Elles sont accessibles aux organisateurs. <strong>Aucun paiement n’est demandé par ce formulaire.</strong></p>
+      <div class="camp-payment" aria-labelledby="camp-payment-title">
+        <h3 id="camp-payment-title">Paiement de l’inscription</h3>
+        <p>Après avoir confirmé ton inscription, verse le montant de ton forfait sur le compte des Andenne Bears :</p>
+        <p class="camp-payment-iban">BE50 0014 5931 8318</p>
+        <p>Montant : <span class="camp-payment-amount" id="camp-payment-amount">40 €, 80 € ou 120 € selon les nuits choisies</span>.</p>
+        <p>En communication, indique « Camp Blégny » suivi de ton nom et de ton prénom.</p>
+      </div>
+      <dialog class="camp-payment-dialog" id="camp-payment-dialog" aria-labelledby="camp-payment-dialog-title">
+        <div class="camp-payment">
+          <h3 id="camp-payment-dialog-title">Inscription enregistrée</h3>
+          <p>Merci ! Pour finaliser ton inscription, effectue un virement de <strong class="camp-payment-amount" id="camp-payment-dialog-amount"></strong> sur le compte des Andenne Bears :</p>
+          <p class="camp-payment-iban">BE50 0014 5931 8318</p>
+          <p>Communication : <strong id="camp-payment-dialog-communication"></strong></p>
+          <p>Ta référence d’inscription : <strong id="camp-payment-dialog-reference"></strong></p>
+          <form method="dialog"><button class="cta" type="submit">J’ai noté les informations</button></form>
+        </div>
+      </dialog>
+      <p class="privacy">Ces informations servent uniquement à organiser le camp, notamment les repas et les besoins particuliers. Elles sont accessibles aux organisateurs. Le paiement se fait par virement après l’inscription.</p>
     </div></section>
   </main>
   <footer class="footer"><span>Copyright &copy; 2026 · Andenne Bears ASBL</span><a href="#top">Retour en haut</a></footer>
-  <script src="scripts/camp-registration.js" defer></script>
+  <script src="scripts/camp-registration.js?v=payment-20261013" defer></script>
 </body>
 </html>

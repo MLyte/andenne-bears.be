@@ -8,7 +8,7 @@
   <link rel="icon" href="images/favicon.png" />
   <link rel="stylesheet" href="bears.css?v=tirage-2026-10-10-2" />
   <link rel="stylesheet" href="tirage-equipes.css?v=2" />
-  <script type="module" src="scripts/family-teams-ui.js?v=11"></script>
+  <script type="module" src="scripts/family-teams-ui.js?v=12"></script>
 </head>
 <body class="family-page">
   <header class="family-header">
@@ -19,7 +19,7 @@
     <div class="family-draw-hero">
       <p class="section-kicker">Organisateurs · tournoi de flag</p>
       <h1>Construire les équipes</h1>
-      <p>Une simulation à partir des inscriptions actuelles. Les trois premières cases de chaque équipe représentent <strong>une femme, une personne de moins de 18 ans et une personne hors Bears, toutes différentes</strong>. Les deux autres places sont libres.</p>
+      <p>Des équipes de <strong>six joueurs : cinq sur le terrain et un remplaçant tournant</strong>. L’objectif reste une femme, une personne de moins de 18 ans et une personne hors Bears, <strong>toutes différentes</strong>, puis trois places libres. Quand les profils manquent, le tirage place les joueurs et cherche à limiter puis répartir les dérogations.</p>
       <p id="draw-data-status" class="family-draw-live" role="status" aria-live="polite">Connexion aux inscriptions…</p>
       <a href="suivi-inscriptions.php">Ouvrir le suivi des inscriptions</a>
     </div>
@@ -28,7 +28,7 @@
         <h2 id="draw-overview-title">Où en est le tournoi&nbsp;?</h2>
         <div class="family-draw-metrics">
           <article><span>Joueurs retenus</span><strong id="draw-total">—</strong><small>dans cette simulation</small></article>
-          <article><span>Équipes de 5 par effectif</span><strong id="draw-by-size">—</strong><small>avant vérification des profils</small></article>
+          <article><span>Équipes de 6 par effectif</span><strong id="draw-by-size">—</strong><small>avant vérification des profils</small></article>
           <article><span>Potentiel selon les profils</span><strong id="draw-by-profiles">—</strong><small>trois représentants distincts</small></article>
         </div>
         <div class="family-draw-next">
@@ -43,10 +43,11 @@
         <p id="draw-overview-note" class="family-draw-overview-note"></p>
       </section>
       <section aria-labelledby="draw-result-title">
-        <div class="family-draw-section-heading"><div><p class="section-kicker">Composition provisoire</p><h2 id="draw-result-title">Les équipes en cases</h2></div><p>Les équipes suggérées accueillent autant de joueurs que possible. Glisse un joueur en attente sur une case vide admissible pour l’y placer, ou sur un joueur pour les échanger. Sur mobile ou au clavier, sélectionne le joueur puis la case ou l’autre joueur. Un placement qui sépare un enfant de son proche est refusé.</p></div>
+        <div class="family-draw-section-heading"><div><p class="section-kicker">Composition provisoire</p><h2 id="draw-result-title">Les équipes en cases</h2></div><p>Glisse un joueur en attente sur une case vide, ou sur un joueur pour les échanger. Sur mobile ou au clavier, sélectionne le joueur puis la case ou l’autre joueur. Un placement contraire aux critères demande confirmation. Les personnes liées restent ensemble ; retire leur lien pour les séparer.</p></div>
         <div class="family-draw-actions">
           <div class="field"><label for="draw-count">Nombre maximal d’équipes à former</label><input id="draw-count" type="number" min="1" step="1" value="1" /></div>
           <button id="draw-generate" class="button button-primary" type="button">Nouvelle simulation</button>
+          <button id="draw-undo" class="button" type="button" disabled>Annuler le dernier déplacement</button>
           <button id="draw-save" class="button button-primary" type="button" disabled>Sauver</button>
           <button id="draw-download" class="button" type="button" disabled>Exporter les équipes</button>
         </div>
@@ -55,7 +56,7 @@
         <p id="draw-swap-status" role="status" aria-live="polite"></p>
         <div id="draw-waiting" class="family-draw-waiting" hidden>
           <h3>En attente d’une équipe supplémentaire</h3>
-          <p>Choisis un joueur ici puis une case vide admissible pour le placer, ou un joueur déjà placé pour les échanger. Tu peux aussi le faire glisser.</p>
+          <p>Choisis un joueur ici puis une case vide pour le placer, ou un joueur déjà placé pour les échanger. Les dérogations demandent confirmation. Tu peux aussi le faire glisser.</p>
           <div id="draw-waiting-players" class="family-draw-waiting-players"></div>
         </div>
         <div id="draw-results" class="family-draw-results"></div>
@@ -77,10 +78,10 @@
         </details>
       </section>
       <section aria-labelledby="draw-family-title">
-        <h2 id="draw-family-title">Garder un enfant avec un proche</h2>
-        <p>Le suivi indique seulement si une personne a moins de 18 ans. Pour un jeune enfant, choisis ici le proche qui jouera avec lui. Ils seront placés dans la même colonne.</p>
+        <h2 id="draw-family-title">Garder un enfant ou une femme avec un proche</h2>
+        <p>Choisis un enfant ou une femme, puis le parent ou le proche avec qui cette personne souhaite jouer. Ils resteront dans la même équipe. Plusieurs personnes peuvent être liées au même proche.</p>
         <form id="draw-family-add" class="family-draw-actions">
-          <div class="field"><label for="draw-child">Enfant</label><select id="draw-child" required></select></div>
+          <div class="field"><label for="draw-child">Enfant ou femme</label><select id="draw-child" required></select></div>
           <div class="field"><label for="draw-relative">Proche qui joue</label><select id="draw-relative" required></select></div>
           <button class="button" type="submit">Les garder ensemble</button>
         </form>

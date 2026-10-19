@@ -121,25 +121,28 @@ function matchCriteria(players, required) {
   return roles;
 }
 
-export function teamSlots(players) {
+export function teamSlots(players, size = 5, allowExceptions = false) {
   const assigned = matchCriteria(players, criteria);
   const used = new Set(assigned.filter(index => index !== -1));
   const remaining = players.filter((_, index) => !used.has(index));
   const slots = criteria.map((role, index) => ({ role, player: assigned[index] === -1 ? null : players[assigned[index]], valid: assigned[index] !== -1 }));
-  slots.push({ role: 'free', player: remaining.shift() || null, valid: true });
-  slots.push({ role: 'free', player: remaining.shift() || null, valid: true });
+  for (let index = 3; index < size; index++) slots.push({ role: 'free', player: remaining.shift() || null, valid: true });
+  // A missing criterion is a visible exception, never a reason to hide a player.
+  if (allowExceptions) for (const slot of slots) {
+    if (!slot.player && remaining.length) slot.player = remaining.shift();
+  }
   while (remaining.length) slots.push({ role: 'extra', player: remaining.shift(), valid: false });
   return slots;
 }
 
-export function analyzeCapacity(players) {
+export function analyzeCapacity(players, size = 5) {
   const total = players.length;
   const counts = {
     women: players.filter(player => player.woman).length,
     minors: players.filter(player => player.minor).length,
     nonBears: players.filter(player => !player.bears).length,
   };
-  const teamsBySize = Math.floor(total / 5);
+  const teamsBySize = Math.floor(total / size);
   const nextTeams = teamsBySize + 1;
   const required = Array.from({ length: nextTeams }, () => criteria).flat();
   const coveredForNext = matchCriteria(players, required).filter(index => index !== -1).length;
@@ -157,9 +160,9 @@ export function analyzeCapacity(players) {
     teamsBySize,
     teamsByProfiles: low,
     nextTeams,
-    placesNeeded: Math.max(0, 5 * nextTeams - total),
+    placesNeeded: Math.max(0, size * nextTeams - total),
     representativeShortage: 3 * nextTeams - coveredForNext,
-    minimumNewPeople: Math.max(5 * nextTeams - total, 3 * nextTeams - coveredForNext),
+    minimumNewPeople: Math.max(size * nextTeams - total, 3 * nextTeams - coveredForNext),
     womenNeeded: Math.max(0, nextTeams - counts.women),
     minorsNeeded: Math.max(0, nextTeams - counts.minors),
     nonBearsNeeded: Math.max(0, nextTeams - counts.nonBears),
@@ -177,8 +180,8 @@ function linkedGroups(players, links) {
   for (const link of links) {
     const child = byId.get(link?.childId);
     const relative = byId.get(link?.relativeId);
-    if (!child || !relative || !child.minor || child.id === relative.id || children.has(child.id)) {
-      throw new Error('Lien familial invalide : choisissez un enfant présent et un proche présent différent pour chaque enfant.');
+    if (!child || !relative || (!child.minor && !child.woman) || child.id === relative.id || children.has(child.id)) {
+      throw new Error('Lien familial invalide : choisissez un enfant ou une femme et un proche présent différent.');
     }
     children.add(child.id);
     parent.set(root(child.id), root(relative.id));
@@ -423,7 +426,154 @@ export function makeSuggestedTeams(players, requestedCount, seed, links = []) {
     seed: seed >>> 0, links: links.map(link => ({ ...link })), revision: 0 };
 }
 
-export function swapPlayers(draw, firstId, secondId) {
+// Lexicographic priorities: participation, total exceptions, their distribution,
+// team sizes, then Bears/minor/woman balance. Seeds reproduce the bounded search.
+export function optimizationScore(teams, waiting = []) {
+  const assessment = assessTeams(teams);
+  return [waiting.length,
+    assessment.reduce((sum, team) => sum + 3 - team.distinctCriteria, 0),
+    assessment.reduce((sum, team) => sum + (3 - team.distinctCriteria) ** 2, 0),
+    assessment.reduce((sum, team) => sum + team.size ** 2, 0),
+    assessment.reduce((sum, team) => sum + (team.size - team.nonBears) ** 2 + team.minors ** 2 + team.women ** 2, 0)];
+}
+
+function compareScores(a, b) {
+  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] - b[i];
+  return 0;
+}
+
+export function makeOptimizedTeams(players, requestedCount, seed, links = [], size = 6, onProgress = () => {}) {
+  if (!Array.isArray(players) || players.length > 200 || !Number.isInteger(requestedCount)
+    || requestedCount < 1 || requestedCount > 200 || !Number.isInteger(seed) || !Array.isArray(links)
+    || ![5, 6].includes(size)) throw new Error('Paramètres de simulation invalides.');
+  const ids = new Set(players.map(player => player.id));
+  if (ids.size !== players.length || players.some(player => !player.id || !player.name
+    || ['minor', 'woman', 'bears'].some(key => typeof player[key] !== 'boolean'))) {
+    throw new Error('La liste des personnes présentes est invalide.');
+  }
+  const groups = linkedGroups(players, links);
+  if (groups.some(group => group.length > size)) throw new Error(`Un groupe lié dépasse ${size} joueurs : modifiez les liens avant le tirage.`);
+  if (!players.length) return { teams: [], waiting: [], assessment: [], links: [], seed: seed >>> 0, teamSize: size, revision: 0 };
+  const count = Math.min(requestedCount, groups.length);
+  const random = randomFromSeed(seed);
+  let best;
+  let bestScore;
+  const evaluate = bins => optimizationScore(bins.slice(0, count).map(bin => bin.flat()), bins[count].flat());
+  const remember = bins => {
+    const score = evaluate(bins);
+    if (!bestScore || compareScores(score, bestScore) < 0) {
+      bestScore = score;
+      best = bins.map(bin => [...bin]);
+    }
+    return score;
+  };
+  // Search whole linked groups, with a strict visit budget. Symmetry pruning
+  // uses remaining capacity only here; profile optimization follows separately.
+  function pack() {
+    const order = shuffle(groups, random).sort((a, b) => b.length - a.length);
+    const bins = Array.from({ length: count + 1 }, () => []);
+    const used = Array(count).fill(0);
+    const suffix = Array(order.length + 1).fill(0);
+    for (let i = order.length - 1; i >= 0; i--) suffix[i] = suffix[i + 1] + order[i].length;
+    let visits = 0;
+    let mostPlaced = -1;
+    let packed;
+    const target = Math.min(players.length, count * size);
+    function visit(index, placed) {
+      if (++visits > 20000 || placed + Math.min(suffix[index], count * size - placed) <= mostPlaced) return false;
+      if (index === order.length) {
+        mostPlaced = placed;
+        packed = bins.map(bin => [...bin]);
+        return placed === target;
+      }
+      const tried = new Set();
+      for (const team of shuffle(used.map((_, i) => i), random).sort((a, b) => used[a] - used[b])) {
+        if (used[team] + order[index].length > size || tried.has(used[team])) continue;
+        tried.add(used[team]);
+        used[team] += order[index].length;
+        bins[team].push(order[index]);
+        if (visit(index + 1, placed + order[index].length)) return true;
+        bins[team].pop();
+        used[team] -= order[index].length;
+      }
+      bins[count].push(order[index]);
+      if (visit(index + 1, placed)) return true;
+      bins[count].pop();
+      return false;
+    }
+    visit(0, 0);
+    // A greedy fallback also supplies a result if the bounded search found none.
+    if (!packed) {
+      const fallback = Array.from({ length: count + 1 }, () => []);
+      for (const group of order) {
+        const choices = fallback.slice(0, count).map((bin, i) => ({ i, n: bin.flat().length }))
+          .filter(item => item.n + group.length <= size).sort((a, b) => a.n - b.n);
+        fallback[choices[0]?.i ?? count].push(group);
+      }
+      return fallback;
+    }
+    return packed;
+  }
+  function subset(bin) {
+    if (!bin.length || random() < 0.15) return [];
+    const chosen = shuffle(bin, random);
+    const take = 1 + Math.floor(random() * Math.min(3, chosen.length));
+    let total = 0;
+    return chosen.slice(0, take).filter(group => {
+      if (total + group.length > size) return false;
+      total += group.length;
+      return true;
+    });
+  }
+  for (let attempt = 0; attempt < 6; attempt++) {
+    onProgress(attempt, 6);
+    let bins = attempt % 2 && best ? best.map(bin => [...bin]) : pack();
+    let score = remember(bins);
+    const steps = players.length > 80 ? 5000 : 7000;
+    for (let step = 0; step < steps; step++) {
+      const a = Math.floor(random() * (count + 1));
+      let b = Math.floor(random() * count);
+      if (b >= a) b++;
+      const left = subset(bins[a]);
+      const right = subset(bins[b]);
+      if (!left.length && !right.length) continue;
+      const nextA = [...bins[a].filter(group => !left.includes(group)), ...right];
+      const nextB = [...bins[b].filter(group => !right.includes(group)), ...left];
+      if ((a < count && nextA.flat().length > size) || (b < count && nextB.flat().length > size)) continue;
+      const candidate = bins.map((bin, i) => i === a ? nextA : i === b ? nextB : bin);
+      const next = evaluate(candidate);
+      const comparison = compareScores(next, score);
+      // Occasional worsening moves escape local minima; never drop participants.
+      const firstDifference = next.findIndex((value, i) => value !== score[i]);
+      const temperature = 1 - step / steps;
+      const accept = comparison <= 0 || (next[0] === score[0] && firstDifference > 0
+        && random() < 0.06 * temperature * Math.exp(-(next[firstDifference] - score[firstDifference]) / (2 + 3 * temperature)));
+      if (accept) { bins = candidate; score = next; remember(bins); }
+    }
+  }
+  const teams = best.slice(0, count).map(bin => bin.flat()).filter(team => team.length);
+  const waiting = best[count].flat();
+  const required = Array.from({ length: teams.length }, () => criteria).flat();
+  const lowerBound = required.length - matchCriteria(players, required).filter(index => index !== -1).length;
+  const score = optimizationScore(teams, waiting);
+  onProgress(6, 6);
+  return { teams, waiting, assessment: assessTeams(teams), links: links.map(link => ({ ...link })),
+    seed: seed >>> 0, teamSize: size, revision: 0,
+    optimization: { lowerBound, missing: score[1], minimumReached: score[1] === lowerBound, score } };
+}
+
+export function teamExceptions(players) {
+  const labels = { woman: 'Femme', minor: 'Moins de 18 ans', nonBears: 'Hors Bears' };
+  return teamSlots(players).slice(0, 3).filter(slot => !slot.valid).map(slot => `${labels[slot.role]} : aucun représentant distinct disponible`);
+}
+
+function confirmationRequired(reasons) {
+  const error = new Error(reasons.join('\n'));
+  error.code = 'CONFIRM_PLACEMENT';
+  throw error;
+}
+
+export function swapPlayers(draw, firstId, secondId, { force = false } = {}) {
   const teams = draw.teams.map(team => [...team]);
   const waiting = [...(draw.waiting || [])];
   const groups = [...teams, waiting];
@@ -437,48 +587,56 @@ export function swapPlayers(draw, firstId, secondId) {
   [groups[firstGroup][firstIndex], groups[secondGroup][secondIndex]] = [groups[secondGroup][secondIndex], groups[firstGroup][firstIndex]];
   for (const link of draw.links || []) {
     if (!groups.some(group => group.some(player => player.id === link.childId) && group.some(player => player.id === link.relativeId))) {
-      throw new Error('Échange refusé : il séparerait un enfant du proche choisi.');
+      throw new Error('Échange refusé : il séparerait un enfant ou une femme du proche choisi. Retirez le lien pour les séparer.');
     }
   }
   const assessment = assessTeams(teams);
   const affectedTeams = [firstGroup, secondGroup].filter(index => index < teams.length);
+  const reasons = [];
   for (const index of affectedTeams) {
     const before = draw.assessment[index];
     const after = assessment[index];
-    if (['women', 'minors', 'nonBears'].some(key => before[key] > 0 && after[key] === 0)) {
-      throw new Error('Échange refusé : une équipe perdrait un profil déjà représenté.');
+    const labels = { women: 'Femme', minors: 'Moins de 18 ans', nonBears: 'Hors Bears' };
+    for (const key of Object.keys(labels)) {
+      if (before[key] > 0 && after[key] === 0) reasons.push(`Équipe ${index + 1} : elle perdrait un profil déjà représenté (${labels[key]}).`);
+    }
+    if (after.distinctCriteria < before.distinctCriteria) {
+      reasons.push(`Équipe ${index + 1} : ${teamExceptions(teams[index]).join(' ; ')}.`);
     }
   }
   if (affectedTeams.some(index => assessment[index].distinctCriteria < draw.assessment[index].distinctCriteria)) {
-    throw new Error('Échange refusé : une équipe perdrait un des trois critères attribués à des joueurs différents.');
+    reasons.push('Une équipe perdrait un des trois critères attribués à des joueurs différents.');
   }
-  return { ...draw, teams, waiting, assessment, revision: (draw.revision || 0) + 1 };
+  if (reasons.length && !force) confirmationRequired(reasons);
+  return { ...draw, teams, waiting, assessment, optimization: undefined, revision: (draw.revision || 0) + 1 };
 }
 
-export function placeWaitingPlayer(draw, playerId, teamIndex, slotIndex) {
+export function placeWaitingPlayer(draw, playerId, teamIndex, slotIndex, { force = false } = {}) {
   const teams = draw.teams.map(team => [...team]);
   const waiting = [...(draw.waiting || [])];
   const playerIndex = waiting.findIndex(player => player.id === playerId);
   const team = teams[teamIndex];
-  if (playerIndex < 0 || !team || team.length >= 5 || !Number.isInteger(slotIndex) || slotIndex < 0 || slotIndex >= 5) {
+  const size = draw.teamSize || 5;
+  if (playerIndex < 0 || !team || team.length >= size || !Number.isInteger(slotIndex) || slotIndex < 0 || slotIndex >= size) {
     throw new Error('Choisis un joueur en attente et une case libre dans une équipe non complète.');
   }
-  if (teamSlots(team)[slotIndex].player) throw new Error('Cette case est déjà occupée.');
+  if (teamSlots(team, size, true)[slotIndex].player) throw new Error('Cette case est déjà occupée.');
   const player = waiting[playerIndex];
   team.push(player);
-  if (teamSlots(team)[slotIndex].player?.id !== playerId) {
-    throw new Error('Ce joueur ne peut pas occuper cette case selon les critères de l’équipe.');
-  }
+  const inadmissible = teamSlots(team, size, true)[slotIndex].player?.id !== playerId
+    || !teamSlots(team, size, true)[slotIndex].valid;
   waiting.splice(playerIndex, 1);
   const groups = [...teams, waiting];
   for (const link of draw.links || []) {
     if (!groups.some(group => group.some(item => item.id === link.childId) && group.some(item => item.id === link.relativeId))) {
-      throw new Error('Placement refusé : il séparerait un enfant du proche choisi.');
+      throw new Error('Placement refusé : il séparerait un enfant ou une femme du proche choisi. Retirez le lien pour les séparer.');
     }
   }
   const assessment = assessTeams(teams);
   if (assessment[teamIndex].distinctCriteria < draw.assessment[teamIndex].distinctCriteria) {
-    throw new Error('Placement refusé : l’équipe perdrait une règle déjà couverte.');
+    if (!force) confirmationRequired(['L’équipe perdrait une règle déjà couverte.']);
   }
-  return { ...draw, teams, waiting, assessment, revision: (draw.revision || 0) + 1 };
+  if (inadmissible && !force) confirmationRequired(['Ce joueur ne peut pas occuper cette case selon les critères de l’équipe.',
+    ...teamExceptions(team), 'Il sera placé dans l’équipe et les cases seront réorganisées selon les profils.']);
+  return { ...draw, teams, waiting, assessment, optimization: undefined, revision: (draw.revision || 0) + 1 };
 }

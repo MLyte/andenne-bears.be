@@ -127,7 +127,7 @@ foreach ($state['roster'] as $player) {
 }
 $locations = [];
 foreach ($state['teams'] as $index => $team) {
-    if (!is_array($team) || count($team) < 1 || count($team) > 5) drawFail(422, 'Composition d’équipe invalide.');
+    if (!is_array($team) || count($team) < 1 || count($team) > 6) drawFail(422, 'Composition d’équipe invalide (six joueurs maximum).');
     foreach ($team as $order => $id) {
         if (!is_string($id) || !isset($people[$id]) || !$people[$id]['present'] || isset($locations[$id])) drawFail(422, 'Joueur placé en double ou absent.');
         $locations[$id] = [(string) ($index + 1), (string) $order];
@@ -143,7 +143,8 @@ foreach ($people as $id => $player) {
 $relatives = [];
 foreach ($state['links'] as $link) {
     if (!is_array($link) || !is_string($link['childId'] ?? null) || !is_string($link['relativeId'] ?? null)
-        || !isset($people[$link['childId']], $people[$link['relativeId']]) || !$people[$link['childId']]['minor']
+        || !isset($people[$link['childId']], $people[$link['relativeId']])
+        || (!$people[$link['childId']]['minor'] && !$people[$link['childId']]['woman'])
         || isset($relatives[$link['childId']]) || $link['childId'] === $link['relativeId']) drawFail(422, 'Lien familial invalide.');
     $relatives[$link['childId']] = $link['relativeId'];
     if (isset($locations[$link['childId']], $locations[$link['relativeId']])
