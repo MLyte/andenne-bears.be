@@ -1,5 +1,6 @@
 const form = document.querySelector('#family-form');
 const result = document.querySelector('#family-result');
+const afterRegistration = document.querySelector('#family-after-registration');
 const flag = document.querySelector('#family-flag');
 const meal = document.querySelector('#family-meal');
 const help = document.querySelector('#family-help');
@@ -173,6 +174,7 @@ function showResult(message, success) {
   result.textContent = message;
   result.className = 'contact-result ' + (success ? 'is-success' : 'is-error');
   result.hidden = false;
+  afterRegistration.hidden = !success;
   result.focus();
 }
 

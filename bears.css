@@ -310,6 +310,35 @@ a {
 }
 
 /* Family day page */
+.family-parking { padding: clamp(2.5rem, 5vw, 4.5rem) 0; background: #eef2f4; color: var(--black); }
+.family-parking h2 { margin: 0 0 0.8rem; font-size: clamp(2rem, 4vw, 3.2rem); }
+.family-parking .family-wrap > p:not(.section-kicker) { max-width: 75ch; line-height: 1.6; }
+.family-parking-places { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 1rem; padding: 0; margin: 1.3rem 0; list-style: none; counter-reset: parking; }
+.family-parking-places li { position: relative; padding: 1rem 1rem 1rem 3.7rem; border-radius: 8px; background: #fff; counter-increment: parking; }
+.family-parking-places li::before { content: counter(parking); position: absolute; top: 1rem; left: 1rem; display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 5px; background: #145476; color: #fff; font-weight: 900; }
+.family-parking-places strong, .family-parking-places span { display: block; line-height: 1.5; }
+.family-parking-warning { padding: 1rem 1.2rem; border-left: 4px solid #b73936; background: #f7e3df; color: #682c29; }
+.family-parking-map { max-width: 860px; margin: 1.5rem 0 1.2rem; }
+.family-parking-map > a { display: block; overflow: hidden; border: 2px solid #183a66; border-radius: 8px; }
+.family-parking-map a:focus-visible, .family-parking-osm:focus-visible { outline: 3px solid #183a66; outline-offset: 4px; }
+.family-parking-map img { display: block; width: 100%; height: auto; }
+.family-parking-map figcaption { margin-top: 0.55rem; color: #334452; font-size: 0.88rem; line-height: 1.5; }
+.family-parking-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+.family-parking-osm { display: inline-block; color: #123e78; font-weight: 700; }
+.family-parking-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); align-items: start; gap: clamp(1.5rem, 4vw, 3rem); }
+.family-parking-copy { min-width: 0; line-height: 1.6; }
+.family-parking-layout .family-parking-places { grid-template-columns: 1fr; }
+.family-parking-layout .family-parking-map { margin: 0; }
+.family-after-registration { margin-top: 1.5rem; padding: clamp(1rem, 3vw, 1.5rem); border: 2px solid #145476; border-radius: 8px; background: #eef2f4; color: #16242c; line-height: 1.6; }
+.family-after-registration h3 { margin-top: 0; }
+.family-after-registration-preview { display: block; width: min(100%, 260px); margin: 1rem auto; }
+.family-after-registration-preview img { display: block; width: 100%; height: auto; border-radius: 5px; }
+.family-after-registration-preview:focus-visible { outline: 3px solid #183a66; outline-offset: 4px; }
+#stationnement { scroll-margin-top: 7rem; }
+@media (max-width: 760px) {
+  .family-parking-layout { grid-template-columns: 1fr; }
+  .family-parking-layout .family-parking-map { width: min(100%, 480px); margin-inline: auto; }
+}
 .family-announcement { position: relative; overflow: hidden; border-block: 4px solid var(--gold); background: linear-gradient(90deg, #050505 0%, rgba(5, 5, 5, 0.98) 44%, rgba(5, 5, 5, 0.65) 100%), url("images/family-flag-teams-2026-v2.png") 70% 45% / cover; color: var(--cream); }
 .family-announcement-link { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: clamp(1rem, 3vw, 2.5rem); width: min(1360px, calc(100% - 2rem)); min-height: 170px; margin-inline: auto; padding-block: 1.35rem; color: inherit; text-decoration: none; }
 .family-announcement-date { display: flex; align-items: center; gap: 0.25rem; color: var(--gold); font-family: "Berthold City", var(--title-font); line-height: 0.9; white-space: nowrap; }
