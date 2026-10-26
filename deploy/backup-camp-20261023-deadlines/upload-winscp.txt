@@ -1,0 +1,10 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+cd /home/andennebh/www
+put "C:\www\andenne-bears.be\camp-registration.php" camp-registration.php
+cd /home/andennebh/www/scripts
+put "C:\www\andenne-bears.be\scripts\camp-registration.js" camp-registration.js
+cd /home/andennebh/www
+put "C:\www\andenne-bears.be\camp-blegny.html" camp-blegny.html
+exit

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>Table de marque · Andenne Bears</title>
+  <link rel="icon" href="images/favicon.png"><link rel="stylesheet" href="tournoi.css?v=6">
+  <script type="module" src="scripts/tournoi.js?v=7"></script>
+</head>
+<body>
+  <main class="dashboard">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Andenne Bears, accueil"><img src="images/logoBears.png" alt=""></a>
+      <div class="page-title"><span>DIM. 25 OCTOBRE 2026</span><h1>Table de marque <small>· Flag</small></h1></div>
+      <nav aria-label="Espace organisateur"><a href="suivi-inscriptions.php">Inscriptions</a><a href="tirage-equipes.html">Tirage des équipes</a><a href="tournoi.html" aria-current="page">Tournoi</a><a href="tournoi-ecran.html" target="_blank" rel="noopener">Écran joueurs ↗</a></nav>
+      <div class="tools"><button id="settings-open" disabled>Réglages</button><button id="rules-open">Règles</button><button id="print" disabled>Imprimer</button><button id="fullscreen" aria-label="Passer en plein écran" title="Plein écran">⛶</button></div>
+    </header>
+    <section class="action-bar" aria-labelledby="action-title">
+      <span class="action-mark" aria-hidden="true">→</span><div><h2 id="action-title">Connexion au tournoi</h2><p id="action-description">Chargement des compositions et des scores enregistrés…</p></div><button id="action-button" class="primary" hidden></button>
+    </section>
+    <div id="content" class="workspace" hidden>
+      <section class="match-panel panel" aria-labelledby="round-title">
+        <div class="panel-heading"><div><span class="eyebrow">RENCONTRES & SCORES</span><h2 id="round-title">Championnat</h2></div><div class="schedule-summary"><strong id="timing"></strong><span id="format"></span></div></div>
+        <nav id="rounds" class="rounds" aria-label="Choisir le tour"></nav>
+        <div id="matches" class="matches"></div>
+        <div class="panel-foot"><span id="round-hint">Les horaires sont prévisionnels.</span><button id="next-action" class="text-button">Premier score manquant →</button></div>
+      </section>
+      <aside class="standings-panel panel" aria-labelledby="standings-title">
+        <div class="panel-heading"><div><span class="eyebrow">LES SIX ÉQUIPES</span><h2 id="standings-title">Classement provisoire</h2></div><span id="progress" class="counter"></span></div>
+        <div class="ranking-switch"><button id="league-view" aria-pressed="true">Championnat</button><button id="final-view" aria-pressed="false" disabled>Résultat final</button></div>
+        <div id="ranking-body"><table><thead><tr><th scope="col">#</th><th scope="col">Équipe</th><th scope="col"><abbr title="Matchs joués">J</abbr></th><th scope="col"><abbr title="Différence de points">Diff.</abbr></th><th scope="col"><abbr title="Points de classement">Pts</abbr></th></tr></thead><tbody id="standings"></tbody></table></div>
+        <div class="standings-note"><span class="live-dot" aria-hidden="true"></span><p id="ranking-note">Victoire 3 pts · Nul 1 pt · Défaite 0 pt</p></div>
+        <div class="meal"><span>APRÈS LE TOURNOI</span><strong>13 h · Burgers</strong><small>Fin prévue <b id="end-time">—</b> · marge <b id="meal-margin">—</b></small></div>
+      </aside>
+    </div>
+    <section id="team-section" class="team-section" aria-label="Compositions des équipes" hidden><div class="team-caption"><strong>Compositions</strong><button id="names-open" class="text-button" disabled>Noms et capitaines</button></div><div id="teams" class="team-strip"></div></section>
+    <footer class="statusbar"><p id="status" role="status" aria-live="polite">Connexion sécurisée à l’espace organisateur…</p><button id="reload" class="text-button">Actualiser</button></footer>
+  </main>
+  <div id="team-popover" class="team-popover" role="dialog" aria-labelledby="team-title" hidden><button id="team-close" class="popover-close" aria-label="Fermer la composition">×</button><span class="eyebrow">COMPOSITION</span><h2 id="team-title"></h2><p id="team-record"></p><ul id="team-players"></ul><div id="team-exceptions"></div></div>
+  <dialog id="review-dialog" aria-labelledby="review-title">
+    <div class="dialog-heading"><div><span class="eyebrow">AVANT LE PREMIER SCORE</span><h2 id="review-title">Vérifier les équipes</h2></div><button data-close aria-label="Fermer">×</button></div>
+    <p id="review-description"></p><p id="source-status" class="notice"></p><div id="review-teams" class="review-teams"></div>
+    <form id="review-form" class="dialog-actions"><label class="check"><input id="accept" type="checkbox"> Je confirme ces compositions et j’accepte les dérogations indiquées.</label><button id="validate" class="primary" disabled>VALIDER les équipes</button></form>
+  </dialog>
+  <dialog id="settings-dialog" class="narrow-dialog" aria-labelledby="settings-title">
+    <div class="dialog-heading"><h2 id="settings-title">Organisation de la matinée</h2><button data-close aria-label="Fermer">×</button></div>
+    <p>Les horaires restent prévisionnels. Les scores et compositions sont conservés.</p>
+    <form id="settings" class="settings">
+      <label>Premier match<input name="start" type="time" required></label><label>Jeu (minutes)<input name="minutes" type="number" min="5" max="30" required></label>
+      <label>Pause entre créneaux (min)<input name="transition" type="number" min="1" max="15" required></label><label>Terrains<select name="fields"><option value="1">1 terrain</option><option value="2">2 terrains</option><option value="3">3 terrains</option></select></label>
+      <label>Pause avant classement (min)<input name="break" type="number" min="5" max="30" required></label>
+      <div class="settings-actions"><button id="three-fields" type="button">Préremplir 3 terrains · 9 h 15–12 h 40</button><button class="primary" type="submit">Enregistrer les horaires</button></div>
+    </form>
+  </dialog>
+  <dialog id="names-dialog" class="narrow-dialog" aria-labelledby="names-title">
+    <div class="dialog-heading"><h2 id="names-title">Noms et capitaines</h2><button data-close aria-label="Fermer">×</button></div>
+    <p>Choisis un capitaine parmi les joueurs de chaque équipe. <strong>Les deux capitaines adverses viennent ensemble communiquer le score à la table de marque.</strong> La couronne ♛ identifie leur rôle ; elle ne signifie pas qu’un score a déjà été confirmé.</p>
+    <p>Les noms restent personnalisables (32 caractères maximum). Les joueurs et les scores sont conservés.</p>
+    <form id="names" class="settings"><div id="name-fields" class="name-fields"></div><button class="primary" type="submit">Enregistrer les noms et capitaines</button></form>
+  </dialog>
+  <dialog id="ties-dialog" class="narrow-dialog" aria-labelledby="ties-title">
+    <div class="dialog-heading"><h2 id="ties-title">Départager les égalités</h2><button data-close aria-label="Fermer">×</button></div>
+    <p>Les quinze rencontres sont terminées. Certaines équipes ont les mêmes points, la même différence et le même total marqué. Effectue un tirage au sort entre elles.</p>
+    <p id="ties-team-numbers"></p><form id="ties"><label>Numéros des six équipes, dans l’ordre souhaité<input name="order" type="text" required placeholder="2,1,3,4,5,6"></label><p>Chaque numéro doit apparaître une fois. Cet ordre ne départage que les égalités parfaites.</p><button class="primary">Enregistrer le départage</button></form>
+  </dialog>
+  <dialog id="rules-dialog" class="narrow-dialog" aria-labelledby="rules-title">
+    <div class="dialog-heading"><h2 id="rules-title">Repères pour la table de marque</h2><button data-close aria-label="Fermer">×</button></div>
+    <h3>Six matchs par équipe</h3><p>Chacune rencontre les cinq autres. Puis : 5e–6e, 3e–4e et finale 1er–2e. Les matchs de classement précèdent la finale pour que tout le monde puisse la regarder.</p>
+    <h3>Scores et classement</h3><p>Victoire : 3 points · nul : 1 · défaite : 0. Départage par différence de points, puis points marqués. Une égalité parfaite se résout par tirage au sort renseigné dans le tableau de bord. Un match de classement doit avoir un vainqueur après départage sur le terrain.</p><p>Un champ vide n’est pas un zéro. Clique sur Enregistrer pour confirmer un score. Pour corriger le championnat après le début des matchs de classement, efface d’abord les scores des trois matchs de classement.</p>
+    <h3>Compositions</h3><p>Le tournoi reprend le tirage sauvegardé. Les équipes validées sont conservées séparément. Avant le premier score, un nouveau tirage peut les remplacer après vérification. Les dérogations portent sur trois représentants différents : femme, moins de 18 ans, hors Bears.</p>
+    <h3>Trois terrains : vérifier l’espace</h3><p>Pour trois terrains standards côte à côte : environ 85,2 × 69,6 m dégagements compris, hors zones d’équipe et public. Garder 5,5 m libres entre les aires de jeu et 2,75 m autour. Mesurer sur place avant de retenir cette implantation. <a href="https://americanfootball.sport/wp-content/uploads/2023/05/FlagRules2023.pdf" target="_blank" rel="noopener">Dimensions IFAF, page 8</a>.</p><p>Prévoir un arbitre par terrain, ballons, chasubles et chronomètres. Faire tourner les remplaçants. Accueil à 9 h, repas à 13 h.</p>
+  </dialog>
+  <section id="print-sheet" aria-label="Planning imprimable"></section>
+</body></html>

@@ -1,0 +1,616 @@
+. 2026-10-21 21:01:59.651 --------------------------------------------------------------------------
+. 2026-10-21 21:01:59.656 WinSCP Version 6.5.6 (Compilation 16502 2026-03-25) (OS 10.0.26300 – Windows 11 Professionnel)
+. 2026-10-21 21:01:59.656 Configuration: HKCU\Software\Martin Prikryl\WinSCP 2\
+. 2026-10-21 21:01:59.656 Log level: Normal
+. 2026-10-21 21:01:59.656 Local account: DESKTOP-LUYTEN\mathi
+. 2026-10-21 21:01:59.656 Working directory: C:\www\andenne-bears.be
+. 2026-10-21 21:01:59.656 Process ID: 64536
+. 2026-10-21 21:01:59.794 Ancestor processes: WinSCP, pwsh, codex, ...
+. 2026-10-21 21:01:59.795 Command-line: "C:\Program Files (x86)\WinSCP\WinSCP.exe" /console=6.5.6 /consoleinstance=_56460_137 "/script=tmp\tournament-release-20261021\publish.txt" "/log=tmp\tournament-release-20261021\publish.log" 
+. 2026-10-21 21:01:59.796 Time zone: Current: GMT+2, Standard: GMT+1 (Paris, Madrid), DST: GMT+2 (Paris, Madrid (heure d’été)), DST Start: 29-03-26, DST End: 25-10-26
+. 2026-10-21 21:01:59.796 Login time: mercredi 21 octobre 2026 21:01:59
+. 2026-10-21 21:01:59.796 --------------------------------------------------------------------------
+. 2026-10-21 21:01:59.796 Script: Retrospectively logging previous script records:
+> 2026-10-21 21:01:59.796 Script: option batch abort
+< 2026-10-21 21:01:59.796 Script: batch           abort     
+> 2026-10-21 21:01:59.796 Script: option confirm off
+< 2026-10-21 21:01:59.796 Script: confirm         off       
+> 2026-10-21 21:01:59.796 Script: open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+< 2026-10-21 21:01:59.796 Script: Dans les scripts, vous ne devriez pas compter sur des sites enregistrés, utilisez cette commande:
+< 2026-10-21 21:01:59.796 Script: open sftp://andennebh:***@ftp.cluster115.hosting.ovh.net/ -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 Utf=1 ProxyPort=0
+. 2026-10-21 21:01:59.796 --------------------------------------------------------------------------
+. 2026-10-21 21:01:59.796 Session name: andenne-bears.be (Modified site)
+. 2026-10-21 21:01:59.796 Host name: ftp.cluster115.hosting.ovh.net (Port: 22)
+. 2026-10-21 21:01:59.796 User name: andennebh (Password: Yes, Key file: No, Passphrase: No)
+. 2026-10-21 21:01:59.796 Tunnel: No
+. 2026-10-21 21:01:59.796 Transfer Protocol: SFTP
+. 2026-10-21 21:01:59.796 Ping type: Off, Ping interval: 30 sec; Timeout: 15 sec
+. 2026-10-21 21:01:59.796 Disable Nagle: No
+. 2026-10-21 21:01:59.796 Proxy: None
+. 2026-10-21 21:01:59.796 Send buffer: 262144
+. 2026-10-21 21:01:59.796 Compression: No
+. 2026-10-21 21:01:59.796 Bypass authentication: No
+. 2026-10-21 21:01:59.796 Try agent: Yes; Agent forwarding: No; KI: Yes; GSSAPI: Yes
+. 2026-10-21 21:01:59.796 GSSAPI: KEX: No; Forwarding: No; Libs: gssapi32,sspi,custom; Custom: 
+. 2026-10-21 21:01:59.796 Ciphers: aes,chacha20,aesgcm,3des,WARN,des,blowfish,arcfour; Ssh2DES: No
+. 2026-10-21 21:01:59.796 KEX: ntru-curve25519,mlkem-curve25519,mlkem-nist,ecdh,dh-gex-sha1,dh-group18-sha512,dh-group17-sha512,dh-group16-sha512,dh-group15-sha512,dh-group14-sha1,rsa,WARN,dh-group1-sha1
+. 2026-10-21 21:01:59.796 SSH Bugs: Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto
+. 2026-10-21 21:01:59.796 Simple channel: Yes
+. 2026-10-21 21:01:59.796 Return code variable: Autodetect; Lookup user groups: Auto
+. 2026-10-21 21:01:59.796 Shell: default
+. 2026-10-21 21:01:59.796 EOL: LF, UTF: On
+. 2026-10-21 21:01:59.796 Clear aliases: Yes, Unset nat.vars: Yes, Resolve symlinks: Yes; Follow directory symlinks: No
+. 2026-10-21 21:01:59.797 LS: ls -la, Ign LS warn: Yes, Scp1 Comp: No; Exit code 1 is error: No
+. 2026-10-21 21:01:59.797 SFTP Bugs: Auto,Auto
+. 2026-10-21 21:01:59.797 SFTP Server: default
+. 2026-10-21 21:01:59.797 Local directory: C:\www\andenne-bears.be\config, Remote directory: /home/andennebh/www, Update: Yes, Cache: Yes
+. 2026-10-21 21:01:59.797 Cache directory changes: Yes, Permanent: Yes
+. 2026-10-21 21:01:59.797 Recycle bin: Delete to: No, Overwritten to: No, Bin path: 
+. 2026-10-21 21:01:59.797 DST mode: Unix
+. 2026-10-21 21:01:59.797 --------------------------------------------------------------------------
+< 2026-10-21 21:01:59.797 Script: Recherche de l'hôte...
+. 2026-10-21 21:01:59.798 Looking up host "ftp.cluster115.hosting.ovh.net" for SSH connection
+. 2026-10-21 21:01:59.839 Connecting to 5.135.41.164 port 22
+. 2026-10-21 21:01:59.865 Connected to 5.135.41.164 (from 192.168.0.19:54818)
+< 2026-10-21 21:01:59.866 Script: Connexion à l'hôte...
+. 2026-10-21 21:01:59.866 We claim version: SSH-2.0-WinSCP_release_6.5.6
+. 2026-10-21 21:01:59.866 Connected to 5.135.41.164 (from 192.168.0.19:54818)
+. 2026-10-21 21:01:59.883 Remote version: SSH-2.0-OpenSSH_9.2p1
+. 2026-10-21 21:01:59.883 Using SSH protocol version 2
+. 2026-10-21 21:01:59.884 Have a known host key of type ssh-ed25519
+. 2026-10-21 21:01:59.906 Enabling strict key exchange semantics
+. 2026-10-21 21:01:59.908 Doing NTRU Prime / Curve25519 hybrid key exchange, using hash SHA-512 (unaccelerated)
+. 2026-10-21 21:02:00.114 Server also has rsa-sha2-512/rsa-sha2-256/ssh-rsa host keys, but we don't know any of them
+. 2026-10-21 21:02:00.115 Host key fingerprint is:
+. 2026-10-21 21:02:00.115 ssh-ed25519 255 SHA256:j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0
+< 2026-10-21 21:02:00.115 Script: Authentification...
+. 2026-10-21 21:02:00.116 Host key matches configured key fingerprint
+. 2026-10-21 21:02:00.116 Initialised AES-256 SDCTR (AES-NI accelerated) [aes256-ctr] outbound encryption
+. 2026-10-21 21:02:00.116 Initialised HMAC-SHA-256 outbound MAC algorithm
+. 2026-10-21 21:02:00.116 Initialised AES-256 SDCTR (AES-NI accelerated) [aes256-ctr] inbound encryption
+. 2026-10-21 21:02:00.116 Initialised HMAC-SHA-256 inbound MAC algorithm
+! 2026-10-21 21:02:00.138 Using username "andennebh".
+< 2026-10-21 21:02:00.139 Script: Utilisation du nom d'utilisateur "andennebh".
+. 2026-10-21 21:02:00.161 Server offered these authentication methods: publickey,password
+. 2026-10-21 21:02:00.161 Prompt (password, "SSH password", <no instructions>, "Mot de passe :")
+. 2026-10-21 21:02:00.161 Using stored password.
+< 2026-10-21 21:02:00.161 Script: Authentification avec le mot de passe préentré.
+. 2026-10-21 21:02:00.161 Sent password
+. 2026-10-21 21:02:00.204 Access granted
+. 2026-10-21 21:02:00.204 Opening main session channel
+. 2026-10-21 21:02:00.311 Opened main channel
+. 2026-10-21 21:02:00.334 Started a shell/command
+< 2026-10-21 21:02:00.334 Script: Authentifié.
+. 2026-10-21 21:02:00.334 --------------------------------------------------------------------------
+. 2026-10-21 21:02:00.334 Using SFTP protocol.
+. 2026-10-21 21:02:00.334 Doing startup conversation with host.
+< 2026-10-21 21:02:00.334 Script: Démarrage de la session...
+. 2026-10-21 21:02:00.334 Well known server, allowing SFTP version 6.
+> 2026-10-21 21:02:00.335 Type: SSH_FXP_INIT, Size: 5, Number: -1
+< 2026-10-21 21:02:00.350 Type: SSH_FXP_VERSION, Size: 150, Number: -1
+. 2026-10-21 21:02:00.351 SFTP version 3 negotiated.
+. 2026-10-21 21:02:00.351 Supports extension posix-rename@openssh.com="1"
+. 2026-10-21 21:02:00.351 Supports statvfs@openssh.com extension version 2
+. 2026-10-21 21:02:00.351 Unknown server extension fstatvfs@openssh.com="2"
+. 2026-10-21 21:02:00.351 Supports hardlink@openssh.com extension version 1
+. 2026-10-21 21:02:00.351 Unknown server extension fsync@openssh.com="1"
+. 2026-10-21 21:02:00.351 We believe the server has signed timestamps bug
+. 2026-10-21 21:02:00.351 We will use UTF-8 strings as configured
+. 2026-10-21 21:02:00.351 Limiting packet size to OpenSSH sftp-server limit of 262148 bytes
+. 2026-10-21 21:02:00.351 Changing directory to "/home/andennebh/www".
+. 2026-10-21 21:02:00.351 Getting real path for '/home/andennebh/www'
+> 2026-10-21 21:02:00.351 Type: SSH_FXP_REALPATH, Size: 28, Number: 16
+< 2026-10-21 21:02:00.370 Type: SSH_FXP_NAME, Size: 59, Number: 16
+. 2026-10-21 21:02:00.371 Real path is '/home/andennebh/www'
+. 2026-10-21 21:02:00.371 Trying to open directory "/home/andennebh/www".
+> 2026-10-21 21:02:00.371 Type: SSH_FXP_LSTAT, Size: 28, Number: 263
+< 2026-10-21 21:02:00.399 Type: SSH_FXP_ATTRS, Size: 37, Number: 263
+. 2026-10-21 21:02:00.399 Getting current directory name.
+. 2026-10-21 21:02:00.399 Startup conversation with host finished.
+< 2026-10-21 21:02:00.399 Script: Session démarrée.
+< 2026-10-21 21:02:00.400 Script: Session active : [1] andenne-bears.be
+> 2026-10-21 21:02:00.400 Script: put C:\www\andenne-bears.be\tournoi-domain.php /home/andennebh/www/tournoi-domain.php
+. 2026-10-21 21:02:00.401 Copying 1 files/directories to remote directory "/home/andennebh/www/" - total size: 1.998
+. 2026-10-21 21:02:00.401   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi-domain.php
+. 2026-10-21 21:02:00.401   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.401   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.401 File: 'C:\www\andenne-bears.be\tournoi-domain.php' [2026-10-21T18:56:44.041Z] [1998]
+. 2026-10-21 21:02:00.402 Copying "C:\www\andenne-bears.be\tournoi-domain.php" to remote directory started.
+. 2026-10-21 21:02:00.402 Binary transfer mode selected.
+. 2026-10-21 21:02:00.402 Opening remote file.
+> 2026-10-21 21:02:00.402 Type: SSH_FXP_OPEN, Size: 63, Number: 515
+< 2026-10-21 21:02:00.417 Type: SSH_FXP_HANDLE, Size: 13, Number: 515
+> 2026-10-21 21:02:00.417 Type: SSH_FXP_WRITE, Size: 2023, Number: 1030
+> 2026-10-21 21:02:00.417 Type: SSH_FXP_CLOSE, Size: 13, Number: 1284
+> 2026-10-21 21:02:00.417 Type: SSH_FXP_SETSTAT, Size: 59, Number: 777
+< 2026-10-21 21:02:00.439 Type: SSH_FXP_STATUS, Size: 24, Number: 1030
+< 2026-10-21 21:02:00.439 Status code: 0
+< 2026-10-21 21:02:00.441 Type: SSH_FXP_STATUS, Size: 24, Number: 1284
+< 2026-10-21 21:02:00.441 Status code: 0
+. 2026-10-21 21:02:00.441 Preserving timestamp [2026-10-21T18:56:44.000Z]
+< 2026-10-21 21:02:00.458 Type: SSH_FXP_STATUS, Size: 24, Number: 777
+< 2026-10-21 21:02:00.458 Status code: 0
+. 2026-10-21 21:02:00.458 Transfer done: 'C:\www\andenne-bears.be\tournoi-domain.php' => '/home/andennebh/www/tournoi-domain.php' [1998]
+. 2026-10-21 21:02:00.458 Copying finished: Transferred: 1.998, Elapsed: 0:00:00, CPS: 35.052/s
+> 2026-10-21 21:02:00.460 Script: put C:\www\andenne-bears.be\tournoi-seed.php /home/andennebh/www/tournoi-seed.php
+. 2026-10-21 21:02:00.460 Copying 1 files/directories to remote directory "/home/andennebh/www/" - total size: 2.432
+. 2026-10-21 21:02:00.460   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi-seed.php
+. 2026-10-21 21:02:00.460   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.460   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.461 File: 'C:\www\andenne-bears.be\tournoi-seed.php' [2026-10-21T19:00:20.021Z] [2432]
+. 2026-10-21 21:02:00.461 Copying "C:\www\andenne-bears.be\tournoi-seed.php" to remote directory started.
+. 2026-10-21 21:02:00.461 Binary transfer mode selected.
+. 2026-10-21 21:02:00.461 Opening remote file.
+> 2026-10-21 21:02:00.461 Type: SSH_FXP_OPEN, Size: 61, Number: 1539
+< 2026-10-21 21:02:00.485 Type: SSH_FXP_HANDLE, Size: 13, Number: 1539
+> 2026-10-21 21:02:00.486 Type: SSH_FXP_WRITE, Size: 2457, Number: 2054
+> 2026-10-21 21:02:00.486 Type: SSH_FXP_CLOSE, Size: 13, Number: 2308
+> 2026-10-21 21:02:00.486 Type: SSH_FXP_SETSTAT, Size: 57, Number: 1801
+< 2026-10-21 21:02:00.506 Type: SSH_FXP_STATUS, Size: 24, Number: 2054
+< 2026-10-21 21:02:00.506 Status code: 0
+< 2026-10-21 21:02:00.507 Type: SSH_FXP_STATUS, Size: 24, Number: 2308
+< 2026-10-21 21:02:00.507 Status code: 0
+. 2026-10-21 21:02:00.507 Preserving timestamp [2026-10-21T19:00:20.000Z]
+< 2026-10-21 21:02:00.527 Type: SSH_FXP_STATUS, Size: 24, Number: 1801
+< 2026-10-21 21:02:00.527 Status code: 0
+. 2026-10-21 21:02:00.527 Transfer done: 'C:\www\andenne-bears.be\tournoi-seed.php' => '/home/andennebh/www/tournoi-seed.php' [2432]
+. 2026-10-21 21:02:00.527 Copying finished: Transferred: 2.432, Elapsed: 0:00:00, CPS: 36.298/s
+> 2026-10-21 21:02:00.528 Script: put C:\www\andenne-bears.be\tournoi-api.php /home/andennebh/www/tournoi-api.php
+. 2026-10-21 21:02:00.528 Copying 1 files/directories to remote directory "/home/andennebh/www/" - total size: 6.369
+. 2026-10-21 21:02:00.528   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi-api.php
+. 2026-10-21 21:02:00.528   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.528   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.529 File: 'C:\www\andenne-bears.be\tournoi-api.php' [2026-10-21T18:56:46.434Z] [6369]
+. 2026-10-21 21:02:00.529 Copying "C:\www\andenne-bears.be\tournoi-api.php" to remote directory started.
+. 2026-10-21 21:02:00.529 Binary transfer mode selected.
+. 2026-10-21 21:02:00.529 Opening remote file.
+> 2026-10-21 21:02:00.529 Type: SSH_FXP_OPEN, Size: 60, Number: 2563
+< 2026-10-21 21:02:00.550 Type: SSH_FXP_HANDLE, Size: 13, Number: 2563
+> 2026-10-21 21:02:00.550 Type: SSH_FXP_WRITE, Size: 6394, Number: 3078
+> 2026-10-21 21:02:00.550 Type: SSH_FXP_CLOSE, Size: 13, Number: 3332
+> 2026-10-21 21:02:00.550 Type: SSH_FXP_SETSTAT, Size: 56, Number: 2825
+< 2026-10-21 21:02:00.575 Type: SSH_FXP_STATUS, Size: 24, Number: 3078
+< 2026-10-21 21:02:00.575 Status code: 0
+< 2026-10-21 21:02:00.588 Type: SSH_FXP_STATUS, Size: 24, Number: 3332
+< 2026-10-21 21:02:00.588 Status code: 0
+. 2026-10-21 21:02:00.588 Preserving timestamp [2026-10-21T18:56:46.000Z]
+< 2026-10-21 21:02:00.590 Type: SSH_FXP_STATUS, Size: 24, Number: 2825
+< 2026-10-21 21:02:00.590 Status code: 0
+. 2026-10-21 21:02:00.590 Transfer done: 'C:\www\andenne-bears.be\tournoi-api.php' => '/home/andennebh/www/tournoi-api.php' [6369]
+. 2026-10-21 21:02:00.590 Copying finished: Transferred: 6.369, Elapsed: 0:00:00, CPS: 102.725/s
+> 2026-10-21 21:02:00.591 Script: put C:\www\andenne-bears.be\tournoi.css /home/andennebh/www/tournoi.css
+. 2026-10-21 21:02:00.592 Copying 1 files/directories to remote directory "/home/andennebh/www/" - total size: 2.100
+. 2026-10-21 21:02:00.592   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.css
+. 2026-10-21 21:02:00.592   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.592   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.592 File: 'C:\www\andenne-bears.be\tournoi.css' [2026-10-21T18:58:20.388Z] [2100]
+. 2026-10-21 21:02:00.592 Copying "C:\www\andenne-bears.be\tournoi.css" to remote directory started.
+. 2026-10-21 21:02:00.592 Binary transfer mode selected.
+. 2026-10-21 21:02:00.592 Opening remote file.
+> 2026-10-21 21:02:00.592 Type: SSH_FXP_OPEN, Size: 56, Number: 3587
+< 2026-10-21 21:02:00.610 Type: SSH_FXP_HANDLE, Size: 13, Number: 3587
+> 2026-10-21 21:02:00.610 Type: SSH_FXP_WRITE, Size: 2125, Number: 4102
+> 2026-10-21 21:02:00.610 Type: SSH_FXP_CLOSE, Size: 13, Number: 4356
+> 2026-10-21 21:02:00.610 Type: SSH_FXP_SETSTAT, Size: 52, Number: 3849
+< 2026-10-21 21:02:00.628 Type: SSH_FXP_STATUS, Size: 24, Number: 4102
+< 2026-10-21 21:02:00.628 Status code: 0
+< 2026-10-21 21:02:00.628 Type: SSH_FXP_STATUS, Size: 24, Number: 4356
+< 2026-10-21 21:02:00.628 Status code: 0
+. 2026-10-21 21:02:00.628 Preserving timestamp [2026-10-21T18:58:20.000Z]
+< 2026-10-21 21:02:00.645 Type: SSH_FXP_STATUS, Size: 24, Number: 3849
+< 2026-10-21 21:02:00.645 Status code: 0
+. 2026-10-21 21:02:00.645 Transfer done: 'C:\www\andenne-bears.be\tournoi.css' => '/home/andennebh/www/tournoi.css' [2100]
+. 2026-10-21 21:02:00.645 Copying finished: Transferred: 2.100, Elapsed: 0:00:00, CPS: 39.622/s
+> 2026-10-21 21:02:00.645 Script: put C:\www\andenne-bears.be\scripts\tournoi-schedule.js /home/andennebh/www/scripts/tournoi-schedule.js
+. 2026-10-21 21:02:00.646 Copying 1 files/directories to remote directory "/home/andennebh/www/scripts/" - total size: 916
+. 2026-10-21 21:02:00.646   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi-schedule.js
+. 2026-10-21 21:02:00.646   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.646   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.646 File: 'C:\www\andenne-bears.be\scripts\tournoi-schedule.js' [2026-10-21T19:01:37.866Z] [916]
+. 2026-10-21 21:02:00.647 Copying "C:\www\andenne-bears.be\scripts\tournoi-schedule.js" to remote directory started.
+. 2026-10-21 21:02:00.647 Binary transfer mode selected.
+. 2026-10-21 21:02:00.647 Opening remote file.
+> 2026-10-21 21:02:00.647 Type: SSH_FXP_OPEN, Size: 72, Number: 4611
+< 2026-10-21 21:02:00.664 Type: SSH_FXP_HANDLE, Size: 13, Number: 4611
+> 2026-10-21 21:02:00.665 Type: SSH_FXP_WRITE, Size: 941, Number: 5126
+> 2026-10-21 21:02:00.665 Type: SSH_FXP_CLOSE, Size: 13, Number: 5380
+> 2026-10-21 21:02:00.665 Type: SSH_FXP_SETSTAT, Size: 68, Number: 4873
+< 2026-10-21 21:02:00.685 Type: SSH_FXP_STATUS, Size: 24, Number: 5126
+< 2026-10-21 21:02:00.685 Status code: 0
+< 2026-10-21 21:02:00.687 Type: SSH_FXP_STATUS, Size: 24, Number: 5380
+< 2026-10-21 21:02:00.687 Status code: 0
+. 2026-10-21 21:02:00.687 Preserving timestamp [2026-10-21T19:01:37.000Z]
+< 2026-10-21 21:02:00.704 Type: SSH_FXP_STATUS, Size: 24, Number: 4873
+< 2026-10-21 21:02:00.704 Status code: 0
+. 2026-10-21 21:02:00.704 Transfer done: 'C:\www\andenne-bears.be\scripts\tournoi-schedule.js' => '/home/andennebh/www/scripts/tournoi-schedule.js' [916]
+. 2026-10-21 21:02:00.704 Copying finished: Transferred: 916, Elapsed: 0:00:00, CPS: 15.793/s
+> 2026-10-21 21:02:00.706 Script: put C:\www\andenne-bears.be\scripts\tournoi.js /home/andennebh/www/scripts/tournoi.js
+. 2026-10-21 21:02:00.706 Copying 1 files/directories to remote directory "/home/andennebh/www/scripts/" - total size: 7.828
+. 2026-10-21 21:02:00.706   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.js
+. 2026-10-21 21:02:00.706   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.706   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.707 File: 'C:\www\andenne-bears.be\scripts\tournoi.js' [2026-10-21T19:01:37.867Z] [7828]
+. 2026-10-21 21:02:00.707 Copying "C:\www\andenne-bears.be\scripts\tournoi.js" to remote directory started.
+. 2026-10-21 21:02:00.707 Binary transfer mode selected.
+. 2026-10-21 21:02:00.707 Opening remote file.
+> 2026-10-21 21:02:00.707 Type: SSH_FXP_OPEN, Size: 63, Number: 5635
+< 2026-10-21 21:02:00.726 Type: SSH_FXP_HANDLE, Size: 13, Number: 5635
+> 2026-10-21 21:02:00.726 Type: SSH_FXP_WRITE, Size: 7853, Number: 6150
+> 2026-10-21 21:02:00.726 Type: SSH_FXP_CLOSE, Size: 13, Number: 6404
+> 2026-10-21 21:02:00.727 Type: SSH_FXP_SETSTAT, Size: 59, Number: 5897
+< 2026-10-21 21:02:00.751 Type: SSH_FXP_STATUS, Size: 24, Number: 6150
+< 2026-10-21 21:02:00.751 Status code: 0
+< 2026-10-21 21:02:00.752 Type: SSH_FXP_STATUS, Size: 24, Number: 6404
+< 2026-10-21 21:02:00.752 Status code: 0
+. 2026-10-21 21:02:00.752 Preserving timestamp [2026-10-21T19:01:37.000Z]
+< 2026-10-21 21:02:00.778 Type: SSH_FXP_STATUS, Size: 24, Number: 5897
+< 2026-10-21 21:02:00.778 Status code: 0
+. 2026-10-21 21:02:00.778 Transfer done: 'C:\www\andenne-bears.be\scripts\tournoi.js' => '/home/andennebh/www/scripts/tournoi.js' [7828]
+. 2026-10-21 21:02:00.778 Copying finished: Transferred: 7.828, Elapsed: 0:00:00, CPS: 108.722/s
+> 2026-10-21 21:02:00.778 Script: put C:\www\andenne-bears.be\tournoi.html /home/andennebh/www/tournoi.html
+. 2026-10-21 21:02:00.780 Copying 1 files/directories to remote directory "/home/andennebh/www/" - total size: 5.096
+. 2026-10-21 21:02:00.780   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.html
+. 2026-10-21 21:02:00.780   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.780   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.780 File: 'C:\www\andenne-bears.be\tournoi.html' [2026-10-21T18:58:18.391Z] [5096]
+. 2026-10-21 21:02:00.781 Copying "C:\www\andenne-bears.be\tournoi.html" to remote directory started.
+. 2026-10-21 21:02:00.781 Binary transfer mode selected.
+. 2026-10-21 21:02:00.781 Opening remote file.
+> 2026-10-21 21:02:00.781 Type: SSH_FXP_OPEN, Size: 57, Number: 6659
+< 2026-10-21 21:02:00.802 Type: SSH_FXP_HANDLE, Size: 13, Number: 6659
+> 2026-10-21 21:02:00.802 Type: SSH_FXP_WRITE, Size: 5121, Number: 7174
+> 2026-10-21 21:02:00.802 Type: SSH_FXP_CLOSE, Size: 13, Number: 7428
+> 2026-10-21 21:02:00.802 Type: SSH_FXP_SETSTAT, Size: 53, Number: 6921
+< 2026-10-21 21:02:00.826 Type: SSH_FXP_STATUS, Size: 24, Number: 7174
+< 2026-10-21 21:02:00.826 Status code: 0
+< 2026-10-21 21:02:00.827 Type: SSH_FXP_STATUS, Size: 24, Number: 7428
+< 2026-10-21 21:02:00.827 Status code: 0
+. 2026-10-21 21:02:00.827 Preserving timestamp [2026-10-21T18:58:18.000Z]
+< 2026-10-21 21:02:00.845 Type: SSH_FXP_STATUS, Size: 24, Number: 6921
+< 2026-10-21 21:02:00.845 Status code: 0
+. 2026-10-21 21:02:00.845 Transfer done: 'C:\www\andenne-bears.be\tournoi.html' => '/home/andennebh/www/tournoi.html' [5096]
+. 2026-10-21 21:02:00.845 Copying finished: Transferred: 5.096, Elapsed: 0:00:00, CPS: 78.400/s
+> 2026-10-21 21:02:00.845 Script: put C:\www\andenne-bears.be\private-backup.php /home/andennebh/www/private-backup.php
+. 2026-10-21 21:02:00.846 Copying 1 files/directories to remote directory "/home/andennebh/www/" - total size: 7.763
+. 2026-10-21 21:02:00.846   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: private-backup.php
+. 2026-10-21 21:02:00.846   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.846   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.846 File: 'C:\www\andenne-bears.be\private-backup.php' [2026-10-21T18:58:38.797Z] [7763]
+. 2026-10-21 21:02:00.846 Copying "C:\www\andenne-bears.be\private-backup.php" to remote directory started.
+. 2026-10-21 21:02:00.846 Binary transfer mode selected.
+. 2026-10-21 21:02:00.846 Opening remote file.
+> 2026-10-21 21:02:00.846 Type: SSH_FXP_OPEN, Size: 63, Number: 7683
+< 2026-10-21 21:02:00.878 Type: SSH_FXP_HANDLE, Size: 13, Number: 7683
+> 2026-10-21 21:02:00.878 Type: SSH_FXP_WRITE, Size: 7788, Number: 8198
+> 2026-10-21 21:02:00.878 Type: SSH_FXP_CLOSE, Size: 13, Number: 8452
+> 2026-10-21 21:02:00.878 Type: SSH_FXP_SETSTAT, Size: 59, Number: 7945
+< 2026-10-21 21:02:00.904 Type: SSH_FXP_STATUS, Size: 24, Number: 8198
+< 2026-10-21 21:02:00.904 Status code: 0
+< 2026-10-21 21:02:00.904 Type: SSH_FXP_STATUS, Size: 24, Number: 8452
+< 2026-10-21 21:02:00.904 Status code: 0
+. 2026-10-21 21:02:00.904 Preserving timestamp [2026-10-21T18:58:38.000Z]
+< 2026-10-21 21:02:00.910 Type: SSH_FXP_STATUS, Size: 24, Number: 7945
+< 2026-10-21 21:02:00.910 Status code: 0
+. 2026-10-21 21:02:00.911 Transfer done: 'C:\www\andenne-bears.be\private-backup.php' => '/home/andennebh/www/private-backup.php' [7763]
+. 2026-10-21 21:02:00.911 Copying finished: Transferred: 7.763, Elapsed: 0:00:00, CPS: 119.430/s
+> 2026-10-21 21:02:00.911 Script: put C:\www\andenne-bears.be\tirage-equipes.html /home/andennebh/www/tirage-equipes.html
+. 2026-10-21 21:02:00.911 Copying 1 files/directories to remote directory "/home/andennebh/www/" - total size: 8.150
+. 2026-10-21 21:02:00.911   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tirage-equipes.html
+. 2026-10-21 21:02:00.912   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.912   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.912 File: 'C:\www\andenne-bears.be\tirage-equipes.html' [2026-10-21T19:00:20.022Z] [8150]
+. 2026-10-21 21:02:00.912 Copying "C:\www\andenne-bears.be\tirage-equipes.html" to remote directory started.
+. 2026-10-21 21:02:00.912 Binary transfer mode selected.
+. 2026-10-21 21:02:00.912 Opening remote file.
+> 2026-10-21 21:02:00.912 Type: SSH_FXP_OPEN, Size: 64, Number: 8707
+< 2026-10-21 21:02:00.934 Type: SSH_FXP_HANDLE, Size: 13, Number: 8707
+> 2026-10-21 21:02:00.934 Type: SSH_FXP_WRITE, Size: 8175, Number: 9222
+> 2026-10-21 21:02:00.935 Type: SSH_FXP_CLOSE, Size: 13, Number: 9476
+> 2026-10-21 21:02:00.935 Type: SSH_FXP_SETSTAT, Size: 60, Number: 8969
+< 2026-10-21 21:02:00.958 Type: SSH_FXP_STATUS, Size: 24, Number: 9222
+< 2026-10-21 21:02:00.958 Status code: 0
+< 2026-10-21 21:02:00.958 Type: SSH_FXP_STATUS, Size: 24, Number: 9476
+< 2026-10-21 21:02:00.958 Status code: 0
+. 2026-10-21 21:02:00.958 Preserving timestamp [2026-10-21T19:00:20.000Z]
+< 2026-10-21 21:02:00.979 Type: SSH_FXP_STATUS, Size: 24, Number: 8969
+< 2026-10-21 21:02:00.979 Status code: 0
+. 2026-10-21 21:02:00.979 Transfer done: 'C:\www\andenne-bears.be\tirage-equipes.html' => '/home/andennebh/www/tirage-equipes.html' [8150]
+. 2026-10-21 21:02:00.979 Copying finished: Transferred: 8.150, Elapsed: 0:00:00, CPS: 119.852/s
+> 2026-10-21 21:02:00.980 Script: put C:\www\andenne-bears.be\suivi-inscriptions.php /home/andennebh/www/suivi-inscriptions.php
+. 2026-10-21 21:02:00.981 Copying 1 files/directories to remote directory "/home/andennebh/www/" - total size: 29.353
+. 2026-10-21 21:02:00.981   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: suivi-inscriptions.php
+. 2026-10-21 21:02:00.981   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:00.981   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:00.981 File: 'C:\www\andenne-bears.be\suivi-inscriptions.php' [2026-10-21T18:59:56.257Z] [29353]
+. 2026-10-21 21:02:00.981 Copying "C:\www\andenne-bears.be\suivi-inscriptions.php" to remote directory started.
+. 2026-10-21 21:02:00.981 Binary transfer mode selected.
+. 2026-10-21 21:02:00.981 Opening remote file.
+> 2026-10-21 21:02:00.981 Type: SSH_FXP_OPEN, Size: 67, Number: 9731
+< 2026-10-21 21:02:01.002 Type: SSH_FXP_HANDLE, Size: 13, Number: 9731
+> 2026-10-21 21:02:01.002 Type: SSH_FXP_WRITE, Size: 29378, Number: 10246
+> 2026-10-21 21:02:01.002 Type: SSH_FXP_CLOSE, Size: 13, Number: 10500
+> 2026-10-21 21:02:01.002 Type: SSH_FXP_SETSTAT, Size: 63, Number: 9993
+< 2026-10-21 21:02:01.038 Type: SSH_FXP_STATUS, Size: 24, Number: 10246
+< 2026-10-21 21:02:01.039 Status code: 0
+< 2026-10-21 21:02:01.039 Type: SSH_FXP_STATUS, Size: 24, Number: 10500
+< 2026-10-21 21:02:01.039 Status code: 0
+. 2026-10-21 21:02:01.040 Preserving timestamp [2026-10-21T18:59:56.000Z]
+< 2026-10-21 21:02:01.046 Type: SSH_FXP_STATUS, Size: 24, Number: 9993
+< 2026-10-21 21:02:01.046 Status code: 0
+. 2026-10-21 21:02:01.046 Transfer done: 'C:\www\andenne-bears.be\suivi-inscriptions.php' => '/home/andennebh/www/suivi-inscriptions.php' [29353]
+. 2026-10-21 21:02:01.047 Copying finished: Transferred: 29.353, Elapsed: 0:00:00, CPS: 444.742/s
+> 2026-10-21 21:02:01.047 Script: get /home/andennebh/www/tournoi-domain.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-domain.php
+. 2026-10-21 21:02:01.047 Listing file "/home/andennebh/www/tournoi-domain.php".
+> 2026-10-21 21:02:01.047 Type: SSH_FXP_LSTAT, Size: 47, Number: 10759
+< 2026-10-21 21:02:01.063 Type: SSH_FXP_ATTRS, Size: 37, Number: 10759
+. 2026-10-21 21:02:01.063 tournoi-domain.php;-;1998;2026-10-21T18:56:44.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.063 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\" - total size: 1.998
+. 2026-10-21 21:02:01.063   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi-domain.php
+. 2026-10-21 21:02:01.063   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.063   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.063 File: '/home/andennebh/www/tournoi-domain.php' [2026-10-21T18:56:44.000Z] [1998]
+. 2026-10-21 21:02:01.063 Copying "/home/andennebh/www/tournoi-domain.php" to local directory started.
+. 2026-10-21 21:02:01.063 Binary transfer mode selected.
+. 2026-10-21 21:02:01.064 Opening remote file.
+> 2026-10-21 21:02:01.064 Type: SSH_FXP_OPEN, Size: 55, Number: 11011
+< 2026-10-21 21:02:01.080 Type: SSH_FXP_HANDLE, Size: 13, Number: 11011
+> 2026-10-21 21:02:01.080 Type: SSH_FXP_FSTAT, Size: 13, Number: 11272
+< 2026-10-21 21:02:01.095 Type: SSH_FXP_ATTRS, Size: 37, Number: 11272
+> 2026-10-21 21:02:01.096 Type: SSH_FXP_READ, Size: 25, Number: 11525
+< 2026-10-21 21:02:01.120 Type: SSH_FXP_DATA, Size: 2007, Number: 11525
+< 2026-10-21 21:02:01.141 Status code: 1
+. 2026-10-21 21:02:01.142 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:01.142 Type: SSH_FXP_CLOSE, Size: 13, Number: 12036
+. 2026-10-21 21:02:01.142 Preserving timestamp [2026-10-21T18:56:44.000Z]
+. 2026-10-21 21:02:01.142 Transfer done: '/home/andennebh/www/tournoi-domain.php' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-domain.php' [1998]
+. 2026-10-21 21:02:01.142 Copying finished: Transferred: 1.998, Elapsed: 0:00:00, CPS: 25.291/s
+> 2026-10-21 21:02:01.143 Script: get /home/andennebh/www/tournoi-seed.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-seed.php
+. 2026-10-21 21:02:01.144 Listing file "/home/andennebh/www/tournoi-seed.php".
+> 2026-10-21 21:02:01.144 Type: SSH_FXP_LSTAT, Size: 45, Number: 12295
+< 2026-10-21 21:02:01.160 Type: SSH_FXP_STATUS, Size: 24, Number: 12036
+. 2026-10-21 21:02:01.160 Discarding reserved response
+< 2026-10-21 21:02:01.174 Type: SSH_FXP_ATTRS, Size: 37, Number: 12295
+. 2026-10-21 21:02:01.174 tournoi-seed.php;-;2432;2026-10-21T19:00:20.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.174 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\" - total size: 2.432
+. 2026-10-21 21:02:01.174   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi-seed.php
+. 2026-10-21 21:02:01.174   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.174   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.174 File: '/home/andennebh/www/tournoi-seed.php' [2026-10-21T19:00:20.000Z] [2432]
+. 2026-10-21 21:02:01.175 Copying "/home/andennebh/www/tournoi-seed.php" to local directory started.
+. 2026-10-21 21:02:01.175 Binary transfer mode selected.
+. 2026-10-21 21:02:01.175 Opening remote file.
+> 2026-10-21 21:02:01.175 Type: SSH_FXP_OPEN, Size: 53, Number: 12547
+< 2026-10-21 21:02:01.191 Type: SSH_FXP_HANDLE, Size: 13, Number: 12547
+> 2026-10-21 21:02:01.191 Type: SSH_FXP_FSTAT, Size: 13, Number: 12808
+< 2026-10-21 21:02:01.208 Type: SSH_FXP_ATTRS, Size: 37, Number: 12808
+> 2026-10-21 21:02:01.209 Type: SSH_FXP_READ, Size: 25, Number: 13061
+< 2026-10-21 21:02:01.227 Type: SSH_FXP_DATA, Size: 2441, Number: 13061
+< 2026-10-21 21:02:01.248 Status code: 1
+. 2026-10-21 21:02:01.249 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:01.249 Type: SSH_FXP_CLOSE, Size: 13, Number: 13572
+. 2026-10-21 21:02:01.249 Preserving timestamp [2026-10-21T19:00:20.000Z]
+. 2026-10-21 21:02:01.249 Transfer done: '/home/andennebh/www/tournoi-seed.php' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-seed.php' [2432]
+. 2026-10-21 21:02:01.249 Copying finished: Transferred: 2.432, Elapsed: 0:00:00, CPS: 32.426/s
+> 2026-10-21 21:02:01.249 Script: get /home/andennebh/www/tournoi-api.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-api.php
+. 2026-10-21 21:02:01.250 Listing file "/home/andennebh/www/tournoi-api.php".
+> 2026-10-21 21:02:01.250 Type: SSH_FXP_LSTAT, Size: 44, Number: 13831
+< 2026-10-21 21:02:01.265 Type: SSH_FXP_STATUS, Size: 24, Number: 13572
+. 2026-10-21 21:02:01.265 Discarding reserved response
+< 2026-10-21 21:02:01.282 Type: SSH_FXP_ATTRS, Size: 37, Number: 13831
+. 2026-10-21 21:02:01.283 tournoi-api.php;-;6369;2026-10-21T18:56:46.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.283 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\" - total size: 6.369
+. 2026-10-21 21:02:01.283   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi-api.php
+. 2026-10-21 21:02:01.283   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.283   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.283 File: '/home/andennebh/www/tournoi-api.php' [2026-10-21T18:56:46.000Z] [6369]
+. 2026-10-21 21:02:01.283 Copying "/home/andennebh/www/tournoi-api.php" to local directory started.
+. 2026-10-21 21:02:01.283 Binary transfer mode selected.
+. 2026-10-21 21:02:01.284 Opening remote file.
+> 2026-10-21 21:02:01.284 Type: SSH_FXP_OPEN, Size: 52, Number: 14083
+< 2026-10-21 21:02:01.298 Type: SSH_FXP_HANDLE, Size: 13, Number: 14083
+> 2026-10-21 21:02:01.298 Type: SSH_FXP_FSTAT, Size: 13, Number: 14344
+< 2026-10-21 21:02:01.313 Type: SSH_FXP_ATTRS, Size: 37, Number: 14344
+> 2026-10-21 21:02:01.314 Type: SSH_FXP_READ, Size: 25, Number: 14597
+< 2026-10-21 21:02:01.332 Type: SSH_FXP_DATA, Size: 6378, Number: 14597
+< 2026-10-21 21:02:01.352 Status code: 1
+. 2026-10-21 21:02:01.353 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:01.353 Type: SSH_FXP_CLOSE, Size: 13, Number: 15108
+. 2026-10-21 21:02:01.353 Preserving timestamp [2026-10-21T18:56:46.000Z]
+. 2026-10-21 21:02:01.353 Transfer done: '/home/andennebh/www/tournoi-api.php' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-api.php' [6369]
+. 2026-10-21 21:02:01.353 Copying finished: Transferred: 6.369, Elapsed: 0:00:00, CPS: 90.985/s
+> 2026-10-21 21:02:01.353 Script: get /home/andennebh/www/tournoi.css C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi.css
+. 2026-10-21 21:02:01.354 Listing file "/home/andennebh/www/tournoi.css".
+> 2026-10-21 21:02:01.354 Type: SSH_FXP_LSTAT, Size: 40, Number: 15367
+< 2026-10-21 21:02:01.372 Type: SSH_FXP_STATUS, Size: 24, Number: 15108
+. 2026-10-21 21:02:01.372 Discarding reserved response
+< 2026-10-21 21:02:01.388 Type: SSH_FXP_ATTRS, Size: 37, Number: 15367
+. 2026-10-21 21:02:01.390 tournoi.css;-;2100;2026-10-21T18:58:20.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.390 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\" - total size: 2.100
+. 2026-10-21 21:02:01.390   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.css
+. 2026-10-21 21:02:01.390   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.390   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.390 File: '/home/andennebh/www/tournoi.css' [2026-10-21T18:58:20.000Z] [2100]
+. 2026-10-21 21:02:01.390 Copying "/home/andennebh/www/tournoi.css" to local directory started.
+. 2026-10-21 21:02:01.391 Binary transfer mode selected.
+. 2026-10-21 21:02:01.391 Opening remote file.
+> 2026-10-21 21:02:01.391 Type: SSH_FXP_OPEN, Size: 48, Number: 15619
+< 2026-10-21 21:02:01.406 Type: SSH_FXP_HANDLE, Size: 13, Number: 15619
+> 2026-10-21 21:02:01.406 Type: SSH_FXP_FSTAT, Size: 13, Number: 15880
+< 2026-10-21 21:02:01.422 Type: SSH_FXP_ATTRS, Size: 37, Number: 15880
+> 2026-10-21 21:02:01.422 Type: SSH_FXP_READ, Size: 25, Number: 16133
+< 2026-10-21 21:02:01.440 Type: SSH_FXP_DATA, Size: 2109, Number: 16133
+< 2026-10-21 21:02:01.457 Status code: 1
+. 2026-10-21 21:02:01.457 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:01.457 Type: SSH_FXP_CLOSE, Size: 13, Number: 16644
+. 2026-10-21 21:02:01.457 Preserving timestamp [2026-10-21T18:58:20.000Z]
+. 2026-10-21 21:02:01.458 Transfer done: '/home/andennebh/www/tournoi.css' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi.css' [2100]
+. 2026-10-21 21:02:01.458 Copying finished: Transferred: 2.100, Elapsed: 0:00:00, CPS: 30.882/s
+> 2026-10-21 21:02:01.459 Script: get /home/andennebh/www/scripts/tournoi-schedule.js C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\scripts\tournoi-schedule.js
+. 2026-10-21 21:02:01.459 Listing file "/home/andennebh/www/scripts/tournoi-schedule.js".
+> 2026-10-21 21:02:01.459 Type: SSH_FXP_LSTAT, Size: 56, Number: 16903
+< 2026-10-21 21:02:01.478 Type: SSH_FXP_STATUS, Size: 24, Number: 16644
+. 2026-10-21 21:02:01.478 Discarding reserved response
+< 2026-10-21 21:02:01.493 Type: SSH_FXP_ATTRS, Size: 37, Number: 16903
+. 2026-10-21 21:02:01.494 tournoi-schedule.js;-;916;2026-10-21T19:01:37.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.494 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\scripts\" - total size: 916
+. 2026-10-21 21:02:01.494   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi-schedule.js
+. 2026-10-21 21:02:01.494   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.494   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.494 File: '/home/andennebh/www/scripts/tournoi-schedule.js' [2026-10-21T19:01:37.000Z] [916]
+. 2026-10-21 21:02:01.494 Copying "/home/andennebh/www/scripts/tournoi-schedule.js" to local directory started.
+. 2026-10-21 21:02:01.494 Binary transfer mode selected.
+. 2026-10-21 21:02:01.495 Opening remote file.
+> 2026-10-21 21:02:01.495 Type: SSH_FXP_OPEN, Size: 64, Number: 17155
+< 2026-10-21 21:02:01.516 Type: SSH_FXP_HANDLE, Size: 13, Number: 17155
+> 2026-10-21 21:02:01.516 Type: SSH_FXP_FSTAT, Size: 13, Number: 17416
+< 2026-10-21 21:02:01.532 Type: SSH_FXP_ATTRS, Size: 37, Number: 17416
+> 2026-10-21 21:02:01.532 Type: SSH_FXP_READ, Size: 25, Number: 17669
+< 2026-10-21 21:02:01.548 Type: SSH_FXP_DATA, Size: 925, Number: 17669
+< 2026-10-21 21:02:01.563 Status code: 1
+. 2026-10-21 21:02:01.563 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:01.563 Type: SSH_FXP_CLOSE, Size: 13, Number: 18180
+. 2026-10-21 21:02:01.564 Preserving timestamp [2026-10-21T19:01:37.000Z]
+. 2026-10-21 21:02:01.564 Transfer done: '/home/andennebh/www/scripts/tournoi-schedule.js' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\scripts\tournoi-schedule.js' [916]
+. 2026-10-21 21:02:01.564 Copying finished: Transferred: 916, Elapsed: 0:00:00, CPS: 13.085/s
+> 2026-10-21 21:02:01.564 Script: get /home/andennebh/www/scripts/tournoi.js C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\scripts\tournoi.js
+. 2026-10-21 21:02:01.564 Listing file "/home/andennebh/www/scripts/tournoi.js".
+> 2026-10-21 21:02:01.564 Type: SSH_FXP_LSTAT, Size: 47, Number: 18439
+< 2026-10-21 21:02:01.579 Type: SSH_FXP_STATUS, Size: 24, Number: 18180
+. 2026-10-21 21:02:01.579 Discarding reserved response
+< 2026-10-21 21:02:01.594 Type: SSH_FXP_ATTRS, Size: 37, Number: 18439
+. 2026-10-21 21:02:01.594 tournoi.js;-;7828;2026-10-21T19:01:37.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.594 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\scripts\" - total size: 7.828
+. 2026-10-21 21:02:01.594   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.js
+. 2026-10-21 21:02:01.594   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.594   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.594 File: '/home/andennebh/www/scripts/tournoi.js' [2026-10-21T19:01:37.000Z] [7828]
+. 2026-10-21 21:02:01.595 Copying "/home/andennebh/www/scripts/tournoi.js" to local directory started.
+. 2026-10-21 21:02:01.595 Binary transfer mode selected.
+. 2026-10-21 21:02:01.595 Opening remote file.
+> 2026-10-21 21:02:01.595 Type: SSH_FXP_OPEN, Size: 55, Number: 18691
+< 2026-10-21 21:02:01.619 Type: SSH_FXP_HANDLE, Size: 13, Number: 18691
+> 2026-10-21 21:02:01.619 Type: SSH_FXP_FSTAT, Size: 13, Number: 18952
+< 2026-10-21 21:02:01.635 Type: SSH_FXP_ATTRS, Size: 37, Number: 18952
+> 2026-10-21 21:02:01.636 Type: SSH_FXP_READ, Size: 25, Number: 19205
+< 2026-10-21 21:02:01.651 Type: SSH_FXP_DATA, Size: 7837, Number: 19205
+< 2026-10-21 21:02:01.667 Status code: 1
+. 2026-10-21 21:02:01.667 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:01.667 Type: SSH_FXP_CLOSE, Size: 13, Number: 19716
+. 2026-10-21 21:02:01.667 Preserving timestamp [2026-10-21T19:01:37.000Z]
+. 2026-10-21 21:02:01.668 Transfer done: '/home/andennebh/www/scripts/tournoi.js' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\scripts\tournoi.js' [7828]
+. 2026-10-21 21:02:01.668 Copying finished: Transferred: 7.828, Elapsed: 0:00:00, CPS: 105.783/s
+> 2026-10-21 21:02:01.668 Script: get /home/andennebh/www/tournoi.html C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi.html
+. 2026-10-21 21:02:01.668 Listing file "/home/andennebh/www/tournoi.html".
+> 2026-10-21 21:02:01.668 Type: SSH_FXP_LSTAT, Size: 41, Number: 19975
+< 2026-10-21 21:02:01.685 Type: SSH_FXP_STATUS, Size: 24, Number: 19716
+. 2026-10-21 21:02:01.685 Discarding reserved response
+< 2026-10-21 21:02:01.703 Type: SSH_FXP_ATTRS, Size: 37, Number: 19975
+. 2026-10-21 21:02:01.703 tournoi.html;-;5096;2026-10-21T18:58:18.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.703 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\" - total size: 5.096
+. 2026-10-21 21:02:01.703   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.html
+. 2026-10-21 21:02:01.703   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.703   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.703 File: '/home/andennebh/www/tournoi.html' [2026-10-21T18:58:18.000Z] [5096]
+. 2026-10-21 21:02:01.703 Copying "/home/andennebh/www/tournoi.html" to local directory started.
+. 2026-10-21 21:02:01.704 Binary transfer mode selected.
+. 2026-10-21 21:02:01.704 Opening remote file.
+> 2026-10-21 21:02:01.704 Type: SSH_FXP_OPEN, Size: 49, Number: 20227
+< 2026-10-21 21:02:01.719 Type: SSH_FXP_HANDLE, Size: 13, Number: 20227
+> 2026-10-21 21:02:01.719 Type: SSH_FXP_FSTAT, Size: 13, Number: 20488
+< 2026-10-21 21:02:01.734 Type: SSH_FXP_ATTRS, Size: 37, Number: 20488
+> 2026-10-21 21:02:01.734 Type: SSH_FXP_READ, Size: 25, Number: 20741
+< 2026-10-21 21:02:01.753 Type: SSH_FXP_DATA, Size: 5105, Number: 20741
+< 2026-10-21 21:02:01.773 Status code: 1
+. 2026-10-21 21:02:01.773 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:01.773 Type: SSH_FXP_CLOSE, Size: 13, Number: 21252
+. 2026-10-21 21:02:01.773 Preserving timestamp [2026-10-21T18:58:18.000Z]
+. 2026-10-21 21:02:01.777 Transfer done: '/home/andennebh/www/tournoi.html' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi.html' [5096]
+. 2026-10-21 21:02:01.777 Copying finished: Transferred: 5.096, Elapsed: 0:00:00, CPS: 68.864/s
+> 2026-10-21 21:02:01.777 Script: get /home/andennebh/www/private-backup.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\private-backup.php
+. 2026-10-21 21:02:01.778 Listing file "/home/andennebh/www/private-backup.php".
+> 2026-10-21 21:02:01.778 Type: SSH_FXP_LSTAT, Size: 47, Number: 21511
+< 2026-10-21 21:02:01.795 Type: SSH_FXP_STATUS, Size: 24, Number: 21252
+. 2026-10-21 21:02:01.795 Discarding reserved response
+< 2026-10-21 21:02:01.812 Type: SSH_FXP_ATTRS, Size: 37, Number: 21511
+. 2026-10-21 21:02:01.812 private-backup.php;-;7763;2026-10-21T18:58:38.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.812 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\" - total size: 7.763
+. 2026-10-21 21:02:01.812   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: private-backup.php
+. 2026-10-21 21:02:01.812   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.812   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.812 File: '/home/andennebh/www/private-backup.php' [2026-10-21T18:58:38.000Z] [7763]
+. 2026-10-21 21:02:01.812 Copying "/home/andennebh/www/private-backup.php" to local directory started.
+. 2026-10-21 21:02:01.812 Binary transfer mode selected.
+. 2026-10-21 21:02:01.813 Opening remote file.
+> 2026-10-21 21:02:01.813 Type: SSH_FXP_OPEN, Size: 55, Number: 21763
+< 2026-10-21 21:02:01.834 Type: SSH_FXP_HANDLE, Size: 13, Number: 21763
+> 2026-10-21 21:02:01.835 Type: SSH_FXP_FSTAT, Size: 13, Number: 22024
+< 2026-10-21 21:02:01.858 Type: SSH_FXP_ATTRS, Size: 37, Number: 22024
+> 2026-10-21 21:02:01.859 Type: SSH_FXP_READ, Size: 25, Number: 22277
+< 2026-10-21 21:02:01.877 Type: SSH_FXP_DATA, Size: 7772, Number: 22277
+< 2026-10-21 21:02:01.895 Status code: 1
+. 2026-10-21 21:02:01.896 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:01.896 Type: SSH_FXP_CLOSE, Size: 13, Number: 22788
+. 2026-10-21 21:02:01.896 Preserving timestamp [2026-10-21T18:58:38.000Z]
+. 2026-10-21 21:02:01.896 Transfer done: '/home/andennebh/www/private-backup.php' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\private-backup.php' [7763]
+. 2026-10-21 21:02:01.896 Copying finished: Transferred: 7.763, Elapsed: 0:00:00, CPS: 92.416/s
+> 2026-10-21 21:02:01.897 Script: get /home/andennebh/www/tirage-equipes.html C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tirage-equipes.html
+. 2026-10-21 21:02:01.898 Listing file "/home/andennebh/www/tirage-equipes.html".
+> 2026-10-21 21:02:01.898 Type: SSH_FXP_LSTAT, Size: 48, Number: 23047
+< 2026-10-21 21:02:01.914 Type: SSH_FXP_STATUS, Size: 24, Number: 22788
+. 2026-10-21 21:02:01.914 Discarding reserved response
+< 2026-10-21 21:02:01.936 Type: SSH_FXP_ATTRS, Size: 37, Number: 23047
+. 2026-10-21 21:02:01.936 tirage-equipes.html;-;8150;2026-10-21T19:00:20.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:01.936 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\" - total size: 8.150
+. 2026-10-21 21:02:01.936   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tirage-equipes.html
+. 2026-10-21 21:02:01.936   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:01.936   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:01.936 File: '/home/andennebh/www/tirage-equipes.html' [2026-10-21T19:00:20.000Z] [8150]
+. 2026-10-21 21:02:01.937 Copying "/home/andennebh/www/tirage-equipes.html" to local directory started.
+. 2026-10-21 21:02:01.937 Binary transfer mode selected.
+. 2026-10-21 21:02:01.937 Opening remote file.
+> 2026-10-21 21:02:01.937 Type: SSH_FXP_OPEN, Size: 56, Number: 23299
+< 2026-10-21 21:02:01.953 Type: SSH_FXP_HANDLE, Size: 13, Number: 23299
+> 2026-10-21 21:02:01.953 Type: SSH_FXP_FSTAT, Size: 13, Number: 23560
+< 2026-10-21 21:02:01.969 Type: SSH_FXP_ATTRS, Size: 37, Number: 23560
+> 2026-10-21 21:02:01.969 Type: SSH_FXP_READ, Size: 25, Number: 23813
+< 2026-10-21 21:02:01.988 Type: SSH_FXP_DATA, Size: 8159, Number: 23813
+< 2026-10-21 21:02:02.010 Status code: 1
+. 2026-10-21 21:02:02.010 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:02.010 Type: SSH_FXP_CLOSE, Size: 13, Number: 24324
+. 2026-10-21 21:02:02.010 Preserving timestamp [2026-10-21T19:00:20.000Z]
+. 2026-10-21 21:02:02.024 Transfer done: '/home/andennebh/www/tirage-equipes.html' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tirage-equipes.html' [8150]
+. 2026-10-21 21:02:02.024 Copying finished: Transferred: 8.150, Elapsed: 0:00:00, CPS: 92.613/s
+> 2026-10-21 21:02:02.024 Script: get /home/andennebh/www/suivi-inscriptions.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\suivi-inscriptions.php
+. 2026-10-21 21:02:02.025 Listing file "/home/andennebh/www/suivi-inscriptions.php".
+> 2026-10-21 21:02:02.025 Type: SSH_FXP_LSTAT, Size: 51, Number: 24583
+< 2026-10-21 21:02:02.062 Type: SSH_FXP_STATUS, Size: 24, Number: 24324
+. 2026-10-21 21:02:02.062 Discarding reserved response
+< 2026-10-21 21:02:02.081 Type: SSH_FXP_ATTRS, Size: 37, Number: 24583
+. 2026-10-21 21:02:02.083 suivi-inscriptions.php;-;29353;2026-10-21T18:59:56.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-21 21:02:02.083 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\" - total size: 29.353
+. 2026-10-21 21:02:02.083   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: suivi-inscriptions.php
+. 2026-10-21 21:02:02.083   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-21 21:02:02.083   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-21 21:02:02.083 File: '/home/andennebh/www/suivi-inscriptions.php' [2026-10-21T18:59:56.000Z] [29353]
+. 2026-10-21 21:02:02.083 Copying "/home/andennebh/www/suivi-inscriptions.php" to local directory started.
+. 2026-10-21 21:02:02.083 Binary transfer mode selected.
+. 2026-10-21 21:02:02.084 Opening remote file.
+> 2026-10-21 21:02:02.084 Type: SSH_FXP_OPEN, Size: 59, Number: 24835
+< 2026-10-21 21:02:02.098 Type: SSH_FXP_HANDLE, Size: 13, Number: 24835
+> 2026-10-21 21:02:02.099 Type: SSH_FXP_FSTAT, Size: 13, Number: 25096
+< 2026-10-21 21:02:02.115 Type: SSH_FXP_ATTRS, Size: 37, Number: 25096
+> 2026-10-21 21:02:02.115 Type: SSH_FXP_READ, Size: 25, Number: 25349
+< 2026-10-21 21:02:02.172 Type: SSH_FXP_DATA, Size: 29362, Number: 25349
+< 2026-10-21 21:02:02.204 Status code: 1
+. 2026-10-21 21:02:02.204 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-21 21:02:02.204 Type: SSH_FXP_CLOSE, Size: 13, Number: 25860
+. 2026-10-21 21:02:02.204 Preserving timestamp [2026-10-21T18:59:56.000Z]
+. 2026-10-21 21:02:02.205 Transfer done: '/home/andennebh/www/suivi-inscriptions.php' => 'C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\suivi-inscriptions.php' [29353]
+. 2026-10-21 21:02:02.205 Copying finished: Transferred: 29.353, Elapsed: 0:00:00, CPS: 240.598/s
+> 2026-10-21 21:02:02.210 Script: exit
+. 2026-10-21 21:02:02.214 Script: Exit code: 0
+. 2026-10-21 21:02:02.214 Closing connection.
+. 2026-10-21 21:02:02.214 Sending special code: 1
+. 2026-10-21 21:02:02.263 Session sent command exit status 0
+. 2026-10-21 21:02:02.263 Main session channel closed
+. 2026-10-21 21:02:02.263 All channels closed

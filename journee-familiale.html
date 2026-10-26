@@ -26,8 +26,10 @@
   <meta name="twitter:image:alt" content="Journée Bears du 25 octobre 2026 au terrain d’Évelette : flag, burgers à l’effiloché de porc et NFL Paris Game" />
   <link rel="icon" href="images/favicon.png" />
   <link rel="stylesheet" href="bears.css?v=parking-confirmation-2026-10-21-4" />
+  <link rel="stylesheet" href="family-results.css?v=2" />
   <script src="scripts/family-burger-portrait.js?v=3" defer></script>
   <script src="scripts/family-day.js?v=24" defer></script>
+  <script src="scripts/family-results.js?v=1" defer></script>
 </head>
 <body class="family-page">
   <header class="family-header">
@@ -39,6 +41,34 @@
     </nav>
   </header>
   <main>
+    <section class="family-results" id="resultats" aria-labelledby="family-results-title">
+      <div class="family-wrap">
+        <div class="family-results-heading">
+          <div>
+            <p class="section-kicker">Journée du 25 octobre · Tournoi de flag</p>
+            <h2 id="family-results-title">Merci d’être venu&nbsp;!</h2>
+            <p>Merci à toutes les équipes et à toutes les personnes qui ont partagé cette journée avec les Bears. Revivez le classement et les 18 rencontres du tournoi.</p>
+          </div>
+          <div class="family-results-facts" aria-label="Le tournoi en chiffres"><span><strong>6</strong> équipes</span><span><strong>18</strong> matchs</span></div>
+        </div>
+        <p id="family-results-status" class="family-results-status" role="status">Chargement des résultats…</p>
+        <div id="family-results-content" hidden>
+          <section class="family-results-standing" aria-labelledby="family-results-standing-title">
+            <div class="family-results-section-heading"><div><p class="section-kicker">Le verdict du terrain</p><h3 id="family-results-standing-title">Classement final</h3></div><span>Championnat + matchs de classement</span></div>
+            <ol id="family-results-ranking" class="family-results-ranking"></ol>
+            <p class="family-results-legend">V · victoires &nbsp; N · nuls &nbsp; D · défaites &nbsp; Diff. · points marqués moins encaissés. Les statistiques concernent les 15 matchs de championnat ; le rang final tient compte des trois matchs de classement.</p>
+          </section>
+          <section class="family-results-matches" aria-labelledby="family-results-matches-title">
+            <div class="family-results-section-heading"><div><p class="section-kicker">Tous les résultats</p><h3 id="family-results-matches-title">Les 18 matchs</h3></div></div>
+            <div id="family-results-match-groups" class="family-results-match-groups"></div>
+          </section>
+          <section id="family-results-rosters" class="family-results-rosters" aria-labelledby="family-results-rosters-title" hidden>
+            <div class="family-results-section-heading"><div><p class="section-kicker">Sur le terrain</p><h3 id="family-results-rosters-title">Les équipes</h3></div></div>
+            <div id="family-results-roster-list" class="family-results-roster-list"></div>
+          </section>
+        </div>
+      </div>
+    </section>
     <section class="family-hero" aria-labelledby="family-title">
       <div class="family-wrap family-hero-layout">
         <div class="family-hero-copy">
@@ -201,7 +231,7 @@
             <p>Pour une personne de moins de 18 ans, <strong>un parent ou tuteur remplit le formulaire</strong> avec son adresse e-mail de contact ci-dessus.</p>
             <label class="family-consent"><input type="checkbox" name="guardian_consent" value="yes" id="guardian-consent" /> Je suis son parent ou tuteur légal et j’autorise sa participation aux activités choisies.</label>
           </div>
-          <p class="contact-form-note">Ces coordonnées servent <strong>uniquement à gérer la journée</strong> et à communiquer ses modalités. Les organisateurs autorisés pourront exporter la liste. Demandez une rectification ou un retrait via <a href="mailto:secretaire@andenne-bears.be">secretaire@andenne-bears.be</a>. Le club supprimera la liste après l’événement, <strong>au plus tard le 30 novembre 2026</strong>.</p>
+          <p class="contact-form-note">Ces coordonnées servent <strong>uniquement à gérer la journée</strong> et à communiquer ses modalités. Seuls les prénoms des participants au tournoi sont affichés publiquement avec leur équipe dans les résultats. Les organisateurs autorisés pourront exporter la liste. Demandez une rectification ou un retrait via <a href="mailto:secretaire@andenne-bears.be">secretaire@andenne-bears.be</a>. Le club supprimera la liste après l’événement, <strong>au plus tard le 30 novembre 2026</strong>.</p>
           <button class="button button-primary" type="submit">Confirmer mon inscription / ma réservation</button>
         </form>
         <div id="family-result" class="contact-result" role="status" aria-live="polite" tabindex="-1" hidden></div>

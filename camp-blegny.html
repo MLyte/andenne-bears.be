@@ -145,6 +145,18 @@
     .program-visual-note { margin:1rem 0 0; color:#555; font-size:.82rem; }
     .notice { margin-top:1.5rem; padding:1rem 1.2rem; border-left:5px solid var(--gold); background:#fff; }
     .notice .camp-icon { margin-right:.4rem; color:var(--red); }
+    .camp-deadline { max-width:800px; margin:0 0 1.5rem; padding:clamp(1.25rem,3vw,2rem); border:2px solid var(--gold); border-top-width:8px; background:#171717; box-shadow:0 18px 45px rgba(0,0,0,.28); }
+    .camp-deadline h3 { margin:0 0 .35rem; font-size:clamp(1.5rem,3.5vw,2.4rem); line-height:1.1; }
+    .camp-deadline-date { margin:0 0 1.15rem; color:#e7e7e7; font-weight:700; }
+    .camp-countdown { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.55rem; }
+    .camp-countdown span { min-width:0; padding:.7rem .25rem; background:var(--gold); color:var(--ink); text-align:center; }
+    .camp-countdown strong { display:block; font-size:clamp(1.8rem,6vw,3.4rem); font-variant-numeric:tabular-nums; font-weight:900; line-height:1; }
+    .camp-countdown small { display:block; margin-top:.35rem; font-size:.72rem; font-weight:900; text-transform:uppercase; }
+    .camp-deadline-note { margin:1rem 0 0; font-weight:800; }
+    .camp-deadline--payment { margin:1.5rem 0 0; padding:clamp(1rem,2.5vw,1.5rem); border-top-width:5px; }
+    .camp-deadline--payment h3 { font-size:clamp(1.25rem,2.5vw,1.7rem); }
+    .camp-deadline--payment .camp-countdown strong { font-size:clamp(1.4rem,4vw,2.3rem); }
+    .camp-closed { max-width:800px; margin:0 0 1.5rem; padding:1.3rem 1.5rem; border-left:7px solid var(--gold); background:#fff; color:var(--ink); font-weight:800; }
     .form { max-width:800px; padding:clamp(1.2rem,3vw,2rem); background:#fff; color:#080808; border-top:7px solid var(--gold); box-shadow:0 24px 70px rgba(40,28,13,.16); }
     .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.1rem; }
     .form .field { display:block; margin-bottom:1.2rem; font-weight:800; }
@@ -269,6 +281,13 @@
       <div class="notice"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-alert"/></svg><strong>Régime alimentaire ou allergie ?</strong> <strong>Signale-le dans le formulaire</strong>, même si tu en as déjà parlé à un coach, afin d’aider le staff à organiser les repas.</div>
     </div></section>
     <section class="section dark" id="inscription"><div class="wrap"><p class="kicker">Inscription</p><h2>Confirme ta présence</h2><p class="intro"><strong>Même tarif pour les Seniors, les U20 et le staff : 120 € avec deux nuits, 80 € avec une nuit, 40 € sans logement.</strong> Reste avec l’équipe pour profiter de la soirée ! Un formulaire par personne. Les champs marqués * sont obligatoires.</p>
+      <div class="camp-deadline" aria-labelledby="camp-registration-deadline-title">
+        <h3 id="camp-registration-deadline-title">Le compte à rebours est lancé</h3>
+        <p class="camp-deadline-date">Clôture des inscriptions : <time datetime="2026-10-25T23:59:59+01:00">25 octobre 2026 à 23 h 59 min 59 s</time> · heure belge</p>
+        <div class="camp-countdown" id="camp-registration-countdown" role="timer" aria-label="Temps restant pour s’inscrire"><span><strong data-unit="days">--</strong><small>jours</small></span><span><strong data-unit="hours">--</strong><small>heures</small></span><span><strong data-unit="minutes">--</strong><small>minutes</small></span><span><strong data-unit="seconds">--</strong><small>secondes</small></span></div>
+        <p class="camp-deadline-note" id="camp-registration-deadline-note">Inscris-toi avant la fermeture du formulaire.</p>
+      </div>
+      <p class="camp-closed" id="camp-registration-closed" hidden>Les inscriptions au camp sont closes depuis le 25 octobre à 23 h 59 min 59 s.</p>
       <form class="form" id="camp-form" action="camp-registration.php" method="post">
         <div class="form-grid"><label class="field" for="camp-last-name">Nom <span class="required">*</span><input id="camp-last-name" name="last_name" autocomplete="family-name" maxlength="100" required /></label><label class="field" for="camp-first-name">Prénom <span class="required">*</span><input id="camp-first-name" name="first_name" autocomplete="given-name" maxlength="100" required /></label></div>
         <label class="field" for="camp-role">Tu participes comme <span class="required">*</span><select id="camp-role" name="role" required><option value="">Choisir</option><option value="Junior">Junior (U20)</option><option value="Senior">Senior</option><option value="Staff">Staff</option></select></label>
@@ -280,6 +299,12 @@
         <div hidden aria-hidden="true"><label>Site web<input name="website" tabindex="-1" autocomplete="off" /></label></div>
         <button class="cta" type="submit"><svg class="camp-icon" aria-hidden="true"><use href="#camp-icon-user-plus"/></svg>Confirmer mon inscription</button><p class="form-status" id="camp-form-status" role="status" aria-live="polite" hidden></p>
       </form>
+      <div class="camp-deadline camp-deadline--payment" aria-labelledby="camp-payment-deadline-title">
+        <h3 id="camp-payment-deadline-title">Échéance du paiement</h3>
+        <p class="camp-deadline-date">Virement à effectuer au plus tard le <time datetime="2026-11-08T23:59:59+01:00">8 novembre 2026 à 23 h 59 min 59 s</time> · heure belge</p>
+        <div class="camp-countdown" id="camp-payment-countdown" role="timer" aria-label="Temps restant pour payer"><span><strong data-unit="days">--</strong><small>jours</small></span><span><strong data-unit="hours">--</strong><small>heures</small></span><span><strong data-unit="minutes">--</strong><small>minutes</small></span><span><strong data-unit="seconds">--</strong><small>secondes</small></span></div>
+        <p class="camp-deadline-note" id="camp-payment-deadline-note">Pense à faire ton virement après l’inscription.</p>
+      </div>
       <div class="camp-payment" aria-labelledby="camp-payment-title">
         <h3 id="camp-payment-title">Paiement de l’inscription</h3>
         <p>Après avoir confirmé ton inscription, verse le montant de ton forfait sur le compte des Andenne Bears :</p>
@@ -301,6 +326,6 @@
     </div></section>
   </main>
   <footer class="footer"><span>Copyright &copy; 2026 · Andenne Bears ASBL</span><a href="#top">Retour en haut</a></footer>
-  <script src="scripts/camp-registration.js?v=payment-20261013" defer></script>
+  <script src="scripts/camp-registration.js?v=deadlines-20261023" defer></script>
 </body>
 </html>

@@ -65,7 +65,7 @@ function bearsCreateDailyBackup(string $private): void
                 chmod($snapshotPath, 0600);
                 $manifest['files']['mysql-data.json'] = hash_file('sha256', $snapshotPath);
             }
-            foreach ($mysql ? ['members-depth-chart.json'] : ['family-day-2026.csv', 'camp-blegny-2026.csv', 'family-teams-2026.csv', 'members-depth-chart.json'] as $name) {
+            foreach ($mysql ? ['members-depth-chart.json', 'family-tournament-2026.json'] : ['family-tournament-2026.json', 'family-day-2026.csv', 'camp-blegny-2026.csv', 'family-teams-2026.csv', 'members-depth-chart.json'] as $name) {
                 $source = $root . DIRECTORY_SEPARATOR . $name;
                 if (!file_exists($source) && !is_link($source)) continue;
                 bearsBackupCopy($source, $pending . DIRECTORY_SEPARATOR . $name);

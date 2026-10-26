@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/membres-data.php';
+require_once __DIR__ . '/membres-image.php';
 memberSession();
 $config = memberConfig();
 $_SESSION['members_staff_csrf'] ??= bin2hex(random_bytes(32));
@@ -32,6 +33,10 @@ function staffPositions(mixed $values, array $allowed, array $current, bool $req
     }
     return $result;
 }
+
+class StaffPhotoConflict extends RuntimeException {}
+class StaffPhotoPlayerMissing extends RuntimeException {}
+class StaffPhotoMissing extends RuntimeException {}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -67,6 +72,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!memberStaff()) staffFail(401, 'Connexion staff requise.');
         $expected = filter_var($_POST['version'] ?? null, FILTER_VALIDATE_INT);
         if ($expected === false || $expected === null) staffFail(422, 'Version invalide.');
+        if ($action === 'replace_photo') {
+            $id = $_POST['player_id'] ?? '';
+            if (!is_string($id) || !preg_match('/^[a-f0-9]{24}$/', $id)) staffFail(422, 'Joueur invalide.');
+            if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 5 * 1024 * 1024) staffFail(413, 'Photo de 4 Mo maximum.');
+            $photo = $_FILES['photo'] ?? null;
+            if (!is_array($photo) || ($photo['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK
+                || !is_string($photo['tmp_name'] ?? null) || !is_uploaded_file($photo['tmp_name'])
+                || !is_int($photo['size'] ?? null) || $photo['size'] < 1 || $photo['size'] > 4 * 1024 * 1024) {
+                staffFail(422, 'Choisis une photo JPG, PNG ou WebP de 4 Mo maximum.');
+            }
+            $image = @getimagesize($photo['tmp_name']);
+            $mime = (new finfo(FILEINFO_MIME_TYPE))->file($photo['tmp_name']);
+            if (!is_array($image) || !in_array($mime, ['image/jpeg', 'image/png', 'image/webp'], true)
+                || ($image['mime'] ?? '') !== $mime || $image[0] < 128 || $image[1] < 128
+                || $image[0] > 6000 || $image[1] > 6000 || $image[0] * $image[1] > 20_000_000) {
+                staffFail(422, 'Choisis une photo JPG, PNG ou WebP valide.');
+            }
+            $newPhoto = null;
+            $photoDir = null;
+            $committed = false;
+            try {
+                $photoDir = memberPrivateDir($config) . DIRECTORY_SEPARATOR . 'member-photos';
+                if (!is_dir($photoDir) && !mkdir($photoDir, 0700) && !is_dir($photoDir)) throw new RuntimeException();
+                do { $photoId = bin2hex(random_bytes(12)); }
+                while (file_exists($photoDir . DIRECTORY_SEPARATOR . $photoId . '.jpg')
+                    || file_exists($photoDir . DIRECTORY_SEPARATOR . $photoId . '.png')
+                    || file_exists($photoDir . DIRECTORY_SEPARATOR . $photoId . '.webp'));
+                $newPhoto = memberSavePortrait($photo['tmp_name'], $mime, $photoDir, $photoId);
+                $result = memberData($config, static function (array &$data) use ($expected, $id, $newPhoto): array {
+                    if (($data['version'] ?? 0) !== $expected) throw new StaffPhotoConflict();
+                    foreach ($data['players'] as &$player) {
+                        if (($player['id'] ?? '') !== $id) continue;
+                        $oldPhoto = $player['photo'] ?? null;
+                        if (!is_string($oldPhoto) || !preg_match('/^[a-f0-9]{24}\.(jpg|png|webp)$/', $oldPhoto)) {
+                            throw new StaffPhotoMissing();
+                        }
+                        $player['photo'] = $newPhoto;
+                        $data['version']++;
+                        return ['data' => $data, 'old_photo' => $oldPhoto];
+                    }
+                    throw new StaffPhotoPlayerMissing();
+                });
+                $committed = true;
+                unset($_SESSION['members_undo']);
+                if (is_string($result['old_photo']) && preg_match('/^[a-f0-9]{24}\.(jpg|png|webp)$/', $result['old_photo'])) {
+                    @unlink($photoDir . DIRECTORY_SEPARATOR . $result['old_photo']);
+                }
+                bearsBackupAfterWrite(memberPrivateDir($config));
+                memberJson(200, ['success' => true, 'data' => $result['data'], 'undo' => false]);
+            } catch (Throwable $exception) {
+                if (!$committed && $newPhoto !== null && $photoDir !== null) @unlink($photoDir . DIRECTORY_SEPARATOR . $newPhoto);
+                if ($exception instanceof StaffPhotoConflict) staffFail(409, 'Le tableau a changé. Recharge la page.');
+                if ($exception instanceof StaffPhotoPlayerMissing) staffFail(404, 'Joueur introuvable.');
+                if ($exception instanceof StaffPhotoMissing) staffFail(422, 'Ce profil n’a pas de photo à remplacer.');
+                if ($exception instanceof InvalidArgumentException) staffFail(422, 'Cette photo ne peut pas être lue. Choisis un autre fichier.');
+                staffFail(503, 'Enregistrement indisponible. Réessaie plus tard.');
+            }
+        }
         try {
             $result = memberData($config, static function (array &$data) use ($action, $expected): array {
                 if (($data['version'] ?? 0) !== $expected) staffFail(409, 'Le tableau a changé. Recharge la page.');
@@ -242,4 +305,5 @@ header('Content-Type: text/html; charset=utf-8');
 <div id="members-staff-app" class="members-staff-app" aria-busy="true"><div class="members-tabs" role="group" aria-label="Vue"><button type="button" data-view="responses" aria-pressed="true">Réponses <span id="response-count"></span></button><button type="button" data-view="board" aria-pressed="false">Compositions</button></div>
 <section id="members-responses" aria-label="Réponses des joueurs"><div class="members-list-heading"><h2>Souhaits reçus</h2><label>Rechercher un joueur<input id="members-search" type="search" placeholder="Nom ou numéro" /></label></div><p>Les souhaits couvrent l’attaque, la défense et les Special Teams. Valide une réponse avant de placer le joueur sur le terrain. Seuls les profils qui ont accepté la publication apparaissent dans la liste des joueurs.</p><div id="members-response-list" class="members-response-list"></div></section>
 <section id="members-board-view" aria-label="Compositions" hidden><div class="members-board-controls"><div id="members-units" class="members-unit-buttons" role="group" aria-label="Unité"></div><div class="members-board-actions"><button id="members-copy" class="button" type="button" hidden></button><a class="button" href="membres-compositions-pdf.php" download="compositions-andenne-bears.pdf">Exporter les 7 compositions (PDF)</a><button id="members-undo" class="button" type="button" disabled>Annuler la dernière modification</button></div></div><p id="members-selection-hint">Sélectionne un joueur, puis sa destination. Tu peux aussi le déplacer à la souris.</p><div class="members-board-layout"><div class="members-field-scroll" tabindex="0" role="region" aria-label="Terrain · défilement horizontal sur petit écran"><div id="members-field" class="members-field" aria-label="Terrain"></div></div><aside class="members-sideline"><h2>Sideline</h2><p>Joueurs disponibles pour cette unité.</p><div id="members-sideline-list"></div><button id="members-send-sideline" type="button" class="button" disabled>Envoyer le joueur sélectionné en sideline</button></aside></div></section></div>
-<dialog id="members-edit-dialog" class="members-dialog members-edit-dialog" aria-labelledby="members-edit-title"><div class="members-dialog-head"><div><p class="section-kicker">Espace membres · Staff</p><h2 id="members-edit-title">Modifier une inscription</h2></div><button id="members-edit-close" class="members-dialog-close" type="button" aria-label="Fermer sans enregistrer">×</button></div><form id="members-edit-form" class="contact-form family-form members-form"><input type="hidden" name="player_id" /><div class="members-fields members-identity-fields"><label class="field members-identity-field"><span class="members-field-label">Prénom *</span><input name="first_name" maxlength="60" autocomplete="given-name" required /></label><label class="field members-identity-field"><span class="members-field-label">Nom *</span><input name="last_name" maxlength="60" autocomplete="family-name" required /></label><label class="field members-identity-field"><span class="members-field-label">Numéro de maillot</span><input name="number" inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" /></label></div><div class="members-position-grid"><?php foreach (['offense' => 'Attaque', 'defense' => 'Défense', 'special_teams' => 'Special Teams'] as $key => $label): ?><fieldset class="members-position-group"><legend><?= $label ?></legend><?php for ($rank = 0; $rank < 3; $rank++): $required = $rank === 0 && $key !== 'special_teams'; ?><label class="field"><span class="members-field-label"><?= ['Premier choix', 'Deuxième choix', 'Troisième choix'][$rank] ?><?= $required ? ' *' : '' ?></span><select name="<?= $key ?>[]" data-edit-side="<?= $key ?>" data-edit-rank="<?= $rank ?>"<?= $required ? ' required' : '' ?>></select></label><?php endfor; ?></fieldset><?php endforeach; ?></div><label class="field">Préférence<select name="preference" required><option value="attaque">Attaque</option><option value="defense">Défense</option><option value="deux">Les deux</option><option value="aucune">Pas de préférence</option></select></label><label class="field">Message aux coachs<textarea name="comment" maxlength="600" rows="4"></textarea></label><p class="members-edit-consent-note">Le choix de publication du profil appartient au joueur et reste inchangé.</p><p id="members-edit-message" class="members-status" role="status" aria-live="polite"></p><div class="members-edit-actions"><button class="button button-primary" type="submit">Enregistrer les modifications</button><button id="members-edit-cancel" class="button" type="button">Annuler</button></div></form></dialog><?php endif; ?></main></body></html>
+<dialog id="members-edit-dialog" class="members-dialog members-edit-dialog" aria-labelledby="members-edit-title"><div class="members-dialog-head"><div><p class="section-kicker">Espace membres · Staff</p><h2 id="members-edit-title">Modifier une inscription</h2></div><button id="members-edit-close" class="members-dialog-close" type="button" aria-label="Fermer sans enregistrer">×</button></div><form id="members-edit-form" class="contact-form family-form members-form"><input type="hidden" name="player_id" /><div class="members-fields members-identity-fields"><label class="field members-identity-field"><span class="members-field-label">Prénom *</span><input name="first_name" maxlength="60" autocomplete="given-name" required /></label><label class="field members-identity-field"><span class="members-field-label">Nom *</span><input name="last_name" maxlength="60" autocomplete="family-name" required /></label><label class="field members-identity-field"><span class="members-field-label">Numéro de maillot</span><input name="number" inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" /></label></div><div class="members-position-grid"><?php foreach (['offense' => 'Attaque', 'defense' => 'Défense', 'special_teams' => 'Special Teams'] as $key => $label): ?><fieldset class="members-position-group"><legend><?= $label ?></legend><?php for ($rank = 0; $rank < 3; $rank++): $required = $rank === 0 && $key !== 'special_teams'; ?><label class="field"><span class="members-field-label"><?= ['Premier choix', 'Deuxième choix', 'Troisième choix'][$rank] ?><?= $required ? ' *' : '' ?></span><select name="<?= $key ?>[]" data-edit-side="<?= $key ?>" data-edit-rank="<?= $rank ?>"<?= $required ? ' required' : '' ?>></select></label><?php endfor; ?></fieldset><?php endforeach; ?></div><label class="field">Préférence<select name="preference" required><option value="attaque">Attaque</option><option value="defense">Défense</option><option value="deux">Les deux</option><option value="aucune">Pas de préférence</option></select></label><label class="field">Message aux coachs<textarea name="comment" maxlength="600" rows="4"></textarea></label><p class="members-edit-consent-note">Le choix de publication du profil appartient au joueur et reste inchangé.</p><p id="members-edit-message" class="members-status" role="status" aria-live="polite"></p><div class="members-edit-actions"><button class="button button-primary" type="submit">Enregistrer les modifications</button><button id="members-edit-cancel" class="button" type="button">Annuler</button></div></form>
+<form id="members-photo-form" class="members-edit-photo-form" method="post" action="membres-staff.php" enctype="multipart/form-data"><input type="hidden" name="player_id" /><h3>Photo du profil</h3><div class="members-edit-photo-row"><img id="members-edit-photo-preview" src="images/bears-player-placeholder.svg" alt="Photo actuelle du joueur" /><label class="field">Choisir une nouvelle photo <span class="members-optional">JPG, PNG ou WebP · 4 Mo max.</span><input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required /></label></div><p class="members-edit-consent-note">La nouvelle photo remplace l’ancienne. Le choix de publication du joueur et la validation du profil restent inchangés.</p><p id="members-photo-message" class="members-status" role="status" aria-live="polite"></p><button class="button button-primary" type="submit">Remplacer la photo</button></form></dialog><?php endif; ?></main></body></html>

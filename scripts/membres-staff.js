@@ -12,6 +12,9 @@ const sidelineButton = document.getElementById('members-send-sideline');
 const editDialog = document.getElementById('members-edit-dialog');
 const editForm = document.getElementById('members-edit-form');
 const editMessage = document.getElementById('members-edit-message');
+const photoForm = document.getElementById('members-photo-form');
+const photoMessage = document.getElementById('members-photo-message');
+const photoPreview = document.getElementById('members-edit-photo-preview');
 const unitNames = { attaque: 'Attaque', defense: 'Défense', kickoff: 'Kickoff', kick_return: 'Kick return', punt: 'Punt', punt_return: 'Punt return', field_goal: 'Field goal / PAT' };
 let data;
 let canUndo = false;
@@ -19,6 +22,7 @@ let view = 'responses';
 let activeUnit = 'attaque';
 let selected = null;
 let editReturnFocus = null;
+let photoPreviewUrl = null;
 
 for (const unit of Object.keys(config.units)) {
   const button = el('button', '', unitNames[unit]);
@@ -43,6 +47,51 @@ function el(tag, className, content) {
 function notify(text, error = false) {
   status.textContent = text;
   status.dataset.state = error ? 'error' : 'success';
+}
+
+async function compactStaffPhoto(file) {
+  let image;
+  let temporaryUrl;
+  try {
+    if (window.createImageBitmap) {
+      try { image = await createImageBitmap(file); } catch { /* Try the image decoder below. */ }
+    }
+    if (!image) {
+      temporaryUrl = URL.createObjectURL(file);
+      image = new Image();
+      image.src = temporaryUrl;
+      await image.decode();
+    }
+    const width = image.width || image.naturalWidth;
+    const height = image.height || image.naturalHeight;
+    if (!width || !height) throw new Error('Photo illisible.');
+    for (const [maxSide, quality] of [[512, .78], [512, .62], [384, .58], [320, .48]]) {
+      const scale = Math.min(1, maxSide / Math.max(width, height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(width * scale));
+      canvas.height = Math.max(1, Math.round(height * scale));
+      try {
+        const context = canvas.getContext('2d');
+        if (!context) throw new Error('Préparation de la photo indisponible. Réessaie.');
+        context.fillStyle = '#fff';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        for (const type of ['image/webp', 'image/jpeg', 'image/png']) {
+          let blob;
+          try { blob = await new Promise(resolve => canvas.toBlob(resolve, type, quality)); }
+          catch { /* Try the next encoder. */ }
+          if (blob && ['image/webp', 'image/jpeg', 'image/png'].includes(blob.type)
+              && blob.size > 0 && blob.size <= 250 * 1024) return blob;
+        }
+      } finally {
+        canvas.width = canvas.height = 0;
+      }
+    }
+    throw new Error('Impossible de réduire cette photo. Choisis-en une autre.');
+  } finally {
+    image?.close?.();
+    if (temporaryUrl) URL.revokeObjectURL(temporaryUrl);
+  }
 }
 
 function playerPhoto(player) {
@@ -177,6 +226,15 @@ function openEditor(player, trigger) {
   editReturnFocus = trigger;
   editMessage.textContent = '';
   editMessage.removeAttribute('data-state');
+  photoForm.reset();
+  photoForm.hidden = !player.photo;
+  if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+  photoPreviewUrl = null;
+  photoMessage.textContent = '';
+  photoMessage.removeAttribute('data-state');
+  photoForm.elements.namedItem('player_id').value = player.id;
+  photoPreview.src = player.photo ? `membres-photo.php?id=${encodeURIComponent(player.id)}&v=${data.version}` : 'images/bears-player-placeholder.svg';
+  photoPreview.alt = player.photo ? `Photo actuelle de ${player.name}` : `Aucune photo pour ${player.name}`;
   editForm.elements.namedItem('player_id').value = player.id;
   editForm.elements.namedItem('first_name').value = player.first_name || '';
   editForm.elements.namedItem('last_name').value = player.last_name || (player.first_name ? '' : player.name);
@@ -407,17 +465,19 @@ async function mutate(action, values = {}) {
     render();
     notify(action === 'move' ? 'Composition mise à jour.' : action === 'copy'
       ? `Postes copiés dans la composition.${result.copy_skipped ? ` ${result.copy_skipped} place(s) laissée(s) vide(s) car le joueur est déjà placé ailleurs dans cette unité.` : ''} Tu peux annuler cette copie.`
-      : action === 'undo' ? 'Dernière modification annulée.' : action === 'edit' ? 'Inscription modifiée.' : 'Réponse mise à jour.');
+      : action === 'undo' ? 'Dernière modification annulée.' : action === 'edit' ? 'Inscription modifiée.'
+      : action === 'replace_photo' ? 'Photo remplacée.' : 'Réponse mise à jour.');
     return true;
   } catch (error) {
     const message = error.message || 'Enregistrement impossible.';
-    if (action === 'edit') {
-      editMessage.textContent = message;
-      editMessage.dataset.state = 'error';
+    if (action === 'edit' || action === 'replace_photo') {
+      const target = action === 'edit' ? editMessage : photoMessage;
+      target.textContent = message;
+      target.dataset.state = 'error';
     } else notify(message, true);
     if (message.includes('changé')) {
       await load();
-      if (action === 'edit') editDialog.close();
+      if (action === 'edit' || action === 'replace_photo') editDialog.close();
     }
     return false;
   }
@@ -443,7 +503,20 @@ document.querySelectorAll('[data-view]').forEach(button => button.addEventListen
 search.addEventListener('input', renderResponses);
 document.getElementById('members-edit-close').addEventListener('click', () => editDialog.close());
 document.getElementById('members-edit-cancel').addEventListener('click', () => editDialog.close());
-editDialog.addEventListener('close', () => (editReturnFocus?.isConnected ? editReturnFocus : search).focus());
+editDialog.addEventListener('close', () => {
+  if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+  photoPreviewUrl = null;
+  (editReturnFocus?.isConnected ? editReturnFocus : search).focus();
+});
+photoForm.elements.namedItem('photo').addEventListener('change', event => {
+  if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+  photoPreviewUrl = null;
+  const file = event.target.files?.[0];
+  if (!file) return;
+  photoPreviewUrl = URL.createObjectURL(file);
+  photoPreview.src = photoPreviewUrl;
+  photoPreview.alt = `Aperçu de la nouvelle photo : ${file.name}`;
+});
 editForm.addEventListener('submit', async event => {
   event.preventDefault();
   const submit = editForm.querySelector('[type="submit"]');
@@ -453,6 +526,28 @@ editForm.addEventListener('submit', async event => {
   const saved = await mutate('edit', new FormData(editForm));
   submit.disabled = false;
   if (saved) editDialog.close();
+});
+photoForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  const submit = photoForm.querySelector('[type="submit"]');
+  submit.disabled = true;
+  photoMessage.textContent = 'Préparation de la photo…';
+  photoMessage.removeAttribute('data-state');
+  try {
+    const file = photoForm.elements.namedItem('photo').files?.[0];
+    if (!file || file.size > 4 * 1024 * 1024) throw new Error('Choisis une photo de 4 Mo maximum.');
+    const portrait = await compactStaffPhoto(file);
+    const body = new FormData(photoForm);
+    body.set('photo', portrait, 'portrait.' + ({ 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' })[portrait.type]);
+    photoMessage.textContent = 'Enregistrement de la photo en cours…';
+    const saved = await mutate('replace_photo', body);
+    if (saved) editDialog.close();
+  } catch (error) {
+    photoMessage.textContent = error.message || 'Cette photo ne peut pas être lue.';
+    photoMessage.dataset.state = 'error';
+  } finally {
+    submit.disabled = false;
+  }
 });
 undoButton.addEventListener('click', () => mutate('undo'));
 copyButton.addEventListener('click', () => mutate('copy', { unit: activeUnit }));

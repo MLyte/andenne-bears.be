@@ -339,19 +339,6 @@ a {
   .family-parking-layout { grid-template-columns: 1fr; }
   .family-parking-layout .family-parking-map { width: min(100%, 480px); margin-inline: auto; }
 }
-.family-announcement { position: relative; overflow: hidden; border-block: 4px solid var(--gold); background: linear-gradient(90deg, #050505 0%, rgba(5, 5, 5, 0.98) 44%, rgba(5, 5, 5, 0.65) 100%), url("images/family-flag-teams-2026-v2.png") 70% 45% / cover; color: var(--cream); }
-.family-announcement-link { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: clamp(1rem, 3vw, 2.5rem); width: min(1360px, calc(100% - 2rem)); min-height: 170px; margin-inline: auto; padding-block: 1.35rem; color: inherit; text-decoration: none; }
-.family-announcement-date { display: flex; align-items: center; gap: 0.25rem; color: var(--gold); font-family: "Berthold City", var(--title-font); line-height: 0.9; white-space: nowrap; }
-.family-announcement-date > strong { font-size: clamp(3.8rem, 6vw, 6rem); }
-.family-announcement-date > span { display: grid; gap: 0.2rem; font-size: clamp(1.25rem, 2vw, 2rem); }
-.family-announcement-date small { font-family: var(--body-font); font-size: 0.42em; letter-spacing: 0.1em; }
-.family-announcement-copy { display: grid; gap: 0.35rem; min-width: 0; line-height: 1.35; }
-.family-announcement-kicker { color: var(--gold); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
-.family-announcement-copy > strong { font-size: clamp(1.3rem, 2.35vw, 2.3rem); line-height: 1.08; }
-.family-announcement-copy > span:last-child { font-size: 0.9rem; font-weight: 700; }
-.family-announcement-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 48px; padding: 0.8rem 1rem; border-radius: 5px; background: var(--gold); color: var(--black); font-weight: 900; white-space: nowrap; }
-.family-announcement-link:hover .family-announcement-action { background: #ffdc43; transform: translateY(-2px); }
-.family-announcement-link:focus-visible { outline: 3px solid var(--gold); outline-offset: -6px; }
 .family-page [hidden] { display: none !important; }
 .family-page p strong { font-weight: 900; }
 .family-header {
@@ -696,10 +683,6 @@ a {
   .family-burgers-scene[data-burger-milestone="200"] .family-burgers-character { --portrait-width: 8.75rem; --portrait-overlap: 3.75rem; --portrait-right: 0rem; }
 }
 @media (max-width: 760px) {
-  .family-announcement-link { grid-template-columns: auto minmax(0, 1fr); min-height: 0; }
-  .family-announcement-date > strong { font-size: 3.5rem; }
-  .family-announcement-date > span { font-size: 1.1rem; }
-  .family-announcement-action { grid-column: 1 / -1; justify-self: start; }
   .family-hero-layout { grid-template-columns: 1fr; gap: 2rem; }
   .family-hero-date > span:first-child { font-size: 6rem; }
   .family-hero-date > span:last-child { font-size: 2.4rem; }

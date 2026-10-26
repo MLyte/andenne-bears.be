@@ -1,0 +1,10 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+put C:\www\andenne-bears.be\tournoi.css /home/andennebh/www/tournoi.css
+put C:\www\andenne-bears.be\scripts\tournoi.js /home/andennebh/www/scripts/tournoi.js
+put C:\www\andenne-bears.be\tournoi.html /home/andennebh/www/tournoi.html
+get /home/andennebh/www/tournoi.css C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\verified\tournoi.css
+get /home/andennebh/www/scripts/tournoi.js C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\verified\scripts\tournoi.js
+get /home/andennebh/www/tournoi.html C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\verified\tournoi.html
+exit

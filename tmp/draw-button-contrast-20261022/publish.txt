@@ -1,0 +1,10 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+get /home/andennebh/www/tirage-equipes.css C:\www\andenne-bears.be\tmp\draw-button-contrast-20261022\before\tirage-equipes.css
+get /home/andennebh/www/tirage-equipes.html C:\www\andenne-bears.be\tmp\draw-button-contrast-20261022\before\tirage-equipes.html
+put C:\www\andenne-bears.be\tirage-equipes.css /home/andennebh/www/tirage-equipes.css
+put C:\www\andenne-bears.be\tirage-equipes.html /home/andennebh/www/tirage-equipes.html
+get /home/andennebh/www/tirage-equipes.css C:\www\andenne-bears.be\tmp\draw-button-contrast-20261022\verified\tirage-equipes.css
+get /home/andennebh/www/tirage-equipes.html C:\www\andenne-bears.be\tmp\draw-button-contrast-20261022\verified\tirage-equipes.html
+exit

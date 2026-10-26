@@ -1,0 +1,10 @@
+{
+  "hostKey": "SHA256:j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0",
+  "existing": {
+    "index.html": "cadf9e3df3df8cdc2dd31c3a6ed8e79b2616a9e3aadfed4e6cf82f074be5ba6e",
+    "bears.css": "983ef21c82ab1dc10122bba3963044ed0770b925a5b96735b326d6d187e409d8",
+    "membres.php": "01b357119a8a54a9019ccbba13fdff6727fdd6fd8aaa9eab94234fd08da63e28",
+    "membres.css": "d3864d152ac70a882f4a6cca0ca497d4974dd655a32f141c33305181f8144e14"
+  },
+  "new": "scripts/membres-tournoi.js"
+}

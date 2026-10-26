@@ -1,0 +1,13 @@
+{
+  "hostKey": "SHA256:j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0",
+  "existing": {
+    "scripts/tournoi.js": "9eda1dfcfdf4c25581f0a5760c534ce06a6eafc99777386cda0532a51bcef06a",
+    "tournoi.html": "5afd14e13aca87fca385ed76d610cfc41216051c4d93d2f4e3a4c4330554b4c6"
+  },
+  "new": [
+    "tournoi-public.php",
+    "scripts/tournoi-ecran.js",
+    "tournoi-ecran.css",
+    "tournoi-ecran.html"
+  ]
+}

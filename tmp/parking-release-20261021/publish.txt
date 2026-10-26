@@ -1,0 +1,12 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+put C:\www\andenne-bears.be\images\family-day-parking-evelette-2026.jpg /home/andennebh/www/images/family-day-parking-evelette-2026.jpg
+put C:\www\andenne-bears.be\bears.css /home/andennebh/www/bears.css
+put C:\www\andenne-bears.be\scripts\family-day.js /home/andennebh/www/scripts/family-day.js
+put C:\www\andenne-bears.be\journee-familiale.html /home/andennebh/www/journee-familiale.html
+get /home/andennebh/www/images/family-day-parking-evelette-2026.jpg C:\www\andenne-bears.be\tmp\parking-release-20261021\verified\images\family-day-parking-evelette-2026.jpg
+get /home/andennebh/www/bears.css C:\www\andenne-bears.be\tmp\parking-release-20261021\verified\bears.css
+get /home/andennebh/www/scripts/family-day.js C:\www\andenne-bears.be\tmp\parking-release-20261021\verified\scripts\family-day.js
+get /home/andennebh/www/journee-familiale.html C:\www\andenne-bears.be\tmp\parking-release-20261021\verified\journee-familiale.html
+exit

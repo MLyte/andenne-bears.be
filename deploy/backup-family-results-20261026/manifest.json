@@ -1,0 +1,13 @@
+{
+  "hostKey": "SHA256:j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0",
+  "existing": {
+    "journee-familiale.html": "103859f68bcf31137026bde61ddce90e3c878bc1a1fc4c015e4c8ec65804a422",
+    "membres.php": "56fb3ccd104ff991ea18a0cf2ce75c5362b41f89639a84bbb83adc1175026ffb",
+    "membres.css": "3e1e473786beccb4215abd047d80fc8afffd9131c2aa934cc29cc4bf2c6ee609",
+    "tournoi-public.php": "475c286602d5101a236a65fd628322b1947d27f52bb0b0763b70826093dc184b"
+  },
+  "new": [
+    "family-results.css",
+    "scripts/family-results.js"
+  ]
+}

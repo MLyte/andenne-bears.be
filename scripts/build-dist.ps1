@@ -7,11 +7,13 @@ $PublicFiles = @(
   '.ovhconfig', 'robots.txt', 'sitemap.xml',
   'index.html', 'journee-familiale.html', 'camp-blegny.html',
   'camp-blegny-comite.html', 'export-inscriptions.html', 'tirage-equipes.html',
-  'bears.css', 'camp-dashboard.css', 'tirage-equipes.css', 'membres.css',
+  'bears.css', 'camp-dashboard.css', 'tirage-equipes.css', 'organizer-nav.css', 'membres.css', 'family-results.css',
   'contact.php', 'family-day.php', 'camp-registration.php',
   'suivi-inscriptions.php', 'suivi-camp-blegny.php', 'tirage-equipes.php', 'changethis.php',
   'membres.php', 'membres-staff.php', 'membres-photo.php', 'membres-data.php', 'membres-image.php', 'membres-compositions-pdf.php', 'private-backup.php',
   'bears-storage.php',
+  'tournoi.html', 'tournoi.css', 'tournoi-api.php', 'tournoi-domain.php', 'tournoi-seed.php',
+  'tournoi-ecran.html', 'tournoi-ecran.css', 'tournoi-public.php',
   'config/family-day-config.php'
 )
 $ResourceTypes = @{

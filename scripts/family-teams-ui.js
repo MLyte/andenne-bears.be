@@ -555,8 +555,10 @@ undoButton.addEventListener('click', () => {
   swapStatus.textContent = 'Dernier déplacement annulé.';
 });
 
-saveButton.addEventListener('click', async () => {
-  if (!draw || !dirty) return;
+let savingDraw = false;
+async function saveDraw() {
+  if (!draw || savingDraw || simulationWorker) return false;
+  savingDraw = true;
   const state = snapshot();
   const submittedToken = changeToken;
   saveButton.disabled = true;
@@ -570,17 +572,31 @@ saveButton.addEventListener('click', async () => {
     const result = await response.json();
     if (!response.ok || !result.success) throw new Error(result.error || 'Enregistrement impossible.');
     saveVersion = result.version;
-    if (changeToken === submittedToken) {
+    if (changeToken === submittedToken && !simulationWorker) {
       dirty = false;
       saveStatus.textContent = 'Tirage enregistré. Il sera rechargé à la prochaine ouverture.';
+      return true;
     } else {
       saveStatus.textContent = 'Le tirage a changé pendant l’enregistrement. Clique à nouveau sur « Sauver ».';
     }
   } catch (error) {
     saveStatus.textContent = error.message || 'Enregistrement impossible. Les changements restent dans cette page.';
   } finally {
+    savingDraw = false;
     saveButton.disabled = !dirty || !draw;
   }
+  return false;
+}
+saveButton.addEventListener('click', () => { if (dirty) saveDraw(); });
+document.querySelector('#draw-tournament').addEventListener('click', async event => {
+  event.preventDefault();
+  if (savingDraw) return;
+  if (!draw || simulationWorker) {
+    saveStatus.textContent = 'Attends la fin du chargement ou du calcul avant d’ouvrir le tournoi.';
+    dataStatus.textContent = saveStatus.textContent;
+    return;
+  }
+  if (await saveDraw()) window.location.assign('tournoi.html');
 });
 
 window.addEventListener('beforeunload', event => {

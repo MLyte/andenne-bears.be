@@ -7,13 +7,14 @@
   <title>Tirage des équipes · Journée familiale | Andenne Bears</title>
   <link rel="icon" href="images/favicon.png" />
   <link rel="stylesheet" href="bears.css?v=tirage-2026-10-10-2" />
-  <link rel="stylesheet" href="tirage-equipes.css?v=2" />
-  <script type="module" src="scripts/family-teams-ui.js?v=12"></script>
+  <link rel="stylesheet" href="tirage-equipes.css?v=3" />
+  <link rel="stylesheet" href="organizer-nav.css?v=1" />
+  <script type="module" src="scripts/family-teams-ui.js?v=13"></script>
 </head>
 <body class="family-page">
   <header class="family-header">
     <a class="brand" href="index.html" aria-label="Andenne Bears, retour à l'accueil"><img src="images/logoBears.png" alt="" /><span>ANDENNE BEARS</span></a>
-    <a href="suivi-inscriptions.php">Suivi des inscriptions</a>
+    <nav class="organizer-nav" aria-label="Espace organisateur"><a href="suivi-inscriptions.php">Inscriptions</a><a href="tirage-equipes.html" aria-current="page">Tirage des équipes</a><a href="tournoi.html">Tournoi</a><a href="tournoi-ecran.html" target="_blank" rel="noopener">Écran joueurs ↗</a></nav>
   </header>
   <main class="family-wrap family-draw">
     <div class="family-draw-hero">
@@ -21,7 +22,7 @@
       <h1>Construire les équipes</h1>
       <p>Des équipes de <strong>six joueurs : cinq sur le terrain et un remplaçant tournant</strong>. L’objectif reste une femme, une personne de moins de 18 ans et une personne hors Bears, <strong>toutes différentes</strong>, puis trois places libres. Quand les profils manquent, le tirage place les joueurs et cherche à limiter puis répartir les dérogations.</p>
       <p id="draw-data-status" class="family-draw-live" role="status" aria-live="polite">Connexion aux inscriptions…</p>
-      <a href="suivi-inscriptions.php">Ouvrir le suivi des inscriptions</a>
+      <nav aria-label="Espace organisateur"><a class="button" href="suivi-inscriptions.php">Inscriptions</a> <a id="draw-tournament" class="button button-primary" href="tournoi.html">Sauver et ouvrir le tournoi</a></nav>
     </div>
     <div id="draw-workspace" hidden>
       <section class="family-draw-overview" aria-labelledby="draw-overview-title">

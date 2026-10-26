@@ -1,0 +1,197 @@
+. 2026-10-22 00:20:28.656 --------------------------------------------------------------------------
+. 2026-10-22 00:20:28.662 WinSCP Version 6.5.6 (Compilation 16502 2026-03-25) (OS 10.0.26300 – Windows 11 Professionnel)
+. 2026-10-22 00:20:28.662 Configuration: HKCU\Software\Martin Prikryl\WinSCP 2\
+. 2026-10-22 00:20:28.662 Log level: Normal
+. 2026-10-22 00:20:28.662 Local account: DESKTOP-LUYTEN\mathi
+. 2026-10-22 00:20:28.662 Working directory: C:\www\andenne-bears.be
+. 2026-10-22 00:20:28.662 Process ID: 80704
+. 2026-10-22 00:20:29.070 Ancestor processes: WinSCP, pwsh, codex, ...
+. 2026-10-22 00:20:29.071 Command-line: "C:\Program Files (x86)\WinSCP\WinSCP.exe" /console=6.5.6 /consoleinstance=_79144_716 "/script=tmp\tournament-dashboard-release-20261022\backup.txt" "/log=tmp\tournament-dashboard-release-20261022\backup.log" 
+. 2026-10-22 00:20:29.072 Time zone: Current: GMT+2, Standard: GMT+1 (Paris, Madrid), DST: GMT+2 (Paris, Madrid (heure d’été)), DST Start: 29-03-26, DST End: 25-10-26
+. 2026-10-22 00:20:29.072 Login time: jeudi 22 octobre 2026 00:20:29
+. 2026-10-22 00:20:29.072 --------------------------------------------------------------------------
+. 2026-10-22 00:20:29.072 Script: Retrospectively logging previous script records:
+> 2026-10-22 00:20:29.072 Script: option batch abort
+< 2026-10-22 00:20:29.072 Script: batch           abort     
+> 2026-10-22 00:20:29.072 Script: option confirm off
+< 2026-10-22 00:20:29.072 Script: confirm         off       
+> 2026-10-22 00:20:29.072 Script: open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+< 2026-10-22 00:20:29.072 Script: Dans les scripts, vous ne devriez pas compter sur des sites enregistrés, utilisez cette commande:
+< 2026-10-22 00:20:29.072 Script: open sftp://andennebh:***@ftp.cluster115.hosting.ovh.net/ -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 Utf=1 ProxyPort=0
+. 2026-10-22 00:20:29.072 --------------------------------------------------------------------------
+. 2026-10-22 00:20:29.072 Session name: andenne-bears.be (Modified site)
+. 2026-10-22 00:20:29.072 Host name: ftp.cluster115.hosting.ovh.net (Port: 22)
+. 2026-10-22 00:20:29.072 User name: andennebh (Password: Yes, Key file: No, Passphrase: No)
+. 2026-10-22 00:20:29.072 Tunnel: No
+. 2026-10-22 00:20:29.072 Transfer Protocol: SFTP
+. 2026-10-22 00:20:29.072 Ping type: Off, Ping interval: 30 sec; Timeout: 15 sec
+. 2026-10-22 00:20:29.072 Disable Nagle: No
+. 2026-10-22 00:20:29.072 Proxy: None
+. 2026-10-22 00:20:29.072 Send buffer: 262144
+. 2026-10-22 00:20:29.072 Compression: No
+. 2026-10-22 00:20:29.072 Bypass authentication: No
+. 2026-10-22 00:20:29.072 Try agent: Yes; Agent forwarding: No; KI: Yes; GSSAPI: Yes
+. 2026-10-22 00:20:29.072 GSSAPI: KEX: No; Forwarding: No; Libs: gssapi32,sspi,custom; Custom: 
+. 2026-10-22 00:20:29.072 Ciphers: aes,chacha20,aesgcm,3des,WARN,des,blowfish,arcfour; Ssh2DES: No
+. 2026-10-22 00:20:29.072 KEX: ntru-curve25519,mlkem-curve25519,mlkem-nist,ecdh,dh-gex-sha1,dh-group18-sha512,dh-group17-sha512,dh-group16-sha512,dh-group15-sha512,dh-group14-sha1,rsa,WARN,dh-group1-sha1
+. 2026-10-22 00:20:29.072 SSH Bugs: Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto
+. 2026-10-22 00:20:29.073 Simple channel: Yes
+. 2026-10-22 00:20:29.073 Return code variable: Autodetect; Lookup user groups: Auto
+. 2026-10-22 00:20:29.073 Shell: default
+. 2026-10-22 00:20:29.073 EOL: LF, UTF: On
+. 2026-10-22 00:20:29.073 Clear aliases: Yes, Unset nat.vars: Yes, Resolve symlinks: Yes; Follow directory symlinks: No
+. 2026-10-22 00:20:29.073 LS: ls -la, Ign LS warn: Yes, Scp1 Comp: No; Exit code 1 is error: No
+. 2026-10-22 00:20:29.073 SFTP Bugs: Auto,Auto
+. 2026-10-22 00:20:29.073 SFTP Server: default
+. 2026-10-22 00:20:29.073 Local directory: C:\www\andenne-bears.be\config, Remote directory: /home/andennebh/www, Update: Yes, Cache: Yes
+. 2026-10-22 00:20:29.073 Cache directory changes: Yes, Permanent: Yes
+. 2026-10-22 00:20:29.073 Recycle bin: Delete to: No, Overwritten to: No, Bin path: 
+. 2026-10-22 00:20:29.073 DST mode: Unix
+. 2026-10-22 00:20:29.073 --------------------------------------------------------------------------
+< 2026-10-22 00:20:29.073 Script: Recherche de l'hôte...
+. 2026-10-22 00:20:29.074 Looking up host "ftp.cluster115.hosting.ovh.net" for SSH connection
+. 2026-10-22 00:20:29.199 Connecting to 5.135.41.164 port 22
+. 2026-10-22 00:20:29.230 Connected to 5.135.41.164 (from 192.168.0.19:60521)
+< 2026-10-22 00:20:29.230 Script: Connexion à l'hôte...
+. 2026-10-22 00:20:29.230 We claim version: SSH-2.0-WinSCP_release_6.5.6
+. 2026-10-22 00:20:29.231 Connected to 5.135.41.164 (from 192.168.0.19:60521)
+. 2026-10-22 00:20:29.250 Remote version: SSH-2.0-OpenSSH_9.2p1
+. 2026-10-22 00:20:29.250 Using SSH protocol version 2
+. 2026-10-22 00:20:29.250 Have a known host key of type ssh-ed25519
+. 2026-10-22 00:20:29.324 Enabling strict key exchange semantics
+. 2026-10-22 00:20:29.325 Doing NTRU Prime / Curve25519 hybrid key exchange, using hash SHA-512 (unaccelerated)
+. 2026-10-22 00:20:29.690 Server also has rsa-sha2-512/rsa-sha2-256/ssh-rsa host keys, but we don't know any of them
+. 2026-10-22 00:20:29.691 Host key fingerprint is:
+. 2026-10-22 00:20:29.691 ssh-ed25519 255 SHA256:j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0
+< 2026-10-22 00:20:29.691 Script: Authentification...
+. 2026-10-22 00:20:29.691 Host key matches configured key fingerprint
+. 2026-10-22 00:20:29.693 Initialised AES-256 SDCTR (AES-NI accelerated) [aes256-ctr] outbound encryption
+. 2026-10-22 00:20:29.693 Initialised HMAC-SHA-256 outbound MAC algorithm
+. 2026-10-22 00:20:29.693 Initialised AES-256 SDCTR (AES-NI accelerated) [aes256-ctr] inbound encryption
+. 2026-10-22 00:20:29.693 Initialised HMAC-SHA-256 inbound MAC algorithm
+! 2026-10-22 00:20:29.871 Using username "andennebh".
+< 2026-10-22 00:20:29.871 Script: Utilisation du nom d'utilisateur "andennebh".
+. 2026-10-22 00:20:29.991 Server offered these authentication methods: publickey,password
+. 2026-10-22 00:20:29.992 Prompt (password, "SSH password", <no instructions>, "Mot de passe :")
+. 2026-10-22 00:20:29.992 Using stored password.
+< 2026-10-22 00:20:29.992 Script: Authentification avec le mot de passe préentré.
+. 2026-10-22 00:20:29.992 Sent password
+. 2026-10-22 00:20:30.123 Access granted
+. 2026-10-22 00:20:30.123 Opening main session channel
+. 2026-10-22 00:20:30.265 Opened main channel
+. 2026-10-22 00:20:30.341 Started a shell/command
+< 2026-10-22 00:20:30.341 Script: Authentifié.
+. 2026-10-22 00:20:30.342 --------------------------------------------------------------------------
+. 2026-10-22 00:20:30.342 Using SFTP protocol.
+. 2026-10-22 00:20:30.342 Doing startup conversation with host.
+< 2026-10-22 00:20:30.342 Script: Démarrage de la session...
+. 2026-10-22 00:20:30.343 Well known server, allowing SFTP version 6.
+> 2026-10-22 00:20:30.344 Type: SSH_FXP_INIT, Size: 5, Number: -1
+< 2026-10-22 00:20:30.412 Type: SSH_FXP_VERSION, Size: 150, Number: -1
+. 2026-10-22 00:20:30.414 SFTP version 3 negotiated.
+. 2026-10-22 00:20:30.414 Supports extension posix-rename@openssh.com="1"
+. 2026-10-22 00:20:30.414 Supports statvfs@openssh.com extension version 2
+. 2026-10-22 00:20:30.414 Unknown server extension fstatvfs@openssh.com="2"
+. 2026-10-22 00:20:30.414 Supports hardlink@openssh.com extension version 1
+. 2026-10-22 00:20:30.414 Unknown server extension fsync@openssh.com="1"
+. 2026-10-22 00:20:30.414 We believe the server has signed timestamps bug
+. 2026-10-22 00:20:30.414 We will use UTF-8 strings as configured
+. 2026-10-22 00:20:30.414 Limiting packet size to OpenSSH sftp-server limit of 262148 bytes
+. 2026-10-22 00:20:30.414 Changing directory to "/home/andennebh/www".
+. 2026-10-22 00:20:30.414 Getting real path for '/home/andennebh/www'
+> 2026-10-22 00:20:30.416 Type: SSH_FXP_REALPATH, Size: 28, Number: 16
+< 2026-10-22 00:20:30.490 Type: SSH_FXP_NAME, Size: 59, Number: 16
+. 2026-10-22 00:20:30.490 Real path is '/home/andennebh/www'
+. 2026-10-22 00:20:30.490 Trying to open directory "/home/andennebh/www".
+> 2026-10-22 00:20:30.490 Type: SSH_FXP_LSTAT, Size: 28, Number: 263
+< 2026-10-22 00:20:30.565 Type: SSH_FXP_ATTRS, Size: 37, Number: 263
+. 2026-10-22 00:20:30.565 Getting current directory name.
+. 2026-10-22 00:20:30.565 Startup conversation with host finished.
+< 2026-10-22 00:20:30.565 Script: Session démarrée.
+< 2026-10-22 00:20:30.582 Script: Session active : [1] andenne-bears.be
+> 2026-10-22 00:20:30.603 Script: get /home/andennebh/www/tournoi.css C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\tournoi.css
+. 2026-10-22 00:20:30.603 Listing file "/home/andennebh/www/tournoi.css".
+> 2026-10-22 00:20:30.603 Type: SSH_FXP_LSTAT, Size: 40, Number: 519
+< 2026-10-22 00:20:30.686 Type: SSH_FXP_ATTRS, Size: 37, Number: 519
+. 2026-10-22 00:20:30.686 tournoi.css;-;2100;2026-10-21T18:58:20.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-22 00:20:30.686 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\" - total size: 2.100
+. 2026-10-22 00:20:30.686   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.css
+. 2026-10-22 00:20:30.686   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-22 00:20:30.686   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-22 00:20:30.687 File: '/home/andennebh/www/tournoi.css' [2026-10-21T18:58:20.000Z] [2100]
+. 2026-10-22 00:20:30.687 Copying "/home/andennebh/www/tournoi.css" to local directory started.
+. 2026-10-22 00:20:30.687 Binary transfer mode selected.
+. 2026-10-22 00:20:30.687 Opening remote file.
+> 2026-10-22 00:20:30.687 Type: SSH_FXP_OPEN, Size: 48, Number: 771
+< 2026-10-22 00:20:30.771 Type: SSH_FXP_HANDLE, Size: 13, Number: 771
+> 2026-10-22 00:20:30.771 Type: SSH_FXP_FSTAT, Size: 13, Number: 1032
+< 2026-10-22 00:20:30.857 Type: SSH_FXP_ATTRS, Size: 37, Number: 1032
+> 2026-10-22 00:20:30.857 Type: SSH_FXP_READ, Size: 25, Number: 1285
+< 2026-10-22 00:20:30.938 Type: SSH_FXP_DATA, Size: 2109, Number: 1285
+< 2026-10-22 00:20:30.996 Status code: 1
+. 2026-10-22 00:20:30.996 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-22 00:20:30.996 Type: SSH_FXP_CLOSE, Size: 13, Number: 1796
+. 2026-10-22 00:20:30.996 Preserving timestamp [2026-10-21T18:58:20.000Z]
+. 2026-10-22 00:20:30.997 Transfer done: '/home/andennebh/www/tournoi.css' => 'C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\tournoi.css' [2100]
+. 2026-10-22 00:20:30.997 Copying finished: Transferred: 2.100, Elapsed: 0:00:00, CPS: 6.752/s
+> 2026-10-22 00:20:30.999 Script: get /home/andennebh/www/scripts/tournoi.js C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\scripts\tournoi.js
+. 2026-10-22 00:20:30.999 Listing file "/home/andennebh/www/scripts/tournoi.js".
+> 2026-10-22 00:20:30.999 Type: SSH_FXP_LSTAT, Size: 47, Number: 2055
+< 2026-10-22 00:20:31.039 Type: SSH_FXP_STATUS, Size: 24, Number: 1796
+. 2026-10-22 00:20:31.039 Discarding reserved response
+< 2026-10-22 00:20:31.099 Type: SSH_FXP_ATTRS, Size: 37, Number: 2055
+. 2026-10-22 00:20:31.100 tournoi.js;-;9581;2026-10-21T22:02:23.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-22 00:20:31.100 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\scripts\" - total size: 9.581
+. 2026-10-22 00:20:31.100   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.js
+. 2026-10-22 00:20:31.100   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-22 00:20:31.100   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-22 00:20:31.100 File: '/home/andennebh/www/scripts/tournoi.js' [2026-10-21T22:02:23.000Z] [9581]
+. 2026-10-22 00:20:31.101 Copying "/home/andennebh/www/scripts/tournoi.js" to local directory started.
+. 2026-10-22 00:20:31.102 Binary transfer mode selected.
+. 2026-10-22 00:20:31.102 Opening remote file.
+> 2026-10-22 00:20:31.102 Type: SSH_FXP_OPEN, Size: 55, Number: 2307
+< 2026-10-22 00:20:31.160 Type: SSH_FXP_HANDLE, Size: 13, Number: 2307
+> 2026-10-22 00:20:31.160 Type: SSH_FXP_FSTAT, Size: 13, Number: 2568
+< 2026-10-22 00:20:31.220 Type: SSH_FXP_ATTRS, Size: 37, Number: 2568
+> 2026-10-22 00:20:31.220 Type: SSH_FXP_READ, Size: 25, Number: 2821
+< 2026-10-22 00:20:31.281 Type: SSH_FXP_DATA, Size: 9590, Number: 2821
+< 2026-10-22 00:20:31.344 Status code: 1
+. 2026-10-22 00:20:31.345 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-22 00:20:31.345 Type: SSH_FXP_CLOSE, Size: 13, Number: 3332
+. 2026-10-22 00:20:31.345 Preserving timestamp [2026-10-21T22:02:23.000Z]
+. 2026-10-22 00:20:31.345 Transfer done: '/home/andennebh/www/scripts/tournoi.js' => 'C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\scripts\tournoi.js' [9581]
+. 2026-10-22 00:20:31.345 Copying finished: Transferred: 9.581, Elapsed: 0:00:00, CPS: 39.106/s
+> 2026-10-22 00:20:31.382 Script: get /home/andennebh/www/tournoi.html C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\tournoi.html
+. 2026-10-22 00:20:31.382 Listing file "/home/andennebh/www/tournoi.html".
+> 2026-10-22 00:20:31.383 Type: SSH_FXP_LSTAT, Size: 41, Number: 3591
+< 2026-10-22 00:20:31.446 Type: SSH_FXP_STATUS, Size: 24, Number: 3332
+. 2026-10-22 00:20:31.446 Discarding reserved response
+< 2026-10-22 00:20:31.507 Type: SSH_FXP_ATTRS, Size: 37, Number: 3591
+. 2026-10-22 00:20:31.508 tournoi.html;-;6918;2026-10-21T22:02:20.000Z;4;"" [227236];"" [100];rw-r--r--;0
+. 2026-10-22 00:20:31.508 Copying 1 files/directories to local directory "C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\" - total size: 6.918
+. 2026-10-22 00:20:31.508   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: tournoi.html
+. 2026-10-22 00:20:31.508   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2026-10-22 00:20:31.508   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2026-10-22 00:20:31.508 File: '/home/andennebh/www/tournoi.html' [2026-10-21T22:02:20.000Z] [6918]
+. 2026-10-22 00:20:31.508 Copying "/home/andennebh/www/tournoi.html" to local directory started.
+. 2026-10-22 00:20:31.508 Binary transfer mode selected.
+. 2026-10-22 00:20:31.510 Opening remote file.
+> 2026-10-22 00:20:31.510 Type: SSH_FXP_OPEN, Size: 49, Number: 3843
+< 2026-10-22 00:20:31.570 Type: SSH_FXP_HANDLE, Size: 13, Number: 3843
+> 2026-10-22 00:20:31.570 Type: SSH_FXP_FSTAT, Size: 13, Number: 4104
+< 2026-10-22 00:20:31.630 Type: SSH_FXP_ATTRS, Size: 37, Number: 4104
+> 2026-10-22 00:20:31.632 Type: SSH_FXP_READ, Size: 25, Number: 4357
+< 2026-10-22 00:20:31.709 Type: SSH_FXP_DATA, Size: 6927, Number: 4357
+< 2026-10-22 00:20:31.759 Status code: 1
+. 2026-10-22 00:20:31.760 Skipped 1 SSH_FXP_READ and 1 SSH_FXP_STATUS packets
+> 2026-10-22 00:20:31.760 Type: SSH_FXP_CLOSE, Size: 13, Number: 4868
+. 2026-10-22 00:20:31.760 Preserving timestamp [2026-10-21T22:02:20.000Z]
+. 2026-10-22 00:20:31.763 Transfer done: '/home/andennebh/www/tournoi.html' => 'C:\www\andenne-bears.be\tmp\tournament-dashboard-release-20261022\before\tournoi.html' [6918]
+. 2026-10-22 00:20:31.764 Copying finished: Transferred: 6.918, Elapsed: 0:00:00, CPS: 27.023/s
+> 2026-10-22 00:20:31.785 Script: exit
+. 2026-10-22 00:20:31.793 Script: Exit code: 0
+. 2026-10-22 00:20:31.793 Closing connection.
+. 2026-10-22 00:20:31.794 Sending special code: 1
+. 2026-10-22 00:20:31.902 Session sent command exit status 0
+. 2026-10-22 00:20:31.902 Main session channel closed
+. 2026-10-22 00:20:31.903 All channels closed

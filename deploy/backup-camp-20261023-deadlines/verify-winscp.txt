@@ -1,0 +1,11 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+cd /home/andennebh/www
+lcd C:\www\andenne-bears.be\deploy\backup-camp-20261023-deadlines\verified
+get camp-blegny.html
+get camp-registration.php
+cd /home/andennebh/www/scripts
+lcd C:\www\andenne-bears.be\deploy\backup-camp-20261023-deadlines\verified\scripts
+get camp-registration.js
+exit

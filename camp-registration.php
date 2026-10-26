@@ -41,6 +41,11 @@ function safeCsv(string $value): string
     return preg_match('/^[=+\-@]/', $value) ? "'" . $value : $value;
 }
 
+$registrationCloses = new DateTimeImmutable('2026-10-26 00:00:00', new DateTimeZone('Europe/Brussels'));
+if (time() >= $registrationCloses->getTimestamp()) {
+    reply(410, 'Les inscriptions au camp sont closes depuis le 25 octobre à 23 h 59 min 59 s (heure belge).');
+}
+
 $configFile = __DIR__ . '/config/family-day-config.php';
 if (!is_file($configFile)) reply(503, 'Inscriptions temporairement indisponibles.');
 $config = require $configFile;

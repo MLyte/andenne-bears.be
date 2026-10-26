@@ -1,0 +1,10 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+get /home/andennebh/www/tournoi-domain.php C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\before\tournoi-domain.php
+get /home/andennebh/www/tournoi-api.php C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\before\tournoi-api.php
+get /home/andennebh/www/scripts/tournoi.js C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\before\scripts\tournoi.js
+get /home/andennebh/www/scripts/family-teams-ui.js C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\before\scripts\family-teams-ui.js
+get /home/andennebh/www/tournoi.html C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\before\tournoi.html
+get /home/andennebh/www/tirage-equipes.html C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\before\tirage-equipes.html
+exit

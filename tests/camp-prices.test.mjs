@@ -40,9 +40,19 @@ test('camp prices are visible without choosing a category and stay after registr
     'camp-payment-dialog-amount': dialogAmount,
     'camp-payment-dialog-communication': dialogCommunication,
     'camp-payment-dialog-reference': dialogReference,
+    'camp-registration-closed': { hidden: true },
+    'camp-registration-deadline-note': {},
+    'camp-payment-deadline-note': {},
+    'camp-registration-countdown': { querySelector: () => ({}) },
+    'camp-payment-countdown': { querySelector: () => ({}) },
   };
+  class BeforeDeadline extends Date {
+    static now() { return Date.parse('2026-10-23T12:00:00Z'); }
+  }
   runInNewContext(script, {
     document: { getElementById: id => elements[id] },
+    Date: BeforeDeadline,
+    setInterval() {},
     FormData: class { set() {} get(name) { return { nights: 'samedi', last_name: 'Dupont', first_name: 'Sam' }[name]; } },
     fetch: async () => ({ ok: true, json: async () => ({ csrfToken: 'test', success: true, message: 'Inscription enregistrée.', reference: 'ABC123' }) }),
   });

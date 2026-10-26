@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Tournoi de flag · Écran joueurs · Andenne Bears</title>
+  <link rel="icon" href="images/favicon.png">
+  <link rel="stylesheet" href="tournoi-ecran.css?v=1">
+  <script type="module" src="scripts/tournoi-ecran.js?v=1"></script>
+</head>
+<body>
+  <main class="screen">
+    <header class="masthead">
+      <div class="identity"><img src="images/logoBears.png" alt=""><div><p>ANDENNE BEARS · DIMANCHE 25 OCTOBRE 2026</p><h1>Tournoi de flag</h1></div></div>
+      <div class="masthead-status"><span class="live-dot" aria-hidden="true"></span><span id="sync">Connexion aux scores…</span><strong id="clock" aria-label="Heure actuelle"></strong></div>
+    </header>
+
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+    <div class="main-grid">
+      <div class="match-column">
+        <section class="current-panel panel" aria-labelledby="current-title">
+          <div class="section-head"><div><p class="kicker">À L’AFFICHE</p><h2 id="current-title">Chargement du tournoi…</h2></div><span id="progress" class="progress"></span></div>
+          <div id="current-matches" class="current-matches"></div>
+          <p id="current-note" class="panel-note"></p>
+        </section>
+
+        <div class="lower-grid">
+          <section class="small-panel panel" aria-labelledby="next-title"><div class="section-head"><div><p class="kicker">ENSUITE</p><h2 id="next-title">Prochains matchs</h2></div></div><div id="next-matches" class="compact-list"></div></section>
+          <section class="small-panel panel" aria-labelledby="results-title"><div class="section-head"><div><p class="kicker">DÉJÀ ENREGISTRÉS</p><h2 id="results-title">Scores du tournoi</h2></div></div><div id="recent-results" class="compact-list"></div></section>
+        </div>
+      </div>
+
+      <aside class="standings-panel panel" aria-labelledby="standings-title">
+        <div class="section-head"><div><p class="kicker">LES SIX ÉQUIPES</p><h2 id="standings-title">Classement</h2></div><span id="standings-phase" class="phase-pill">Championnat</span></div>
+        <div class="standings-head"><span>#</span><span>Équipe</span><span>J</span><span>Diff.</span><span>Pts</span></div>
+        <div id="standings" class="standings-list"></div>
+        <p id="standings-note" class="standings-note">Victoire 3 pts · Nul 1 pt · Défaite 0 pt</p>
+      </aside>
+    </div>
+    <footer class="footer"><span>Les horaires sont prévisionnels. Les scores affichés sont ceux enregistrés par la table de marque.</span><span>Andenne Bears · One team. One family. One heartbeat.</span></footer>
+  </main>
+</body>
+</html>

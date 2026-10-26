@@ -1,0 +1,16 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+put C:\www\andenne-bears.be\tournoi-domain.php /home/andennebh/www/tournoi-domain.php
+put C:\www\andenne-bears.be\tournoi-api.php /home/andennebh/www/tournoi-api.php
+put C:\www\andenne-bears.be\scripts\tournoi.js /home/andennebh/www/scripts/tournoi.js
+put C:\www\andenne-bears.be\scripts\family-teams-ui.js /home/andennebh/www/scripts/family-teams-ui.js
+put C:\www\andenne-bears.be\tournoi.html /home/andennebh/www/tournoi.html
+put C:\www\andenne-bears.be\tirage-equipes.html /home/andennebh/www/tirage-equipes.html
+get /home/andennebh/www/tournoi-domain.php C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\verified\tournoi-domain.php
+get /home/andennebh/www/tournoi-api.php C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\verified\tournoi-api.php
+get /home/andennebh/www/scripts/tournoi.js C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\verified\scripts\tournoi.js
+get /home/andennebh/www/scripts/family-teams-ui.js C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\verified\scripts\family-teams-ui.js
+get /home/andennebh/www/tournoi.html C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\verified\tournoi.html
+get /home/andennebh/www/tirage-equipes.html C:\www\andenne-bears.be\tmp\tournament-draw-sync-20261022\verified\tirage-equipes.html
+exit

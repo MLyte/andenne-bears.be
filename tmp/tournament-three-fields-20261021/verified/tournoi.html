@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>Tournoi du 25 octobre · Andenne Bears</title>
+  <link rel="icon" href="images/favicon.png"><link rel="stylesheet" href="bears.css"><link rel="stylesheet" href="tournoi.css?v=1">
+  <script type="module" src="scripts/tournoi.js?v=2"></script>
+</head>
+<body class="family-page">
+  <header class="family-header"><a class="brand" href="index.html"><img src="images/logoBears.png" alt=""><span>ANDENNE BEARS</span></a></header>
+  <main class="family-wrap tournament">
+    <nav class="tournament-nav" aria-label="Espace organisateur"><a class="button" href="suivi-inscriptions.php">Inscriptions</a><a class="button" href="tirage-equipes.html">Simulation des équipes</a><a class="button button-primary" href="tournoi.html" aria-current="page">Tournoi</a></nav>
+    <p class="section-kicker">Organisateurs · dimanche 25 octobre 2026</p><h1>Le tournoi des six équipes</h1>
+    <p id="status" role="status" aria-live="polite">Chargement du tournoi…</p>
+    <div id="content" hidden>
+      <section><h2>Un tournoi où tout le monde joue</h2><p>Un championnat commun : chaque équipe rencontre les cinq autres. Puis trois matchs de classement : 5e–6e, 3e–4e et finale 1er–2e. <strong>Six matchs par équipe, aucune élimination anticipée.</strong></p>
+        <p><strong>Proposition sur trois terrains :</strong> accueil et briefing à 9 h, premier tour à 9 h 15. Cinq tours de 20 minutes, avec 10 minutes pour souffler, boire et changer de terrain. Matchs de classement à 11 h 50, puis finale seule à 12 h 20 pour que tout le monde puisse la regarder. Fin à 12 h 40 ; burgers à 13 h.</p>
+        <p>Implantation à confirmer en mesurant le terrain : trois terrains standards côte à côte, orientés dans la largeur du terrain de soccer, demandent environ <strong>85,2 × 69,6 m dégagements compris</strong>, hors zones d’équipe et public. Garder 5,5 m libres entre les aires de jeu et 2,75 m autour. Ne pas présumer que les lignes du terrain de soccer suffisent. <a href="https://americanfootball.sport/wp-content/uploads/2023/05/FlagRules2023.pdf" target="_blank" rel="noopener">Dimensions IFAF, page 8</a>.</p>
+        <p>Barème proposé pour cette journée : victoire 3 points, nul 1 point, défaite 0. Départage : différence de points, puis points marqués. Si l’égalité persiste, l’organisateur effectue un tirage au sort et en renseigne l’ordre avant les matchs de classement. Ceux-ci doivent avoir un vainqueur, avec départage sur le terrain si nécessaire.</p>
+      </section>
+      <section id="validation"><h2>Valider les compositions</h2><p>Composition issue du fichier <strong>simulation 1678168026</strong> fourni pour le 25 octobre. Vérifie les présences avant validation. Cette validation fige une copie pour le tournoi ; les simulations restent indépendantes.</p>
+        <label class="accept"><input id="accept" type="checkbox"> Je confirme ces six équipes et j’accepte les dérogations indiquées ci-dessous.</label>
+        <button id="validate" class="button button-primary" disabled>VALIDER les équipes</button>
+      </section>
+      <details open><summary>Les six équipes et leurs dérogations</summary><div id="teams" class="team-grid"></div></details>
+      <div id="live" hidden>
+        <section><h2>Organisation de la matinée</h2><p>Horaires prévisionnels, à adapter au briefing. Prévoir un arbitre par terrain, des chasubles, un ballon, un chronomètre et une personne à la table des scores. Faire tourner les remplaçants à chaque match.</p>
+          <button id="three-fields" class="button" type="button">Appliquer le planning 3 terrains · 9 h 15–12 h 40</button>
+          <form id="settings" class="settings">
+            <label>Premier match<input name="start" type="time" required></label>
+            <label>Jeu (minutes)<input name="minutes" type="number" min="5" max="30" required></label>
+            <label>Transition (minutes)<input name="transition" type="number" min="1" max="15" required></label>
+            <label>Terrains<select name="fields"><option value="1">1 terrain</option><option value="2">2 terrains</option><option value="3">3 terrains</option></select></label>
+            <label>Pause avant classement (min)<input name="break" type="number" min="5" max="30" required></label>
+            <button class="button" type="submit">Enregistrer les horaires</button>
+          </form><p id="timing"></p><button id="print" class="button">Imprimer le planning et les scores</button>
+        </section>
+        <section><h2>Classement du championnat</h2><p id="progress"></p><p>J = joués · V/N/D = victoires/nuls/défaites · PM/PE = points marqués/encaissés · Diff. = différence · Pts = points de classement.</p><div class="table-wrap"><table><thead><tr><th>Rang*</th><th>Équipe</th><th>J</th><th>V</th><th>N</th><th>D</th><th>PM</th><th>PE</th><th>Diff.</th><th>Pts</th></tr></thead><tbody id="standings"></tbody></table></div><p>* Classement provisoire avant les quinze résultats et le départage des éventuelles égalités parfaites.</p>
+          <form id="ties" hidden><label>Après tirage au sort des équipes à égalité parfaite, indique les six numéros d’équipe dans l’ordre souhaité (ex. 2,1,3,4,5,6). Ce choix ne départage que les égalités parfaites.<input name="order" type="text" required placeholder="2,1,3,4,5,6"></label><button class="button" type="submit">Enregistrer le départage</button></form>
+        </section>
+        <section><h2>Rencontres et scores</h2><p>Saisis les deux scores puis clique sur « Enregistrer ». Un champ vide n’est pas un score nul. Les résultats ne sont confirmés qu’après l’enregistrement. Pour corriger le championnat après le début des matchs de classement, efface d’abord les trois scores de classement.</p><div id="matches"></div></section>
+        <section><h2>Résultat du tournoi</h2><ol id="podium"></ol></section>
+      </div>
+    </div>
+  </main>
+</body></html>

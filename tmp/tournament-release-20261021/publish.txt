@@ -1,0 +1,24 @@
+option batch abort
+option confirm off
+open "andenne-bears.be" -hostkey="ssh-ed25519 255 j6f+o3Aqvj2jcR/ZMgs8CES00CMvn2qcJMD51AeQku0" -rawsettings FSProtocol=2 PortNumber=22
+put C:\www\andenne-bears.be\tournoi-domain.php /home/andennebh/www/tournoi-domain.php
+put C:\www\andenne-bears.be\tournoi-seed.php /home/andennebh/www/tournoi-seed.php
+put C:\www\andenne-bears.be\tournoi-api.php /home/andennebh/www/tournoi-api.php
+put C:\www\andenne-bears.be\tournoi.css /home/andennebh/www/tournoi.css
+put C:\www\andenne-bears.be\scripts\tournoi-schedule.js /home/andennebh/www/scripts/tournoi-schedule.js
+put C:\www\andenne-bears.be\scripts\tournoi.js /home/andennebh/www/scripts/tournoi.js
+put C:\www\andenne-bears.be\tournoi.html /home/andennebh/www/tournoi.html
+put C:\www\andenne-bears.be\private-backup.php /home/andennebh/www/private-backup.php
+put C:\www\andenne-bears.be\tirage-equipes.html /home/andennebh/www/tirage-equipes.html
+put C:\www\andenne-bears.be\suivi-inscriptions.php /home/andennebh/www/suivi-inscriptions.php
+get /home/andennebh/www/tournoi-domain.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-domain.php
+get /home/andennebh/www/tournoi-seed.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-seed.php
+get /home/andennebh/www/tournoi-api.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi-api.php
+get /home/andennebh/www/tournoi.css C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi.css
+get /home/andennebh/www/scripts/tournoi-schedule.js C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\scripts\tournoi-schedule.js
+get /home/andennebh/www/scripts/tournoi.js C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\scripts\tournoi.js
+get /home/andennebh/www/tournoi.html C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tournoi.html
+get /home/andennebh/www/private-backup.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\private-backup.php
+get /home/andennebh/www/tirage-equipes.html C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\tirage-equipes.html
+get /home/andennebh/www/suivi-inscriptions.php C:\www\andenne-bears.be\tmp\tournament-release-20261021\verified\suivi-inscriptions.php
+exit

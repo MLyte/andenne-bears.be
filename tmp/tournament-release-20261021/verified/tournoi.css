@@ -1,0 +1,27 @@
+.tournament { max-width: 1100px; padding-bottom: 4rem; color: #17231b; }
+.tournament h1 { font-size: clamp(2rem,5vw,3.4rem); }
+.tournament section,.tournament details { margin: 1.5rem 0; padding: 1.25rem; background: #fff; border: 1px solid #cbd4cd; border-radius: 8px; }
+.tournament p { line-height: 1.6; }
+.tournament-nav,.settings { display: flex; flex-wrap: wrap; gap: .8rem; align-items: end; }
+.tournament label { display: grid; gap: .35rem; }
+.tournament input,.tournament select { min-height: 44px; padding: .55rem; border: 1px solid #657568; border-radius: 4px; color: #17231b; background: white; font: inherit; }
+.settings input { width: 130px; }
+.tournament .accept { display: flex; align-items: center; margin-bottom: 1rem; gap: .7rem; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 1rem; }
+.team-grid article { padding: .5rem; }
+.team-grid ul { padding-left: 1.3rem; line-height: 1.7; }
+.exception { background: #fff2cd; color: #594009; padding: .6rem; }
+.table-wrap { overflow-x: auto; }
+.tournament table { border-collapse: collapse; width: 100%; }
+.tournament th,.tournament td { text-align: left; padding: .65rem; border-bottom: 1px solid #d4dcd5; white-space: nowrap; }
+.match { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; padding: 1rem 0; border-bottom: 1px solid #cbd4cd; }
+.match p { flex: 1 1 260px; margin: 0; }
+.match input { width: 85px; }
+.match label { font-size: .85rem; }
+.tournament button { min-height: 44px; }
+.tournament button:disabled { opacity: .55; cursor: default; }
+.tournament :focus-visible { outline: 3px solid #2163b0; outline-offset: 3px; }
+#status { position: sticky; top: 0; padding: .8rem; background: #eff5ef; border: 1px solid #a5b9a8; z-index: 2; }
+#status.error { background: #fff0ed; color: #8b2114; }
+[hidden] { display: none !important; }
+@media print { .family-header,.tournament-nav,button,#settings,#validation,#ties,#status { display: none !important; } .tournament { max-width: none; width: 100%; } .match { break-inside: avoid; } .tournament section { padding: .4rem; } }

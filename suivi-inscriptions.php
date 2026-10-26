@@ -412,11 +412,12 @@ function statusMark(string $value, string $yesLabel = 'Oui', string $yesNote = '
   <title>Suivi des inscriptions | Andenne Bears</title>
   <link rel="icon" href="images/favicon.png" />
   <link rel="stylesheet" href="bears.css?v=cursor-2026-10-10" />
+  <link rel="stylesheet" href="organizer-nav.css?v=1" />
 </head>
 <body class="family-page family-dashboard-page">
   <header class="family-header">
     <a class="brand" href="index.html" aria-label="Andenne Bears, retour à l’accueil"><img src="images/logoBears.png" alt="" /><span>ANDENNE BEARS</span></a>
-    <nav class="family-header-actions" aria-label="Navigation"><a href="journee-familiale.html">Retour à la journée</a></nav>
+    <nav class="organizer-nav" aria-label="Espace organisateur"><a href="suivi-inscriptions.php" aria-current="page">Inscriptions</a><a href="tirage-equipes.html">Tirage des équipes</a><a href="tournoi.html">Tournoi</a><a href="tournoi-ecran.html" target="_blank" rel="noopener">Écran joueurs ↗</a></nav>
   </header>
   <main class="family-wrap family-dashboard-main">
     <p class="section-kicker">Réservé aux organisateurs</p>
@@ -439,6 +440,7 @@ function statusMark(string $value, string $yesLabel = 'Oui', string $yesNote = '
         <div>
           <form action="suivi-inscriptions.php" method="post"><input type="hidden" name="action" value="download" /><input type="hidden" name="csrf_token" value="<?= escape($csrf) ?>" /><button class="button button-primary" type="submit">Télécharger le CSV</button></form>
           <a class="button" href="tirage-equipes.html">Préparer le tirage des équipes</a>
+          <a class="button button-primary" href="tournoi.html">VALIDER les &#233;quipes / Tournoi</a>
           <form action="suivi-inscriptions.php" method="post"><input type="hidden" name="action" value="logout" /><input type="hidden" name="csrf_token" value="<?= escape($csrf) ?>" /><button class="button" type="submit">Se déconnecter</button></form>
         </div>
       </div>
